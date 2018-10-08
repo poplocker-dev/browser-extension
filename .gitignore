@@ -1,0 +1,4 @@
+*.swp
+*.org
+node_modules/
+dist/

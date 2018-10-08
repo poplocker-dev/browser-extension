@@ -1,0 +1,20 @@
+{
+  "name": "popwallet-browser-extension",
+  "version": "0.0.1",
+  "description": "PopWallet Browser Extension",
+  "scripts": {
+    "build": "webpack --mode production"
+  },
+  "license": "MIT",
+  "private": true,
+  "browser": true,
+  "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "babel-loader": "^8.0.4",
+    "copy-webpack-plugin": "^4.5.2",
+    "css-loader": "^1.0.0",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.2"
+  }
+}

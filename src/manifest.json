@@ -1,0 +1,9 @@
+{
+  "manifest_version": 2,
+  "name": "PopWallet",
+  "description": "DApps Browser and Ethereum Wallet",
+  "version": "0.0.1",
+  "background": {
+    "scripts": ["background.min.js"]
+  }
+}
