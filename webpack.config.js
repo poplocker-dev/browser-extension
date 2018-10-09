@@ -1,7 +1,13 @@
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const path = require('path')
 
 module.exports = {
-  entry: { background: './src/background.js' },
+  entry: {
+    background: './src/background.js',
+    popup: './src/popup/popup.jsx'
+  },
   output: {
     path: __dirname + '/dist',
     filename: '[name].min.js'
@@ -9,8 +15,9 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.js[x]?$/,
         exclude: /node_modules/,
+        include: __dirname + '/src',
         use: {
           loader: 'babel-loader'
         }
@@ -21,9 +28,20 @@ module.exports = {
       }
     ]
   },
+  resolve: {
+    extensions: ['.js', '.jsx'],
+    plugins: [
+      new DirectoryNamedWebpackPlugin({
+        exclude: /node_modules/,
+        include: [
+          __dirname + './src/popup'
+        ]
+      }),
+    ]
+  },
   plugins: [
     new CopyWebpackPlugin([{
-      from: 'src/manifest.json',
+      from: __dirname + '/src/manifest.json',
       transform: function (content, path) {
         return Buffer.from(JSON.stringify({
           description: process.env.npm_package_description,
@@ -32,5 +50,10 @@ module.exports = {
         }))
       }
     }]),
+    new HtmlWebpackPlugin({
+      filename: __dirname + '/dist/popup.html',
+      title: 'PopWallet',
+      chunks: ['popup']
+    })
   ]
 };
