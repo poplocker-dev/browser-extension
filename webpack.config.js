@@ -30,11 +30,15 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.jsx'],
+    alias: {
+      lib: __dirname + '/src/lib'
+    },
     plugins: [
       new DirectoryNamedWebpackPlugin({
         exclude: /node_modules/,
         include: [
-          __dirname + './src/popup'
+          __dirname + '/src/popup',
+          __dirname + '/src/lib'
         ]
       }),
     ]
