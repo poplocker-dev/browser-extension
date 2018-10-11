@@ -3,7 +3,7 @@ const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path')
 
-module.exports = {
+let config = {
   entry: {
     background: './src/background.js',
     popup: './src/popup/popup.jsx'
@@ -61,3 +61,11 @@ module.exports = {
     })
   ]
 };
+
+module.exports = (env, argv) => {
+  if (argv.mode === 'development') {
+    config.devtool = 'source-map';
+  }
+  return config;
+};
+
