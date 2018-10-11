@@ -1,4 +1,3 @@
-import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { Route, Switch } from 'react-router'
@@ -18,4 +17,4 @@ ReactDOM.render(
       </div>
     </ConnectedRouter>
   </Provider>,
-  document.body.appendChild(document.createElement('div')))
+  document.body.appendChild(document.createElement('div')));

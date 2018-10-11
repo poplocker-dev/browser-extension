@@ -19,7 +19,7 @@ class AccountForm extends React.Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <label for="password">Password:</label>
+        <label htmlFor="password">Password:</label>
         <input name="password" type="password" ref={this.inputRef} value={this.inputRef.value} />
         <button>Create</button>
       </form>
