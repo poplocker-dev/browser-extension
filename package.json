@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "connected-react-router": "^4.5.0",
+    "ethereumjs-wallet": "^0.6.2",
     "history": "^4.7.2",
     "react-redux": "^5.0.7",
     "react-router": "^4.3.1",
