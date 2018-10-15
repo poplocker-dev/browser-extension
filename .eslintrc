@@ -12,5 +12,8 @@
   ],
   "env": {
     "webextensions": true
+  },
+  "globals": {
+    "Promise": true
   }
 }
