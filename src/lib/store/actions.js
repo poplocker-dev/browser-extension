@@ -1,11 +1,17 @@
 import { sendToBackground } from 'lib/messaging'
 
-// TODO: use secret to encrypt pk in storage
 export function newAccount (secret) {
   return function (dispatch) {
-    sendToBackground({ type: 'KEY_GEN' })
+    dispatch(accountProcessed());
+    sendToBackground({ message: 'KEY_GEN', secret })
       .then(address => dispatch(accountReady(address)))
-      .catch(error  => dispatch(accountFailed(error)));
+      .catch(() => dispatch(accountFailed()));
+  }
+}
+
+export function accountProcessed () {
+  return {
+    type: 'ACCOUNT_PROCESSED'
   }
 }
 
@@ -16,9 +22,8 @@ export function accountReady ({ address }) {
   }
 }
 
-export function accountFailed (error) {
+export function accountFailed () {
   return {
-    type: 'ACCOUNT_FAILED',
-    error
+    type: 'ACCOUNT_FAILED'
   }
 }

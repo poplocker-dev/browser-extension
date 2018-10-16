@@ -4,16 +4,17 @@ import { newAccount } from 'lib/store/actions'
 
 class AccountForm extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 
-    this.inputRef = React.createRef()
-    this.handleSubmit = this.handleSubmit.bind(this)
+    this.inputRef = React.createRef();
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleSubmit(e) {
-    e.preventDefault()
-    this.props.dispatch(newAccount(this.inputRef.current.value))
-    this.inputRef.current.value = ''
+    e.preventDefault();
+    const val = this.inputRef.current.value;
+    this.inputRef.current.value = '';
+    this.props.dispatch(newAccount(val));
   }
 
   render() {

@@ -1,9 +1,13 @@
-import { generateKeypair } from 'lib/keyring'
+import { generateAccount, encrypt, save } from 'lib/keyring'
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  switch (message.type) {
+chrome.runtime.onMessage.addListener(({ message, secret }, sender, sendResponse) => {
+  switch (message) {
     case 'KEY_GEN':
-      generateKeypair().then(account => sendResponse({ address: account.address }));
+      generateAccount()
+        .then(keys => encrypt(keys, secret))
+        .then(save)
+        .then(({ address }) => sendResponse({ address }))
+        .catch(sendResponse);
   }
   return true;
-})
+});
