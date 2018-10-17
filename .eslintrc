@@ -11,12 +11,15 @@
     "eslint:recommended"
   ],
   "env": {
-    "webextensions": true
+    "webextensions": true,
+    "worker": true
   },
   "globals": {
-    "Promise": true
+    "Promise": true,
+    "document": true
   },
   "rules": {
-    "react/prop-types": "off"
+    "react/prop-types": "off",
+    "no-console": ["error", { "allow": ["error"] }]
   }
 }
