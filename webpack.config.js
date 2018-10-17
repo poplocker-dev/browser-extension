@@ -25,6 +25,10 @@ let config = {
       {
         test: /\.css$/,
         use: [ 'style-loader', 'css-loader' ]
+      },
+      {
+        test: /\.worker\.js$/,
+        use: 'worker-loader'
       }
     ]
   },
