@@ -24,7 +24,8 @@
     "react-dom": "^16.5.2",
     "style-loader": "^0.23.1",
     "webpack": "^4.20.2",
-    "webpack-cli": "^3.1.2"
+    "webpack-cli": "^3.1.2",
+    "worker-loader": "^2.0.0"
   },
   "dependencies": {
     "connected-react-router": "^4.5.0",
