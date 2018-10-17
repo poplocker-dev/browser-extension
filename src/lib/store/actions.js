@@ -3,8 +3,8 @@ import { sendToBackground } from 'lib/messaging'
 export function newAccount (secret) {
   return function (dispatch) {
     dispatch(accountProcessed());
-    sendToBackground({ message: 'KEY_GEN', secret })
-      .then(address => dispatch(accountReady(address)))
+    sendToBackground({ message: 'ACCOUNT_GEN', secret })
+      .then(account => dispatch(accountReady(account.address)))
       .catch(() => dispatch(accountFailed()));
   }
 }
@@ -15,7 +15,7 @@ export function accountProcessed () {
   }
 }
 
-export function accountReady ({ address }) {
+export function accountReady (address) {
   return {
     type: 'ACCOUNT_READY',
     address

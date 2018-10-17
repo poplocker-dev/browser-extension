@@ -1,27 +1,27 @@
-import * as wallet from 'ethereumjs-wallet'
+import Worker from './encryptor.worker.js';
 
-export function generateAccount () {
-  try       { return Promise.resolve(wallet.generate()); }
-  catch (e) { return Promise.reject(); }
-}
+export function generateAccount (secret) {
+  return new Promise((resolve, reject) => {
+    try {
+      const w = new Worker();
 
-export function encrypt (keys, secret) {
-  try {
-    return Promise.resolve({
-      address: keys.getChecksumAddressString(),
-      v3: keys.toV3(secret)
-    });
-  }
-  catch (e) { return Promise.reject(); }
+      w.postMessage({ secret });
+      w.onmessage = ({ data }) => {
+        resolve(data);
+        w.terminate();
+      }
+    }
+    catch (e) { console.error(e); reject(); }
+  });
 }
 
 export function save (payload) {
   return new Promise((resolve, reject) => {
-
-    chrome.storage.local.set(payload, () => {
-      if (!chrome.runtime.lastError) resolve(payload);
-      else reject();
-    });
-
+    try {
+      chrome.storage.local.set(payload, () => {
+        resolve(payload);
+      });
+    }
+    catch (e) { console.error(e); reject(); }
   })
 }
