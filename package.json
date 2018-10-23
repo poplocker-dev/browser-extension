@@ -29,12 +29,10 @@
   },
   "dependencies": {
     "@parity/api": "^2.1.24",
-    "connected-react-router": "^4.5.0",
     "ethereumjs-wallet": "^0.6.2",
     "history": "^4.7.2",
     "react-redux": "^5.0.7",
     "react-router": "^4.3.1",
-    "react-router-dom": "^4.3.1",
     "redux": "^4.0.0",
     "redux-thunk": "^2.3.0"
   }
