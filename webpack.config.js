@@ -6,11 +6,13 @@ const path = require('path')
 let config = {
   entry: {
     background: './src/background.js',
-    popup: './src/popup/popup.jsx'
+    popup: './src/popup/popup.jsx',
+    contentscript: './src/contentscript.js',
+    injected: './src/injected.js'
   },
   output: {
     path: __dirname + '/dist',
-    filename: '[name].min.js'
+    filename: '[name].js'
   },
   module: {
     rules: [

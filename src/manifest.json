@@ -2,10 +2,26 @@
   "manifest_version": 2,
   "name": "PopWallet",
   "background": {
-    "scripts": ["background.min.js"]
+    "scripts": ["background.js", "contentscript.js"]
   },
+  "content_scripts": [
+    {
+      "matches": [
+        "file://*/*",
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": [
+        "contentscript.js"
+      ],
+      "run_at": "document_start"
+    }
+  ],
   "browser_action": {
     "default_popup": "popup.html"
   },
-  "permissions": ["activeTab", "storage"]
+  "permissions": ["activeTab", "storage", "https://*.infura.io/"],
+  "web_accessible_resources": [
+    "injected.js"
+  ]
 }
