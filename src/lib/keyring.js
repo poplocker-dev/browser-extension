@@ -1,4 +1,4 @@
-import Worker from './encryptor.worker.js';
+import Worker from './workers/encryptor.worker.js';
 
 export function generateAccount (secret) {
   return new Promise((resolve, reject) => {
