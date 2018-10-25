@@ -1,7 +1,8 @@
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const path = require('path')
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
+const Dotenv = require('dotenv-webpack');
 
 let config = {
   entry: {
@@ -64,7 +65,8 @@ let config = {
       filename: __dirname + '/dist/popup.html',
       title: 'PopWallet',
       chunks: ['popup']
-    })
+    }),
+    new Dotenv()
   ]
 };
 
