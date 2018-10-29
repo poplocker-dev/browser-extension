@@ -1,9 +1,13 @@
 import { generateAccount, save } from 'lib/keyring'
 
-chrome.runtime.onMessage.addListener(({ message, secret }, sender, sendResponse) => {
-  switch (message) {
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  switch (message.type) {
     case 'ACCOUNT_GEN':
-      generateAccount(secret).then(save).then(sendResponse);
-      return true;
+      generateAccount(message.secret).then(save).then(sendResponse);
+      break;
+    case 'ETH_RPC':
+      //TODO: use async RPC bridge for infura test node
+      return sendResponse({ body: 'NOP', method: message.method });
   }
+  return true;
 });

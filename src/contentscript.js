@@ -1,9 +1,24 @@
-const el = document.createElement('script');
-const container = document.head || document.documentElement;
+import { sendToBackground, Proxy } from 'lib/messaging'
 
-el.src = chrome.extension.getURL('injected.js');
+dirtyInjectProvider();
 
-el.onload = function() {
-  this.remove();
-};
-container.insertBefore(el, container.children[0]);
+const proxy = new Proxy('ETH_RX', 'ETH_TX');
+proxy.handle(handleBackground);
+
+function dirtyInjectProvider () {
+  const el = document.createElement('script');
+  const container = document.head || document.documentElement;
+
+  el.src = chrome.extension.getURL('injected.js');
+
+  el.onload = function() {
+    this.remove();
+  };
+
+  container.insertBefore(el, container.children[0]);
+}
+
+function handleBackground (payload) {
+  return sendToBackground(payload)
+    .then(response => proxy.send(response))
+}
