@@ -6,5 +6,5 @@ onmessage = e => {
   const address = keys.getChecksumAddressString();
   const encrypted = keys.toV3(e.data.secret);
 
-  postMessage({ address, encrypted })
+  postMessage({ address, encrypted });
 };

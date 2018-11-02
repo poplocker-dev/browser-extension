@@ -1,8 +1,16 @@
 export function sendToBackground (message) {
   return new Promise((resolve, reject) => {
     chrome.runtime.sendMessage(message, (response) => {
-      if (response) resolve(response);
-      else reject(new Error('Background script did not respond'));
+
+      if (chrome.runtime.lastError) {
+        console.error('Sending message failed', message);
+        reject();
+      }
+
+      if (response)
+        resolve(response);
+      else
+        reject();
     });
   })
 }
@@ -22,7 +30,7 @@ export class Proxy {
           const found = this.queue.findIndex(i => i.method == data.method);
 
           if (found != -1) {
-            this.queue[found].callback.call(this, data);
+            this.queue[found].callback.call(this, data.response);
             this.queue.splice(found, 1);
           }
         }
@@ -42,7 +50,7 @@ export class Proxy {
     if (callback)
       this.queue.push({ method: payload.method, callback });
 
-    window.postMessage(Object.assign({ type: 'ETH_RPC', channel: this.up }, payload), '*');
+    window.postMessage(Object.assign({ type: 'ETH_RPC', channel: this.up, method: payload.method }, payload), '*');
     return this;
   }
 }

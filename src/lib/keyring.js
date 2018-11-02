@@ -25,3 +25,17 @@ export function save (payload) {
     catch (e) { console.error(e); reject(); }
   })
 }
+
+export function load (id) {
+  return new Promise((resolve, reject) => {
+    try {
+      chrome.storage.local.get([id], (value) => {
+        if (Object.keys(value).indexOf(id) != -1)
+          resolve([ value[id] ]);
+        else
+          resolve([]);
+      });
+    }
+    catch (e) { console.error(e); reject() }
+  })
+}
