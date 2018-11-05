@@ -10,7 +10,7 @@ class ProxyProvider extends SafeEventEmitter {
     this.proxy   = new Proxy('ETH_TX', 'ETH_RX');
   }
 
-  send (payload, callback) { this.proxy.send(payload, callback); }
+  sendAsync (payload, callback) { this.proxy.send(payload, callback); }
 }
 
 export default ProxyProvider;

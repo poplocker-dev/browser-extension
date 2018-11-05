@@ -1,18 +1,13 @@
 export function sendToBackground (message) {
   return new Promise((resolve, reject) => {
     chrome.runtime.sendMessage(message, (response) => {
-
       if (chrome.runtime.lastError) {
         console.error('Sending message failed', message);
         reject();
       }
-
-      if (response)
-        resolve(response);
-      else
-        reject();
+      resolve(response);
     });
-  })
+  });
 }
 
 export class Proxy {
@@ -27,10 +22,11 @@ export class Proxy {
 
       if (data.type == 'ETH_RPC' && (data.channel == this.down)) {
         if (this.queue.length > 0) {
-          const found = this.queue.findIndex(i => i.method == data.method);
+          const found = this.queue.findIndex(i => (i.method == data.method && i.id == data.id));
 
           if (found != -1) {
-            this.queue[found].callback.call(this, data.response);
+            // calls callback(error, result)
+            this.queue[found].callback.call(this, null, data);
             this.queue.splice(found, 1);
           }
         }
@@ -48,9 +44,9 @@ export class Proxy {
 
   send (payload, callback) {
     if (callback)
-      this.queue.push({ method: payload.method, callback });
+      this.queue.push({ method: payload.method, id: payload.id, callback });
 
-    window.postMessage(Object.assign({ type: 'ETH_RPC', channel: this.up, method: payload.method }, payload), '*');
+    window.postMessage(Object.assign({ type: 'ETH_RPC', channel: this.up }, payload), '*');
     return this;
   }
 }

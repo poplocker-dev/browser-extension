@@ -11,7 +11,7 @@ export function generateAccount (secret) {
         w.terminate();
       }
     }
-    catch (e) { console.error(e); reject(); }
+    catch (e) { console.error(e); reject(e); }
   });
 }
 
@@ -22,7 +22,7 @@ export function save (payload) {
         resolve(payload);
       });
     }
-    catch (e) { console.error(e); reject(); }
+    catch (e) { console.error(e); reject(e); }
   })
 }
 
@@ -36,6 +36,6 @@ export function load (id) {
           resolve([]);
       });
     }
-    catch (e) { console.error(e); reject() }
+    catch (e) { console.error(e); reject(e) }
   })
 }
