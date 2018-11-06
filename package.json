@@ -31,6 +31,8 @@
   "dependencies": {
     "@parity/api": "^2.1.24",
     "ethereumjs-wallet": "^0.6.2",
+    "ethjs-provider-http": "^0.1.6",
+    "ethjs-rpc": "^0.2.0",
     "history": "^4.7.2",
     "react-redux": "^5.0.7",
     "react-router": "^4.3.1",
