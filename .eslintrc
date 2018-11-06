@@ -17,7 +17,8 @@
   "globals": {
     "Promise": true,
     "document": true,
-    "window": true
+    "window": true,
+    "process": true
   },
   "rules": {
     "react/prop-types": "off",

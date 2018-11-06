@@ -1,4 +1,5 @@
-import { generateAccount, save, load } from 'lib/keyring'
+import { generateAccount, save } from 'lib/keyring'
+import { dispatchRpc, decorate } from 'lib/rpc'
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   switch (message.type) {
@@ -10,25 +11,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       break;
 
     case 'ETH_RPC':
-      dispatchRpc(message).then(sendResponse);
+      dispatchRpc(message).then(r => decorate(message, r)).then(sendResponse);
       break;
   }
   return true;
 });
 
-function dispatchRpc (message) {
-  switch (message.method) {
-
-    case 'eth_accounts':
-      return load('address')
-        .then(result => decorate(message, result));
-
-    default:
-      //TODO: use async RPC bridge for infura test node
-      return decorate(message, 'NOP');
-  }
-}
-
-function decorate ({ method, id, jsonrpc }, result) {
-  return Promise.resolve({ result, method, id, jsonrpc });
-}

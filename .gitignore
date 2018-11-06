@@ -2,3 +2,4 @@
 *.org
 node_modules/
 dist/
+/.env
