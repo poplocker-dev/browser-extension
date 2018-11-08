@@ -2,27 +2,54 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { newAccount } from 'lib/store/actions'
 
+import PassField from './pass_field'
+
 class AccountForm extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
-
-    this.inputRef = React.createRef();
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.state = { pass: '', confirm: '' }
   }
-
-  handleSubmit(e) {
+  
+  handleChange (e) {
+    this.setState({ [e.target.name]: e.target.value });
+  }
+  
+  handleSubmit (e) {
     e.preventDefault();
-    const val = this.inputRef.current.value;
-    this.inputRef.current.value = '';
-    this.props.dispatch(newAccount(val));
   }
+  
+  handleBlur (e) {
+    const name = e.target.name;
 
-  render() {
+    if (!this.state[name]) {
+      this.setState({ [`${name}Error`]: `${name} cannot be empty.` });
+      return;
+    } 
+
+    if (name == 'confirm' && !this.passMatch()) {
+      this.setState({ confirmError: 'Password and confirmation do not match.' });
+      return;
+    }
+    
+    this.setState({ confirmError: '', passError: ''});
+  }
+  
+  passMatch () {
+    return this.state.confirm == this.state.pass;
+  }
+  
+  shouldBeDisabled () {
+    return (this.state.pass == '' || !this.passMatch());
+  }
+  
+  render () {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label htmlFor="password">Password:</label>
-        <input name="password" type="password" ref={this.inputRef} value={this.inputRef.value} />
-        <button>Create</button>
+      <form className="account-form" onSubmit={ this.handleSubmit.bind(this) }>
+
+        <PassField name="pass" value={ this.state.pass } onChange={ this.handleChange.bind(this) } onBlur={ this.handleBlur.bind(this) } error={ this.state.passError } />
+        <PassField name="confirm" value={ this.state.confirm } onChange={ this.handleChange.bind(this) } onBlur={ this.handleBlur.bind(this) } error={ this.state.confirmError } />
+
+        <button disabled={ this.shouldBeDisabled() }>Create</button>
       </form>
     )
   }
