@@ -7,7 +7,7 @@ import PassField from './pass_field'
 class AccountForm extends React.Component {
   constructor (props) {
     super(props);
-    this.state = { pass: '', confirm: '' }
+    this.state = { password: '', confirmation: '' }
   }
   
   handleChange (e) {
@@ -26,28 +26,37 @@ class AccountForm extends React.Component {
       return;
     } 
 
-    if (name == 'confirm' && !this.passMatch()) {
-      this.setState({ confirmError: 'Password and confirmation do not match.' });
+    if (name == 'confirmation' && !this.passMatch()) {
+      this.setState({ confirmationError: 'password and confirmation do not match.' });
       return;
     }
     
-    this.setState({ confirmError: '', passError: ''});
+    this.setState({ confirmationError: '', passwordError: ''});
   }
   
   passMatch () {
-    return this.state.confirm == this.state.pass;
+    return this.state.confirmation == this.state.password;
   }
   
   shouldBeDisabled () {
-    return (this.state.pass == '' || !this.passMatch());
+    return (this.state.password == '' || !this.passMatch());
   }
   
   render () {
     return (
       <form className="account-form" onSubmit={ this.handleSubmit.bind(this) }>
 
-        <PassField name="pass" value={ this.state.pass } onChange={ this.handleChange.bind(this) } onBlur={ this.handleBlur.bind(this) } error={ this.state.passError } />
-        <PassField name="confirm" value={ this.state.confirm } onChange={ this.handleChange.bind(this) } onBlur={ this.handleBlur.bind(this) } error={ this.state.confirmError } />
+        <PassField name="password"
+                   value={ this.state.password }
+                   onChange={ this.handleChange.bind(this) }
+                   onBlur={ this.handleBlur.bind(this) }
+                   error={ this.state.passwordError } />
+
+        <PassField name="confirmation"
+                   value={ this.state.confirmation }
+                   onChange={ this.handleChange.bind(this) }
+                   onBlur={ this.handleBlur.bind(this) }
+                   error={ this.state.confirmationError } />
 
         <button disabled={ this.shouldBeDisabled() }>Create</button>
       </form>
