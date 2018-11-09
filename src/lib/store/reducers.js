@@ -14,6 +14,17 @@ function processed (state, action) {
   else return false;
 }
 
-const reducers = combineReducers({ address, processed });
+function page (state = 'NewAccountView', action) {
+  switch (action.type) {
+    case 'ACCOUNT_PROCESSED':
+      return 'LoadingView';
+    case 'ACCOUNT_READY':
+      return 'SuccessView';
+    default:
+      return state;
+  }
+}
+
+const reducers = combineReducers({ address, processed, page });
 
 export default reducers;

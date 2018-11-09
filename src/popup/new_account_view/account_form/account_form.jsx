@@ -16,6 +16,7 @@ class AccountForm extends React.Component {
   
   handleSubmit (e) {
     e.preventDefault();
+    this.props.dispatch(newAccount(this.state.password));
   }
   
   handleBlur (e) {
