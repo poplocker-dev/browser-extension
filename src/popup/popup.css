@@ -1,4 +1,11 @@
+@font-face {
+  font-family: Orkney;
+  src: url('~assets/orkney_r.woff2') format('woff2');
+}
+
 body {
-  width: 320px;
-  height: 480px;
+	height: 388px;
+	width: 375px;
+  font-size: 13px;
+  font-family: Orkney, Helvetica, sans-serif;
 }

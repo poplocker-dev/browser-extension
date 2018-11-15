@@ -32,13 +32,25 @@ let config = {
       {
         test: /\.worker\.js$/,
         use: 'worker-loader'
+      },
+      {
+        test: /\.woff2$/,
+        use: {
+          loader: 'url-loader',
+          options: {
+            name: '[name].[ext]',
+            limit: 50000,
+            outputPath: __dirname + '/dist'
+          }
+        }
       }
     ]
   },
   resolve: {
     extensions: ['.js', '.jsx'],
     alias: {
-      lib: __dirname + '/src/lib'
+      lib: __dirname + '/src/lib',
+      assets: __dirname + '/src/assets'
     },
     plugins: [
       new DirectoryNamedWebpackPlugin({
