@@ -48,12 +48,14 @@ class AccountForm extends React.Component {
       <form className="account-form" onSubmit={ this.handleSubmit.bind(this) }>
 
         <PassField name="password"
+                   label="Password"
                    value={ this.state.password }
                    onChange={ this.handleChange.bind(this) }
                    onBlur={ this.handleBlur.bind(this) }
                    error={ this.state.passwordError } />
 
         <PassField name="confirmation"
+                   label="Confirm Password"
                    value={ this.state.confirmation }
                    onChange={ this.handleChange.bind(this) }
                    onBlur={ this.handleBlur.bind(this) }

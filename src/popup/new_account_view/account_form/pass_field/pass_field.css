@@ -1,0 +1,23 @@
+.password-field {
+  position: relative;
+  margin-bottom: 21px;
+}
+
+.password-field input {
+	height: 43px;
+	width: 335px;
+  font-size: 16px;
+	border: 1px solid #DBDBDB;
+	border-radius: 2px;
+  line-height: 23px;
+}
+
+.password-field__label {
+  position: absolute;
+	color: #4880FF;
+  top: -6px;
+  left: 8px;
+  padding: 0 5px;
+  background: #ffffff;
+	letter-spacing: -0.1px;
+}
