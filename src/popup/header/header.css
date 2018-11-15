@@ -1,0 +1,12 @@
+.header__logo {
+  padding: 15px 5px 5px 15px;
+}
+
+.header__caption {
+	font-size: 14px;
+	font-weight: 500;
+	font-family: Orkney;
+	line-height: 19px;
+	text-align: center;
+	letter-spacing: 0.29px;
+}

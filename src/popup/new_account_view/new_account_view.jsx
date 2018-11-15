@@ -1,10 +1,11 @@
 import React from 'react'
 import AccountForm from './account_form'
+import Header from '../header'
 
 const NewAccountView = () => (
-  <div className="new-acount-view">
-    <h1>Create Account</h1>
-    <AccountForm />
+  <div className="new-acount-view view">
+    <Header caption="Create new account on this device" />
+    <AccountForm/>
   </div>
 )
 

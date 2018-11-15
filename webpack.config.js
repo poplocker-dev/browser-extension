@@ -34,6 +34,13 @@ let config = {
         use: 'worker-loader'
       },
       {
+        test: /\.(gif|png|jpe?g|svg)$/i,
+        use: {
+          loader: 'url-loader',
+          options: { limit: 8000 }
+        }
+      },
+      {
         test: /\.woff2$/,
         use: {
           loader: 'url-loader',
