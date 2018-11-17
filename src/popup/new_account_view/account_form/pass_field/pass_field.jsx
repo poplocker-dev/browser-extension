@@ -12,7 +12,9 @@ const PassField = (props) => (
     <div className="password-field__label">
       { props.label }
     </div>
-    <input type="password" {...props} />
+    <div className="password-field__input">
+      <input type="password" {...props} />
+    </div>
     <div className="password-field__error">{ props.error }</div>
   </div>
 )

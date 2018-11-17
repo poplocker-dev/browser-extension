@@ -3,6 +3,10 @@
   src: url('~assets/orkney_r.woff2') format('woff2');
 }
 
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
 body {
 	color: #353A41;
   font-size: 13px;
