@@ -6,10 +6,15 @@
 .password-field input {
 	height: 43px;
 	width: 335px;
+  padding-left: 13px;
   font-size: 16px;
 	border: 1px solid #DBDBDB;
 	border-radius: 2px;
   line-height: 23px;
+}
+
+.password-field input:focus {
+  border-color: #717171;
 }
 
 .password-field__label {
@@ -20,4 +25,16 @@
   padding: 0 5px;
   background: #ffffff;
 	letter-spacing: -0.1px;
+}
+
+.password-field__error::first-letter {
+  text-transform: capitalize;
+}
+
+.password-field--invalid .password-field__label {
+  color: #FF0054;
+}
+
+.password-field--invalid input {
+  border: 1px solid #FF0054; 
 }

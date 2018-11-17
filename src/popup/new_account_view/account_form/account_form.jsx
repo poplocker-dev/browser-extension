@@ -1,38 +1,41 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { newAccount } from 'lib/store/actions'
-
 import PassField from './pass_field'
 
 class AccountForm extends React.Component {
   constructor (props) {
     super(props);
-    this.state = { password: '', confirmation: '' }
-  }
-  
-  handleChange (e) {
-    this.setState({ [e.target.name]: e.target.value });
+
+    this.state    = { password: '', confirmation: '', passwordError: '', confirmationError: '' }
+    this.pristine = { passwordError: '', confirmationError: '' }
+    this.handlers = {
+      onChange: (e) => {
+        const { name, value } = e.target;
+        
+        this.setState({ [name]: value }, () => {
+          if (name == 'confirmation' && !this.passMatch())
+            this.setState({ confirmationError: 'password and confirmation do not match' });
+          else
+            this.setState(this.pristine);
+        });
+      },
+      
+      onBlur: (e) => {
+        const name = e.target.name;
+
+        if (!this.state[name]) {
+          this.setState({ [`${name}Error`]: `${name} cannot be empty` });
+          return;
+        } 
+        this.setState(this.pristine);
+      }
+    }
   }
   
   handleSubmit (e) {
     e.preventDefault();
     this.props.dispatch(newAccount(this.state.password));
-  }
-  
-  handleBlur (e) {
-    const name = e.target.name;
-
-    if (!this.state[name]) {
-      this.setState({ [`${name}Error`]: `${name} cannot be empty.` });
-      return;
-    } 
-
-    if (name == 'confirmation' && !this.passMatch()) {
-      this.setState({ confirmationError: 'password and confirmation do not match.' });
-      return;
-    }
-    
-    this.setState({ confirmationError: '', passwordError: ''});
   }
   
   passMatch () {
@@ -49,17 +52,15 @@ class AccountForm extends React.Component {
 
         <PassField name="password"
                    label="Password"
-                   value={ this.state.password }
-                   onChange={ this.handleChange.bind(this) }
-                   onBlur={ this.handleBlur.bind(this) }
-                   error={ this.state.passwordError } />
+                   value={this.state.password}
+                   error={this.state.passwordError}
+                   {...this.handlers} />
 
         <PassField name="confirmation"
                    label="Confirm Password"
-                   value={ this.state.confirmation }
-                   onChange={ this.handleChange.bind(this) }
-                   onBlur={ this.handleBlur.bind(this) }
-                   error={ this.state.confirmationError } />
+                   value={this.state.confirmation}
+                   error={this.state.confirmationError}
+                   {...this.handlers} />
 
         <button disabled={ this.shouldBeDisabled() }>Create</button>
       </form>
