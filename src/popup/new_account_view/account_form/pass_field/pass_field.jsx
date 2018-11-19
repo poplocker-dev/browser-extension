@@ -24,7 +24,9 @@ export default class PassField extends React.Component {
   }
 
   toggle () {
-    this.setState({ show: !this.state.show, type: this.state.show ? 'text' : 'password' });
+    this.setState({ show: !this.state.show, }, () => {
+      this.setState({ type: this.state.show ? 'text' : 'password' });
+    });
   }
 
   render () {
