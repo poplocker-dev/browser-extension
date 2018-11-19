@@ -1,8 +1,8 @@
-.header__logo {
+.header .logo {
   padding: 15px 5px 5px 15px;
 }
 
-.header__caption {
+.header .caption {
 	font-size: 14px;
 	font-weight: 500;
 	font-family: Orkney;

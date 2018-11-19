@@ -4,8 +4,8 @@ import './header.css'
 
 const Header = ({ caption }) => (
   <div className="header">
-    <img className="header__logo" alt="PopLocker logo" src={logo} />
-    <div className="header__caption">
+    <img className="logo" alt="PopLocker logo" src={logo} />
+    <div className="caption">
       { caption }
     </div>
   </div>

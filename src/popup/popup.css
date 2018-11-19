@@ -1,3 +1,11 @@
+:root {
+  --background-color: #FFFFFF;
+  --label-color: #4880FF;
+  --border-color: #DBDBDB;
+  --border-focus-color: #b4b4b4;
+  --invalid-color: #FF0054;
+}
+
 @font-face {
   font-family: Orkney;
   src: url('~assets/orkney_r.woff2') format('woff2');
@@ -8,11 +16,11 @@
 }
 
 body {
+  margin: 0;
 	color: #353A41;
   font-size: 13px;
   font-family: Orkney, Helvetica, sans-serif;
 	line-height: 19px;
-
 }
 
 textarea:focus, input:focus {
