@@ -1,18 +1,12 @@
 import React from 'react'
-import cl from 'classnames'
+import cl    from 'classnames'
+import Input from 'ui/input'
 import './pass_field.css'
 
 export default class PassField extends React.Component {
   constructor (props) {
     super(props);
     this.state = { show: false, type: 'password' };
-  }
-
-  fieldClasses () {
-    return {
-      'password-field': true,
-      'password-field--invalid': this.props.error
-    }
   }
 
   previewClasses () {
@@ -31,11 +25,9 @@ export default class PassField extends React.Component {
 
   render () {
     return (
-      <div className={ cl(this.fieldClasses()) }>
-        <div className="label">{this.props.label}</div>
-        <input type={this.state.type} {...this.props}/>
+      <div className="password-field">
+        <Input type={this.state.type} {...this.props}/>
         <div onClick={ this.toggle.bind(this) } className={ cl(this.previewClasses()) } />
-        <div className="error">{this.props.error}</div>
       </div>
     )
   }

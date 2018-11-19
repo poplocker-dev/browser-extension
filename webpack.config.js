@@ -69,7 +69,8 @@ let config = {
     extensions: ['.js', '.jsx'],
     alias: {
       lib: __dirname + '/src/lib',
-      assets: __dirname + '/src/assets'
+      assets: __dirname + '/src/assets',
+      ui: __dirname + '/src/popup/ui'
     },
     plugins: [
       new DirectoryNamedWebpackPlugin({

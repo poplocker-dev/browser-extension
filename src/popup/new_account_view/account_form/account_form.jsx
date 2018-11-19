@@ -65,7 +65,7 @@ class AccountForm extends React.Component {
 
         <PassMeter measure={this.state.password} />
 
-        <button disabled={ this.shouldBeDisabled() }>Create</button>
+        <button className="btn create-account-btn" disabled={ this.shouldBeDisabled() }>Create</button>
       </form>
     )
   }

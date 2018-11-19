@@ -1,0 +1,48 @@
+.input-field {
+  position: relative;
+  margin-bottom: 21px;
+
+  input {
+	  height: 43px;
+	  width: 335px;
+    padding-left: 13px;
+    padding-right: 61px;
+	  border: 1px solid var(--border-color);
+	  border-radius: 2px;
+    font-size: 16px;
+    line-height: 23px;
+
+    &:focus {
+      border-color: var(--border-focus-color);
+    }
+  }
+
+  .error {
+    color: var(--invalid-color);
+    margin-top: 11px;
+
+    &::first-letter {
+      text-transform: capitalize;
+    }
+  }
+
+  .label {
+    position: absolute;
+	  color: var(--label-color);
+    top: -6px;
+    left: 8px;
+    padding: 0 5px;
+    background: var(--background-color);
+	  letter-spacing: -0.1px;
+  }
+}
+
+.input-field--invalid {
+  .label {
+    color: var(--invalid-color);
+  }
+
+  input, input:focus {
+    border: 1px solid var(--invalid-color);
+  }
+}

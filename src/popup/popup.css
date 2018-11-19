@@ -26,8 +26,8 @@ body {
 	line-height: 19px;
 
   .view {
-	  width: 375px;
-	  height: 388px;
+	  min-width: 375px;
+	  min-height: 388px;
     display: flex;
     flex-direction: column;
     align-items: center;
