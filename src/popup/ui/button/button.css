@@ -1,0 +1,10 @@
+.btn {
+  width: 161px;
+  height: 40px;
+  border: 0;
+	color: var(--std-button-fg);
+  background-color: var(--std-button-color);
+  border-radius: 20px;
+	font-weight: bold;
+	line-height: 18px;
+}

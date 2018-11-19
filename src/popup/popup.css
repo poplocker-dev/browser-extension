@@ -8,6 +8,8 @@
   --medium-pass-color: #FBC812;
   --good-pass-color: #7C6FFC;
   --strong-pass-color: #5AC897;
+  --std-button-color: #4880FF;
+  --std-button-fg: #FFFFFF;
 }
 
 *, *:before, *:after {
@@ -21,13 +23,13 @@ textarea:focus, input:focus {
 body {
   margin: 0;
 	color: #353A41;
+	min-width: 375px;
+	min-height: 388px;
   font-size: 13px;
   font-family: Orkney, Helvetica, sans-serif;
 	line-height: 19px;
 
   .view {
-	  min-width: 375px;
-	  min-height: 388px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -37,5 +39,4 @@ body {
     font-family: Orkney;
     src: url('~assets/orkney_r.woff2') format('woff2');
   }
-
 }

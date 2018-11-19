@@ -1,8 +1,9 @@
-import React from 'react'
-import { connect } from 'react-redux'
+import React          from 'react'
+import { connect }    from 'react-redux'
 import { newAccount } from 'lib/store/actions'
-import PassField from './pass_field'
-import PassMeter from './pass_meter'
+import Button         from 'ui/button'
+import PassField      from './pass_field'
+import PassMeter      from './pass_meter'
 
 class AccountForm extends React.Component {
   constructor (props) {
@@ -64,8 +65,7 @@ class AccountForm extends React.Component {
                    {...this.handlers} />
 
         <PassMeter measure={this.state.password} />
-
-        <button className="btn create-account-btn" disabled={ this.shouldBeDisabled() }>Create</button>
+        <Button disabled={ this.shouldBeDisabled() }>Create Account</Button>
       </form>
     )
   }
