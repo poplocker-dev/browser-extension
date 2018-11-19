@@ -4,6 +4,10 @@
   --border-color: #DBDBDB;
   --border-focus-color: #b4b4b4;
   --invalid-color: #FF0054;
+  --weak-pass-color: #FD6D30;
+  --medium-pass-color: #FBC812;
+  --good-pass-color: #7C6FFC;
+  --strong-pass-color: #5AC897;
 }
 
 *, *:before, *:after {
@@ -27,7 +31,6 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-align: center;
   }
 
   @font-face {

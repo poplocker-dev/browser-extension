@@ -29,7 +29,7 @@
   .preview {
     position: absolute;
     top: 9px;
-    right: 19px;
+    right: 9px;
     height: 28px;
     width: 35px;
     padding-top: 8px;
@@ -60,7 +60,6 @@
 }
 
 .password-field--invalid {
-
   label {
     color: var(--invalid-color);
   }
