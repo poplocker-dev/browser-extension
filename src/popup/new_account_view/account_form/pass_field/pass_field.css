@@ -1,68 +1,67 @@
 .password-field {
   position: relative;
   margin-bottom: 21px;
+
+  input {
+	  height: 43px;
+	  width: 335px;
+    padding-left: 13px;
+    padding-right: 61px;
+	  border: 1px solid var(--border-color);
+	  border-radius: 2px;
+    font-size: 16px;
+    line-height: 23px;
+
+    &:focus {
+      border-color: var(--border-focus-color);
+    }
+  }
+
+  .error {
+    color: var(--invalid-color);
+    margin-top: 11px;
+
+    &::first-letter {
+      text-transform: capitalize;
+    }
+  }
+
+  .preview {
+    position: absolute;
+    top: 9px;
+    right: 19px;
+    height: 28px;
+    width: 35px;
+    padding-top: 8px;
+    cursor: pointer;
+
+    &.preview--hidden::after {
+      content: url('~assets/eye_closed.svg');
+    }
+
+    &.preview--visible::after {
+      content: url('~assets/eye_opened.svg');
+    }
+  }
+
+  .label {
+    position: absolute;
+	  color: var(--label-color);
+    top: -6px;
+    left: 8px;
+    padding: 0 5px;
+    background: var(--background-color);
+	  letter-spacing: -0.1px;
+  }
 }
 
-.password-field input {
-	height: 43px;
-	width: 335px;
-  padding-left: 13px;
-  padding-right: 61px;
-	border: 1px solid var(--border-color);
-	border-radius: 2px;
-  font-size: 16px;
-  line-height: 23px;
-}
+.password-field--invalid {
 
-.password-field input:focus {
-  border-color: var(--border-focus-color);
-}
+  label {
+    color: var(--invalid-color);
+  }
 
-.password-field .label {
-  position: absolute;
-	color: var(--label-color);
-  top: -6px;
-  left: 8px;
-  padding: 0 5px;
-  background: var(--background-color);
-	letter-spacing: -0.1px;
-}
-
-.password-field error::first-letter {
-  text-transform: capitalize;
-}
-
-.password-field--invalid .label {
-  color: var(--invalid-color);
-}
-
-.password-field--invalid input, .password-field--invalid input:focus {
-  border: 1px solid var(--invalid-color);
-}
-
-.password-field .preview {
-  position: absolute;
-  top: 9px;
-  right: 19px;
-  height: 28px;
-  width: 35px;
-  padding-top: 8px;
-  cursor: pointer;
-}
-
-.password-field .preview--hidden::after {
-  content: url('~assets/eye_closed.svg');
-}
-
-.password-field .preview--show::after {
-  content: url('~assets/eye_closed.svg');
-}
-
-.password-field .error::first-letter {
-  text-transform: capitalize;
-}
-
-.password-field .error {
-  color: var(--invalid-color);
-  margin-top: 11px;
+  input, input:focus {
+    border: 1px solid var(--invalid-color);
+  }
 }

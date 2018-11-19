@@ -27,7 +27,19 @@ let config = {
       },
       {
         test: /\.css$/,
-        use: [ 'style-loader', 'css-loader' ]
+        use: [
+          'style-loader',
+          'css-loader',
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: [
+                require('postcss-nested'),
+                require('cssnano')
+              ]
+            }
+          }
+        ]
       },
       {
         test: /\.worker\.js$/,

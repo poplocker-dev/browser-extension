@@ -18,8 +18,8 @@ export default class PassField extends React.Component {
   previewClasses () {
     return {
       'preview': true,
-      'preview--show': this.state.show,
-      'preview--hidden': !this.state.show
+      'preview--hidden': !this.state.show,
+      'preview--visible': this.state.show
     }
   }
 

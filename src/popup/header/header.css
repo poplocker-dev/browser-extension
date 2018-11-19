@@ -1,12 +1,15 @@
-.header .logo {
-  padding: 15px 5px 5px 15px;
-}
+.header {
 
-.header .caption {
-	font-size: 14px;
-	font-weight: 500;
-	font-family: Orkney;
-	text-align: center;
-	letter-spacing: 0.29px;
-  margin-bottom: 34px;
+  .logo {
+    padding: 15px 5px 5px 15px;
+  }
+
+  .caption {
+	  font-size: 14px;
+	  font-weight: 500;
+	  font-family: Orkney;
+	  text-align: center;
+	  letter-spacing: 0.29px;
+    margin-bottom: 34px;
+  }
 }

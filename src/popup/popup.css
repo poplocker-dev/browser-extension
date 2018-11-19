@@ -6,13 +6,12 @@
   --invalid-color: #FF0054;
 }
 
-@font-face {
-  font-family: Orkney;
-  src: url('~assets/orkney_r.woff2') format('woff2');
-}
-
 *, *:before, *:after {
   box-sizing: border-box;
+}
+
+textarea:focus, input:focus {
+  outline: none;
 }
 
 body {
@@ -21,18 +20,19 @@ body {
   font-size: 13px;
   font-family: Orkney, Helvetica, sans-serif;
 	line-height: 19px;
-}
 
-textarea:focus, input:focus {
-  outline: none;
-}
+  .view {
+	  width: 375px;
+	  height: 388px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
 
-.view {
-	width: 375px;
-	height: 388px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
+  @font-face {
+    font-family: Orkney;
+    src: url('~assets/orkney_r.woff2') format('woff2');
+  }
 
+}
