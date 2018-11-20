@@ -4,9 +4,9 @@ import { Provider } from 'react-redux'
 import { store } from 'lib/store'
 
 import Pager from './pager'
-import NewAccountView from './new_account_view'
-import LoadingView from './loading_view'
-import SuccessView from './success_view'
+import NewAccountView from './views/new_account'
+import LoadingView from './views/loading'
+import SuccessView from './views/success'
 
 import './popup.css'
 
