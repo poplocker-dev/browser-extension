@@ -5,21 +5,28 @@
   width: 161px;
   height: 40px;
   border: 0;
+  cursor: pointer;
 	color: var(--std-button-fg);
   background-color: var(--std-button-color);
   border-radius: 20px;
 	font-weight: bold;
   font-size: 13px;
 	line-height: 20px;
-  transition: opacity 0.5s;
+  transition: all 0.5s;
   box-shadow: -2px 9px 30px 0px rgba(72,128,255,0.50);
   
   &:hover {
     background-color: #386BE1;
     
     .icon {
+      transition: all 0.7s;
       background-color: white;
+
+      &.icon--human {
+        background-image: url('~assets/human--alt.svg');
+      }
     }
+
   }
   
   .caption {
@@ -42,5 +49,6 @@
 
 .btn:disabled,
 .btn[disabled] {
+  pointer-events: none;
   opacity: 0.5;
 }
