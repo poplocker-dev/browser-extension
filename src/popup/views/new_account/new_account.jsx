@@ -1,6 +1,6 @@
-import React       from 'react'
-import Header      from 'ui/header'
-import AccountForm from './account_form'
+import React        from 'react'
+import Header       from 'ui/header'
+import AccountForm  from './account_form'
 
 const NewAccountView = () => (
   <div className="new-acount-view view">

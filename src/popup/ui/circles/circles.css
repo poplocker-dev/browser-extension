@@ -1,0 +1,72 @@
+.fancy-circles {
+  z-index: 1;
+
+  .circ {
+    position: absolute;
+    border: 1px solid black;
+    opacity: 0.05;
+    border-radius: 200px;
+  }
+  
+  .circ-0 {
+    left: -80px;
+    top: -80px;
+    width: 130px;
+    height: 130px;
+  }
+  
+  .circ-1 {
+    left: 270px;
+    top: 3px;
+    width: 18px;
+    height: 18px;
+    opacity: 0.09;
+  }
+
+  .circ-2 {
+    right: -70px;
+    top: -30px;
+    width: 125px;
+    height: 125px;
+  }
+
+  .circ-3 {
+    bottom: -65px;
+    left: -30px;
+    width: 125px;
+    height: 125px;
+  }
+
+  .circ-4 {
+    left: 160px;
+    top: 100px;
+    width: 16px;
+    height: 16px;
+    opacity: 0.06;
+  }
+
+  .circ-5 {
+    right: 19px;
+    bottom: 51px;
+    width: 20px;
+    height: 20px;
+    opacity: .1;
+  }  
+
+  .circ-6 {
+    right: 50px;
+    bottom: 80px;
+    width: 13px;
+    height: 13px;
+    opacity: .1;
+  }  
+
+  .circ-7 {
+    right: 19px;
+    left: 15px;
+    top: 78px;
+    width: 14px;
+    height: 14px;
+    opacity: 0.09;
+  } 
+}

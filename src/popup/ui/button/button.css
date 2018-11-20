@@ -13,10 +13,10 @@
   font-size: 13px;
 	line-height: 20px;
   transition: all 0.5s;
-  box-shadow: -2px 9px 30px 0px rgba(72,128,255,0.50);
+  box-shadow: -2px 9px 30px 0px var(--std-button-shadow-color);
   
   &:hover {
-    background-color: #386BE1;
+    background-color: var(--std-button-darker-color);
     
     .icon {
       transition: all 0.7s;
@@ -36,7 +36,7 @@
   .icon {
     min-width: 30px;
     min-height: 30px;
-    background-color: #386BE1;
+    background-color: var(--std-button-darker-color);
     border-radius: 29px;
     background-repeat: no-repeat;
     background-position: center;

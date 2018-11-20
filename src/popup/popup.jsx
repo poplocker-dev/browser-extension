@@ -7,15 +7,19 @@ import Pager from './pager'
 import NewAccountView from './views/new_account'
 import LoadingView from './views/loading'
 import SuccessView from './views/success'
+import FancyCircles from 'ui/circles'
 
 import './popup.css'
 
 ReactDOM.render(
   <Provider store={store}>
-    <Pager>
-      <NewAccountView/>
-      <LoadingView/>
-      <SuccessView/>
-    </Pager>
+    <>
+      <FancyCircles number="8"/>
+      <Pager>
+        <NewAccountView/>
+        <LoadingView/>
+        <SuccessView/>
+      </Pager>
+    </>
   </Provider>,
   document.body.appendChild(document.createElement('div')));
