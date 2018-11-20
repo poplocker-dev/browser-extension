@@ -4,6 +4,7 @@ import { newAccount } from 'lib/store/actions'
 import Button         from 'ui/button'
 import PassField      from './pass_field'
 import PassMeter      from './pass_meter'
+import './account_form.css'
 
 class AccountForm extends React.Component {
   constructor (props) {
@@ -65,7 +66,7 @@ class AccountForm extends React.Component {
                    {...this.handlers} />
 
         <PassMeter measure={this.state.password} />
-        <Button disabled={ this.shouldBeDisabled() }>Create Account</Button>
+        <Button icon="human" disabled={ this.shouldBeDisabled() }>Create Account</Button>
       </form>
     )
   }

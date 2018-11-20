@@ -1,4 +1,7 @@
 .btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
   width: 161px;
   height: 40px;
   border: 0;
@@ -6,5 +9,38 @@
   background-color: var(--std-button-color);
   border-radius: 20px;
 	font-weight: bold;
-	line-height: 18px;
+  font-size: 13px;
+	line-height: 20px;
+  transition: opacity 0.5s;
+  box-shadow: -2px 9px 30px 0px rgba(72,128,255,0.50);
+  
+  &:hover {
+    background-color: #386BE1;
+    
+    .icon {
+      background-color: white;
+    }
+  }
+  
+  .caption {
+    flex-basis: 120px;
+  }
+  
+  .icon {
+    min-width: 30px;
+    min-height: 30px;
+    background-color: #386BE1;
+    border-radius: 29px;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    &.icon--human {
+      background-image: url('~assets/human.svg');
+    }
+  }
+}
+
+.btn:disabled,
+.btn[disabled] {
+  opacity: 0.5;
 }

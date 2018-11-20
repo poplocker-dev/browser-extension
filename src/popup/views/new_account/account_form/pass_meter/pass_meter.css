@@ -1,8 +1,8 @@
 .password-meter {
+  width: 100%;
   margin-bottom: 42px;
 
   .bar {
-    width: 100%;
     height: 5px;
     border-radius: 5px;
     background-color: var(--border-color);

@@ -25,6 +25,7 @@ body {
 	color: #353A41;
 	min-width: 375px;
 	min-height: 388px;
+  padding-bottom: 32px;
   font-size: 13px;
   font-family: Orkney, Helvetica, sans-serif;
 	line-height: 19px;
