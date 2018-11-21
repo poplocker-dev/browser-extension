@@ -11,7 +11,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       break;
 
     case 'ETH_RPC':
-      dispatchRpc(message).then(r => decorate(message, r)).then(sendResponse);
+      dispatchRpc(message)
+        .then(r => decorate(message, r))
+        .then(sendResponse)
       break;
   }
   return true;

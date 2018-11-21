@@ -30,7 +30,7 @@ export class Proxy {
             this.queue.splice(found, 1);
           }
         }
-        
+
         if (this.handlers.length > 0)
           this.handlers.forEach(h => h.call(this, data));
       }
