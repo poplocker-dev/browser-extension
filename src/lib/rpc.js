@@ -17,6 +17,8 @@ export function decorate ({ method, id, jsonrpc }, result) {
 export function dispatchRpc (message) {
   switch (message.method) {
 
+    // non-private by default for now
+    case 'eth_requestAccounts':
     case 'eth_accounts':
       return load('address')
 
