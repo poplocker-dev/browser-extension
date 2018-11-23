@@ -10,12 +10,19 @@ function strip (message) {
   return { id, method, jsonrpc, params }
 }
 
-function callback (message) {
+function dispatcher (message) {
   switch (message.method) {
+
     // non-private by default for now
     case 'eth_requestAccounts':
     case 'eth_accounts':
       return load('address');
+
+    case 'eth_subscribe':
+    case 'eth_sendTransaction':
+    case 'eth_getTransactionReceipt':
+      console.error('NOOP')
+      return Promise.reject('NOOP');
 
     default:
       return eth.sendAsync(strip(message));
@@ -27,5 +34,5 @@ export function decorate ({ method, id, jsonrpc }, result) {
 }
 
 export function dispatchRpc (message) {
-  return callback(message).catch(console.error);
+  return dispatcher(message).catch(console.error);
 }
