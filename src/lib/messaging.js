@@ -1,13 +1,26 @@
-export function sendToBackground (message) {
-  return new Promise((resolve, reject) => {
-    chrome.runtime.sendMessage(message, (response) => {
-      if (chrome.runtime.lastError) {
-        console.error('Sending message failed', message);
-        reject();
-      }
-      resolve(response);
+export const notify = {
+  send: (msg, port) => {
+    let message = Object.assign(msg, { port });
+
+    return new Promise((resolve, reject) => {
+      chrome.runtime.sendMessage(message, (response) => {
+        let e = chrome.runtime.lastError;
+        if (e) {
+          console.error('Sending message failed', message, port, e);
+          reject(e);
+        }
+        else resolve(response);
+      });
     });
-  });
+  },
+
+  background: function(message) {
+    return this.send(message, 'background');
+  },
+
+  popup: function(message) {
+    return this.send(message, 'popup');
+  }
 }
 
 export class Proxy {

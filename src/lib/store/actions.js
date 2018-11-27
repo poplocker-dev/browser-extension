@@ -1,9 +1,9 @@
-import { sendToBackground } from 'lib/messaging'
+import { notify } from 'lib/messaging'
 
 export function newAccount (secret) {
   return function (dispatch) {
     dispatch(accountProcessed());
-    sendToBackground({ type: 'ACCOUNT_GEN', secret })
+    notify.background({ type: 'ACCOUNT_GEN', secret })
       .then(account => dispatch(accountReady(account.address)))
       .catch(() => dispatch(accountFailed()));
   }
