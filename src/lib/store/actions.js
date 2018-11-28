@@ -1,9 +1,9 @@
-import { notify } from 'lib/messaging'
+import { delegateTo } from 'lib/messaging'
 
 export function newAccount (secret) {
   return function (dispatch) {
     dispatch(accountProcessed());
-    notify.background({ type: 'ACCOUNT_GEN', secret })
+    delegateTo.background({ type: 'ACCOUNT_GEN', secret })
       .then(account => dispatch(accountReady(account.address)))
       .catch(() => dispatch(accountFailed()));
   }
@@ -25,5 +25,13 @@ export function accountReady (address) {
 export function accountFailed () {
   return {
     type: 'ACCOUNT_FAILED'
+  }
+}
+
+export function enqAuth (message, callback) {
+  return {
+    type: 'ENQ_AUTH',
+    message,
+    callback
   }
 }

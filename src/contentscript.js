@@ -1,4 +1,4 @@
-import { notify, Proxy } from 'lib/messaging'
+import { delegateTo, Proxy } from 'lib/messaging'
 
 dirtyInjectProvider();
 
@@ -19,6 +19,6 @@ function dirtyInjectProvider () {
 }
 
 function handleBackground (payload) {
-  return notify.background(payload)
+  return delegateTo.background(payload)
     .then(response => proxy.send(response))
 }
