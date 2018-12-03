@@ -2,7 +2,7 @@ import React          from 'react'
 import { connect }    from 'react-redux'
 import { newAccount } from 'lib/store/actions'
 import Button         from 'ui/button'
-import PassField      from './pass_field'
+import PassField      from 'ui/pass_field'
 import PassMeter      from './pass_meter'
 import './account_form.css'
 

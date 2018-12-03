@@ -8,6 +8,7 @@ import NewAccountView from './views/new_account'
 import LoadingView from './views/loading'
 import SuccessView from './views/success'
 import FancyCircles from 'ui/circles'
+import AuthoriseView from './views/authorise'
 
 import './popup.css'
 
@@ -19,6 +20,7 @@ ReactDOM.render(
         <NewAccountView/>
         <LoadingView/>
         <SuccessView/>
+        <AuthoriseView/>
       </Pager>
     </>
   </Provider>,
