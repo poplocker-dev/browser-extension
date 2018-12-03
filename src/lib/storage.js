@@ -1,20 +1,5 @@
 import Worker from './workers/encryptor.worker.js';
 
-export function generateAccount (secret) {
-  return new Promise((resolve, reject) => {
-    try {
-      const w = new Worker();
-
-      w.postMessage({ secret });
-      w.onmessage = ({ data }) => {
-        resolve(data);
-        w.terminate();
-      }
-    }
-    catch (e) { console.error(e); reject(e); }
-  });
-}
-
 export function save (payload) {
   return new Promise((resolve, reject) => {
     try {
@@ -31,11 +16,32 @@ export function load (id) {
     try {
       chrome.storage.local.get([id], (value) => {
         if (Object.keys(value).indexOf(id) != -1)
-          resolve([ value[id] ]);
+          resolve(value[id]);
         else
-          resolve([]);
+          resolve(null);
       });
     }
     catch (e) { console.error(e); reject(e) }
   })
+}
+
+export const account = {
+  get address () {
+    return load('address').then(a => [a] || []);
+  },
+  
+  generate (secret) {
+    return new Promise((resolve, reject) => {
+      try {
+        const w = new Worker();
+
+        w.postMessage({ secret });
+        w.onmessage = ({ data }) => {
+          resolve(data);
+          w.terminate();
+        }
+      }
+      catch (e) { console.error(e); reject(e); }
+    });
+  }
 }

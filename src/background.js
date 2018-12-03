@@ -1,4 +1,4 @@
-import { generateAccount, save } from 'lib/keyring'
+import { account, save } from 'lib/storage'
 import { dispatchRpc, decorate } from 'lib/rpc'
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
@@ -6,7 +6,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     switch (message.type) {
 
       case 'ACCOUNT_GEN':
-        generateAccount(message.secret)
+        account.generate(message.secret)
           .then(save)
           .then(sendResponse);
         break;

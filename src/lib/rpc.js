@@ -1,14 +1,8 @@
-import { load } from 'lib/keyring'
+import { account } from 'lib/storage'
 import * as HttpProvider from 'ethjs-provider-http'
 import * as EthRPC from 'ethjs-rpc'
 
 const eth = new EthRPC(new HttpProvider(process.env.RPC_URL));
-
-// parity strict nodes don't like extra props
-function strip (message) {
-  const { id, method, jsonrpc, params } = message;
-  return { id, method, jsonrpc, params }
-}
 
 function dispatcher (message) {
   switch (message.method) {
@@ -16,7 +10,7 @@ function dispatcher (message) {
     // non-private by default for now
     case 'eth_requestAccounts':
     case 'eth_accounts':
-      return load('address');
+      return account.address;
 
     case 'eth_subscribe':
     case 'eth_sendTransaction':
@@ -29,6 +23,12 @@ function dispatcher (message) {
   }
 }
 
+// parity strict nodes don't like extra props
+function strip (message) {
+  const { id, method, jsonrpc, params } = message;
+  return { id, method, jsonrpc, params }
+}
+
 export function decorate ({ method, id, jsonrpc }, result) {
   return Promise.resolve({ result, method, id, jsonrpc });
 }
@@ -36,3 +36,4 @@ export function decorate ({ method, id, jsonrpc }, result) {
 export function dispatchRpc (message) {
   return dispatcher(message).catch(console.error);
 }
+
