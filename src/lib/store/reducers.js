@@ -14,6 +14,13 @@ function processed (state, action) {
   else return false;
 }
 
+function pending (state = [], action) {
+  if (action.type == 'ENQUEUE_PENDING_TXS') {
+    return action.pending;
+  }
+  else return state;
+}
+
 function page (state = 'NewAccountView', action) {
   switch (action.type) {
     case 'ACCOUNT_PROCESSED':
@@ -25,6 +32,6 @@ function page (state = 'NewAccountView', action) {
   }
 }
 
-const reducers = combineReducers({ address, processed, page });
+const reducers = combineReducers({ address, processed, page, pending });
 
 export default reducers;

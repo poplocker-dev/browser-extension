@@ -28,10 +28,9 @@ export function accountFailed () {
   }
 }
 
-export function enqAuth (message, callback) {
+export function processPending (pending) {
   return {
-    type: 'ENQ_AUTH',
-    message,
-    callback
+    type: 'ENQ_PENDING_TXS',
+    pending
   }
 }
