@@ -27,6 +27,8 @@ function page (state = 'NewAccountView', action) {
       return 'LoadingView';
     case 'ACCOUNT_READY':
       return 'SuccessView';
+    case 'ENQUEUE_PENDING_TXS':
+      return 'AuthorizeView'
     default:
       return state;
   }
