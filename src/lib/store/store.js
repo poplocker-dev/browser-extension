@@ -10,5 +10,6 @@ export const store = createStore(
 );
 
 load('pending').then(pending => {
-  store.dispatch(processPending(pending));
+  if (pending && pending.length > 0)
+    store.dispatch(processPending(pending));
 });

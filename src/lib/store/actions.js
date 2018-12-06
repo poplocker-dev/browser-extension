@@ -4,22 +4,25 @@ export function newAccount (secret) {
   return function (dispatch) {
     dispatch(accountProcessed());
     delegateTo.background({ type: 'ACCOUNT_GEN', secret })
-      .then(account => dispatch(accountReady(account.address)))
-      .catch(() => dispatch(accountFailed()));
+              .then(account => dispatch(accountReady(account.address)))
+              .catch(() => dispatch(accountFailed()));
   }
 }
 
-export function txSign (secret) {
+export function signTransaction (transaction, secret) {
   return function (dispatch) {
-    delegateTo.background({ type: 'TX_SIGN', secret })
-      .then(() => dispatch(txSigned()))
-      .catch(() => dispatch(txSignFailed()));
+    delegateTo.background({ type: 'TX_SIGN', transaction, secret })
+              .then(signed => {
+                dispatch(txSigned(signed));
+                delegateTo.background(txSigned(signed));
+              }).catch(() => dispatch(txSignFailed()))
   }
 }
 
-export function txSigned () {
+export function txSigned (tx) {
   return {
-    type: 'TX_SIGNED'
+    type: 'TX_SIGNED',
+    tx
   }
 }
 
@@ -50,7 +53,7 @@ export function accountFailed () {
 
 export function processPending (pending) {
   return {
-    type: 'ENQ_PENDING_TXS',
+    type: 'ENQUEUE_PENDING_TXS',
     pending
   }
 }

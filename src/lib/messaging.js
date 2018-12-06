@@ -4,8 +4,7 @@ export const delegateTo = {
 
     return new Promise((resolve, reject) => {
       chrome.runtime.sendMessage(message, (response) => {
-        if (chrome.runtime.lastError) {
-          console.error('Sending message failed', message, port, chrome.runtime.lastError);
+        if (chrome.runtime.lastError || !response) {
           reject();
         }
         else resolve(response);

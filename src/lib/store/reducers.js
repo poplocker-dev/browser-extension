@@ -8,7 +8,7 @@ function address (state = null, action) {
 }
 
 function processed (state, action) {
-  if (action.type == 'KEY_GEN') {
+  if (action.type == 'ACCOUNT_PROCESSED') {
     return true
   }
   else return false;

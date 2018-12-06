@@ -1,5 +1,6 @@
 import { account, save } from 'lib/storage'
-import { dispatchRpc, decorate } from 'lib/rpc'
+import { sign } from 'lib/tx'
+import { dispatch, decorate } from 'lib/rpc'
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.port == 'background') {
@@ -12,9 +13,15 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         break;
 
       case 'ETH_RPC':
-        dispatchRpc(message)
+        dispatch(message)
           .then(r => decorate(message, r))
-          .then(sendResponse)
+          .then(sendResponse);
+        break;
+
+      case 'TX_SIGN':
+        account.decrypt(message.secret)
+               .then(sk => sign(message.transaction, sk))
+               .then(sendResponse);
         break;
     }
     return true;
