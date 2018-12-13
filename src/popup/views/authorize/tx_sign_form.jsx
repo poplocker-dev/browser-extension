@@ -4,7 +4,7 @@ import Button              from 'ui/button'
 import { signTransaction } from 'lib/store/actions'
 
 class TxSignForm extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.inputRef = React.createRef();
   }

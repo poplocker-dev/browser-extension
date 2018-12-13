@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { store } from 'lib/store'
+import { enqueuePending } from 'lib/store/actions'
 
 import Pager from './pager'
 import NewAccountView from './views/new_account'
@@ -11,6 +12,8 @@ import FancyCircles from 'ui/circles'
 import AuthorizeView from './views/authorize'
 
 import './popup.css'
+
+store.dispatch(enqueuePending());
 
 ReactDOM.render(
   <Provider store={store}>

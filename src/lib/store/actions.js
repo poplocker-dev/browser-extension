@@ -1,8 +1,9 @@
 import { delegateTo } from 'lib/messaging'
+import { load } from 'lib/storage'
 
 export function newAccount (secret) {
   return function (dispatch) {
-    dispatch(accountProcessed());
+    dispatch(processed());
     delegateTo.background({ type: 'ACCOUNT_GEN', secret })
               .then(account => dispatch(accountReady(account.address)))
               .catch(() => dispatch(accountFailed()));
@@ -19,6 +20,20 @@ export function signTransaction (transaction, secret) {
   }
 }
 
+export function enqueuePending () {
+  return function (dispatch) {
+    load('pending').then(pending => {
+      if (pending && pending.length > 0) {
+        dispatch(processed())
+
+        delegateTo.background({ type: 'TX_FETCH_PRICING' }).then(price => {
+          dispatch({ type: 'ENQUEUE_TXS', pending, price });
+        });
+      }
+    });
+  }
+}
+
 export function txSigned (tx) {
   return {
     type: 'TX_SIGNED',
@@ -32,9 +47,9 @@ export function txSignFailed () {
   }
 }
 
-export function accountProcessed () {
+export function processed () {
   return {
-    type: 'ACCOUNT_PROCESSED'
+    type: 'PROCESSED'
   }
 }
 
@@ -51,9 +66,3 @@ export function accountFailed () {
   }
 }
 
-export function processPending (pending) {
-  return {
-    type: 'ENQUEUE_PENDING_TXS',
-    pending
-  }
-}

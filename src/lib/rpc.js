@@ -14,15 +14,10 @@ export function dispatch (message) {
       return account.address();
 
     case 'eth_sendTransaction':
-      return auth(message).then(sendToEthNode);
-
-    case 'eth_subscribe':
-    case 'eth_getTransactionReceipt':
-      console.error('NOOP')
-      return Promise.reject('NOOP');
+      return auth(message).then(sendToNode);
 
     default:
-      return sendToEthNode(message);
+      return sendToNode(message);
   }
 }
 
@@ -30,7 +25,7 @@ export function decorate ({ method, id, jsonrpc }, result) {
   return Promise.resolve({ result, method, id, jsonrpc });
 }
 
-function sendToEthNode (message) {
+function sendToNode (message) {
   // parity strict nodes don't like extra props
   const { id, method, jsonrpc, params } = message;
   return eth.sendAsync({ id, method, jsonrpc, params });

@@ -23,6 +23,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                .then(sk => sign(message.transaction, sk))
                .then(sendResponse);
         break;
+
+      case 'TX_FETCH_PRICING':
+        fetch(process.env.GAS_API_URL)
+          .then(r => r.json())
+          .then(r => sendResponse(r.average));
+        break;
     }
     return true;
   }

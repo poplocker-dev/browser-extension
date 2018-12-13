@@ -6,7 +6,7 @@ export function auth (tx) {
 
     chrome.runtime.onMessage.addListener(message => {
       if ( message.type == 'TX_SIGNED')
-        resolve(message);
+        resolve(formatSignedTx(message));
     });
 
     load('pending').then(txs => {
@@ -19,9 +19,11 @@ export function sign (rawTx, sk) {
   return Promise.resolve(signer(rawTx, sk));
 }
 
-export function formatRpc (tx) {
+function formatSignedTx (message) {
   return {
-    params: [tx],
+    params: [message.tx],
     method: 'eth_sendRawTransaction',
+    jsonrpc: '2.0',
+    id: 222
   }
 }
