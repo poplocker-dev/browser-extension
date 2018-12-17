@@ -39,6 +39,7 @@
     "ethjs-provider-http": "^0.1.6",
     "ethjs-rpc": "^0.2.0",
     "ethjs-signer": "^0.1.1",
+    "ethjs-unit": "^0.1.6",
     "history": "^4.7.2",
     "postcss-nested": "^4.1.0",
     "react-redux": "^5.0.7",
