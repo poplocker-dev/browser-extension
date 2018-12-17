@@ -7,13 +7,6 @@ function address (state = null, action) {
   else return state;
 }
 
-function processed (state, action) {
-  if (action.type == 'PROCESSED') {
-    return true
-  }
-  else return false;
-}
-
 function pending (state = [], action) {
   if (action.type == 'ENQUEUE_TXS') {
     return action.pending;
@@ -21,16 +14,16 @@ function pending (state = [], action) {
   else return state;
 }
 
-function gasPrice (state = 0, action) {
-  if (action.type == 'ENQUEUE_TXS') {
-    return action.price;
+function balance (state = 0, action) {
+  if (action.type == 'UPDATE_BALANCE') {
+    return action.balance;
   }
   else return state;
 }
 
 function page (state = 'NewAccountView', action) {
   switch (action.type) {
-    case 'PROCESSED':
+    case 'ACCOUNT_GEN':
       return 'LoadingView';
     case 'ACCOUNT_READY':
       return 'SuccessView';
@@ -41,6 +34,8 @@ function page (state = 'NewAccountView', action) {
   }
 }
 
-const reducers = combineReducers({ address, processed, page, pending, gasPrice });
+
+
+const reducers = combineReducers({ address, page, pending, balance });
 
 export default reducers;

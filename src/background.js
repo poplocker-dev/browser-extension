@@ -1,6 +1,6 @@
-import { account, save } from 'lib/storage'
-import { sign } from 'lib/tx'
-import { dispatch, decorate } from 'lib/rpc'
+import { account, save }              from 'lib/storage'
+import { sign, fetchPricing }         from 'lib/tx'
+import { dispatch, decorate, raw } from 'lib/rpc'
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.port == 'background') {
@@ -8,8 +8,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
       case 'ACCOUNT_GEN':
         account.generate(message.secret)
-          .then(save)
-          .then(sendResponse);
+               .then(save)
+               .then(sendResponse);
+        break;
+
+      case 'ACCOUNT_BALANCE':
+        account.address()
+               .then(a => dispatch(raw.balance(a[0])))
+               .then(sendResponse)
         break;
 
       case 'ETH_RPC':
@@ -24,10 +30,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                .then(sendResponse);
         break;
 
-      case 'TX_FETCH_PRICING':
-        fetch(process.env.GAS_API_URL)
-          .then(r => r.json())
-          .then(r => sendResponse(r.average));
+      case 'TX_ENRICH':
+        Promise.all([
+          fetchPricing()
+        ]).then(sendResponse);
         break;
     }
     return true;

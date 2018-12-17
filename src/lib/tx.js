@@ -1,4 +1,5 @@
-import { save, load } from 'lib/storage'
+import { save, load }     from 'lib/storage'
+import { format }         from 'lib/rpc'
 import { sign as signer } from 'ethjs-signer'
 
 export function auth (tx) {
@@ -6,7 +7,7 @@ export function auth (tx) {
 
     chrome.runtime.onMessage.addListener(message => {
       if ( message.type == 'TX_SIGNED')
-        resolve(formatSignedTx(message));
+        resolve(format.raw('eth_sendRawTransaction', [message.tx]));
     });
 
     load('pending').then(txs => {
@@ -19,11 +20,7 @@ export function sign (rawTx, sk) {
   return Promise.resolve(signer(rawTx, sk));
 }
 
-function formatSignedTx (message) {
-  return {
-    params: [message.tx],
-    method: 'eth_sendRawTransaction',
-    jsonrpc: '2.0',
-    id: 222
-  }
+
+export function fetchPricing () {
+  return fetch(process.env.GAS_API_URL).then(r => r.json())
 }
