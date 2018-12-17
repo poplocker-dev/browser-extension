@@ -34,8 +34,6 @@ function page (state = 'NewAccountView', action) {
   }
 }
 
-
-
 const reducers = combineReducers({ address, page, pending, balance });
 
 export default reducers;

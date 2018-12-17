@@ -1,5 +1,5 @@
-import { account, save }              from 'lib/storage'
-import { sign, fetchPricing }         from 'lib/tx'
+import { account, save }           from 'lib/storage'
+import { sign }                    from 'lib/tx'
 import { dispatch, decorate, raw } from 'lib/rpc'
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
@@ -31,9 +31,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         break;
 
       case 'TX_ENRICH':
-        Promise.all([
-          fetchPricing()
-        ]).then(sendResponse);
+        dispatch(raw.gasPrice()).then(sendResponse)
         break;
     }
     return true;

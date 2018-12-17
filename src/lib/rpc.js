@@ -22,8 +22,8 @@ export function dispatch (message) {
 }
 
 export function decorate ({ method, id, jsonrpc, params, result }, mergedResult) {
-  const props = { 
-    method, 
+  const props = {
+    method,
     id,
     jsonrpc,
     result: (result || mergedResult),
@@ -47,8 +47,12 @@ export const raw = {
       id: '1'
     }
   },
- 
+
   balance (address) {
     return this.format('eth_getBalance', [address, 'latest']);
+  },
+
+  gasPrice () {
+    return this.format('eth_gasPrice');
   }
 }

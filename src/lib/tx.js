@@ -19,8 +19,3 @@ export function auth (tx) {
 export function sign (rawTx, sk) {
   return Promise.resolve(signer(rawTx, sk));
 }
-
-
-export function fetchPricing () {
-  return fetch(process.env.GAS_API_URL).then(r => r.json())
-}
