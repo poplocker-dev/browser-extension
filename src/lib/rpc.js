@@ -6,36 +6,23 @@ import * as EthRPC       from 'ethjs-rpc'
 const eth = new EthRPC(new HttpProvider(process.env.RPC_URL));
 
 export function dispatch (message) {
-  switch (message.method) {
+  const result = () => {
+    switch (message.method) {
 
       // non-private by default for now
-    case 'eth_requestAccounts':
-    case 'eth_accounts':
-      return account.address();
+      case 'eth_requestAccounts':
+      case 'eth_accounts':
+        return account.address();
 
-    case 'eth_sendTransaction':
-      return auth(message).then(decorate).then(sendToNode);
+      case 'eth_sendTransaction':
+        return auth(message).then(decorate).then(sendToNode);
 
-    default:
-      return sendToNode(message);
+      default:
+        return sendToNode(message);
+
+    }
   }
-}
-
-export function decorate ({ method, id, jsonrpc, params, result }, mergedResult) {
-  const props = {
-    method,
-    id,
-    jsonrpc,
-    result: (result || mergedResult),
-    params
-  }
-  return Object.assign({}, props);
-}
-
-function sendToNode (message) {
-  // parity strict nodes don't like extra props
-  const { id, method, jsonrpc, params } = message;
-  return eth.sendAsync({ id, method, jsonrpc, params });
+  return result().then(r => decorate(message, r));
 }
 
 export const raw = {
@@ -52,7 +39,25 @@ export const raw = {
     return this.format('eth_getBalance', [address, 'latest']);
   },
 
-  gasPrice () {
+  get gasPrice () {
     return this.format('eth_gasPrice');
   }
 }
+
+function decorate ({ method, id, jsonrpc, params, result }, mergedResult) {
+  const props = {
+    method,
+    id,
+    jsonrpc,
+    result: (result || mergedResult),
+    params
+  }
+  return Object.assign({}, props);
+}
+
+function sendToNode (message) {
+  // parity strict nodes don't like extra props
+  const { id, method, jsonrpc, params } = message;
+  return eth.sendAsync({ id, method, jsonrpc, params });
+}
+

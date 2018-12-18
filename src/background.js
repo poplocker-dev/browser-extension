@@ -1,6 +1,6 @@
-import { account, save }           from 'lib/storage'
-import { sign }                    from 'lib/tx'
-import { dispatch, decorate, raw } from 'lib/rpc'
+import { account, save } from 'lib/storage'
+import { sign }          from 'lib/tx'
+import { dispatch, raw } from 'lib/rpc'
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.port == 'background') {
@@ -20,7 +20,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
       case 'ETH_RPC':
         dispatch(message)
-          .then(r => decorate(message, r))
           .then(sendResponse);
         break;
 
@@ -31,7 +30,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         break;
 
       case 'TX_ENRICH':
-        dispatch(raw.gasPrice()).then(sendResponse)
+        dispatch(raw.gasPrice).then(sendResponse)
         break;
     }
     return true;
