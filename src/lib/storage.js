@@ -26,11 +26,28 @@ export function load (id) {
   })
 }
 
+export const transaction = {
+  pending () { return load('pending') },
+
+  shift () {
+    return this.pending().then(txs => {
+      save({ pending: txs.slice(1) });
+      return txs[0];
+    });
+  },
+
+  add (tx) {
+    return this.pending().then(txs => {
+      save({ pending: [...(txs || []), tx] });
+    });
+  }
+}
+
 export const account = {
   address () {
     return load('address').then(a => [a] || []);
   },
-  
+
   generate (secret) {
     return new Promise((resolve, reject) => {
       const w = new Encryptor();
@@ -43,11 +60,11 @@ export const account = {
       w.onerror = () => reject();
     });
   },
-  
+
   decrypt (secret) {
     return new Promise((resolve, reject) => {
       Promise.all([load('encrypted'), load('salt')]).then(([encrypted, salt]) => {
-        
+
         const w = new Decryptor();
 
         w.postMessage({ encrypted, salt, secret });

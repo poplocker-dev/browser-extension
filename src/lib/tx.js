@@ -1,5 +1,5 @@
-import { save, load }     from 'lib/storage'
-import { format }         from 'lib/rpc'
+import { transaction }    from 'lib/storage'
+import { raw }            from 'lib/rpc'
 import { sign as signer } from 'ethjs-signer'
 
 export function auth (tx) {
@@ -7,12 +7,10 @@ export function auth (tx) {
 
     chrome.runtime.onMessage.addListener(message => {
       if ( message.type == 'TX_SIGNED')
-        resolve(format.raw('eth_sendRawTransaction', [message.tx]));
+        resolve(raw.format('eth_sendRawTransaction', [message.tx], message.id));
     });
 
-    load('pending').then(txs => {
-      save({ pending: [...(txs || []), tx] });
-    });
+    transaction.add(tx);
   });
 }
 

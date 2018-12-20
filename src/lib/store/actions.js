@@ -1,5 +1,5 @@
-import { delegateTo } from 'lib/messaging'
-import { load } from 'lib/storage'
+import { delegateTo }  from 'lib/messaging'
+import { transaction } from 'lib/storage'
 
 export function newAccount (secret) {
   return function (dispatch) {
@@ -25,22 +25,23 @@ export function signTransaction (transaction, secret) {
 
 export function enqueuePending () {
   return function (dispatch) {
-    load('pending').then(pending => {
+    transaction.pending().then(pending => {
       if (pending && pending.length > 0)
         dispatch({ type: 'ENQUEUE_TXS', pending });
     });
   }
 }
 
-export function fetchBalance () {
+export function fetchTxInfo () {
   return function (dispatch) {
-    load('address').then(address => {
-      if (address) {
-        delegateTo
-          .background({ type: 'ACCOUNT_BALANCE', address })
-          .then(balance => dispatch(updateBalance(balance)));
-      }
-    });
+    delegateTo
+      .background({ type: 'TX_INFO' })
+      .then(results => {
+        const [ nonce, balance, gasPrice, ] = results.map(r => r.result);
+        dispatch(update('nonce', nonce));
+        dispatch(update('gasPrice', gasPrice));
+        dispatch(update('balance', balance));
+      });
   }
 }
 
@@ -77,10 +78,10 @@ export function accountFailed () {
   }
 }
 
-export function updateBalance (balance) {
+export function update (prop, value) {
   return {
-    type: 'UPDATE_BALANCE',
-    balance
+    type: 'UPDATE',
+    prop,
+    value
   }
 }
-

@@ -1,6 +1,6 @@
-import { account, save } from 'lib/storage'
-import { sign }          from 'lib/tx'
-import { dispatch, raw } from 'lib/rpc'
+import { sign }                       from 'lib/tx'
+import { dispatch, raw }              from 'lib/rpc'
+import { account, save, transaction } from 'lib/storage'
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.port == 'background') {
@@ -12,15 +12,20 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                .then(sendResponse);
         break;
 
-      case 'ACCOUNT_BALANCE':
-        account.address()
-               .then(a => dispatch(raw.balance(a[0])))
-               .then(sendResponse)
+      case 'ETH_RPC':
+        dispatch(message).then(sendResponse);
         break;
 
-      case 'ETH_RPC':
-        dispatch(message)
-          .then(sendResponse);
+      case 'TX_INFO':
+        account.address().then(([address]) => {
+          Promise.all([
+
+            dispatch(raw.nonce(address)),
+            dispatch(raw.balance(address)),
+            dispatch(raw.gasPrice)
+
+          ]).then(sendResponse);
+        });
         break;
 
       case 'TX_SIGN':
@@ -29,8 +34,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                .then(sendResponse);
         break;
 
-      case 'TX_ENRICH':
-        dispatch(raw.gasPrice).then(sendResponse)
+      case 'TX_SIGNED':
+        transaction.shift().then(sendResponse);
         break;
     }
     return true;

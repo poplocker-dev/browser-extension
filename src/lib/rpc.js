@@ -15,7 +15,7 @@ export function dispatch (message) {
         return account.address();
 
       case 'eth_sendTransaction':
-        return auth(message).then(decorate).then(sendToNode);
+        return auth(message).then(sendToNode);
 
       default:
         return sendToNode(message);
@@ -26,13 +26,13 @@ export function dispatch (message) {
 }
 
 export const raw = {
-  format: (method, params) => {
-    return {
+  format: (method, params, id='1') => {
+    return JSON.parse(JSON.stringify({
+      id,
       method,
       jsonrpc: '2.0',
-      params,
-      id: '1'
-    }
+      params
+    }));
   },
 
   balance (address) {
@@ -41,6 +41,10 @@ export const raw = {
 
   get gasPrice () {
     return this.format('eth_gasPrice');
+  },
+
+  nonce (address) {
+    return this.format('eth_getTransactionCount', [address, 'latest']);
   }
 }
 

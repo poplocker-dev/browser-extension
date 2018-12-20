@@ -19,14 +19,21 @@ class TxSignForm extends React.Component {
   }
 }
 
-const mapStore = (store) => ({
-  transaction: store.pending[0].params[0]
-});
+const mapStore = ({ pending, balance, transaction }) => {
+  const { gasPrice, nonce } = transaction;
+  const pendingOne = pending[0].params[0];
+
+  return {
+    currentTx: Object.assign(pendingOne,
+                             { gasPrice, nonce, balance },
+                             { gasPrice: pendingOne.gasPrice })
+  }
+};
 
 const mapDispatch = (dispatch) => ({
   handleSubmit: function (e) {
     e.preventDefault();
-    dispatch(signTransaction(this.props.transaction, this.inputRef.current.value));
+    dispatch(signTransaction(this.props.currentTx, this.inputRef.current.value));
   }
 });
 

@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux'
+import unit from 'ethjs-unit'
 
 function address (state = null, action) {
   if (action.type == 'ACCOUNT_READY') {
@@ -15,8 +16,22 @@ function pending (state = [], action) {
 }
 
 function balance (state = 0, action) {
-  if (action.type == 'UPDATE_BALANCE') {
-    return action.balance;
+  if (action.type == 'UPDATE' && action.prop == 'balance') {
+    return unit.fromWei(action.value, 'ether');
+  }
+  else return state;
+}
+
+function gasPrice (state = 0, action) {
+  if (action.type == 'UPDATE' && action.prop == 'gasPrice') {
+    return unit.fromWei(action.value, 'gwei');
+  }
+  else return state;
+}
+
+function nonce (state = null, action) {
+  if (action.type == 'UPDATE' && action.prop == 'nonce') {
+    return action.value;
   }
   else return state;
 }
@@ -34,6 +49,8 @@ function page (state = 'NewAccountView', action) {
   }
 }
 
-const reducers = combineReducers({ address, page, pending, balance });
+const transaction = combineReducers({ gasPrice, nonce })
+
+const reducers = combineReducers({ address, balance, page, pending, transaction });
 
 export default reducers;
