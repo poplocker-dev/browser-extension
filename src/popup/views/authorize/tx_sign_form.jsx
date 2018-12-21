@@ -20,12 +20,12 @@ class TxSignForm extends React.Component {
 }
 
 const mapStore = ({ pending, balance, transaction }) => {
-  const { gasPrice, nonce } = transaction;
+  const { gasPrice } = transaction;
   const pendingOne = pending[0].params[0];
 
   return {
     currentTx: Object.assign(pendingOne,
-                             { gasPrice, nonce, balance },
+                             { gasPrice, balance },
                              { gasPrice: pendingOne.gasPrice })
   }
 };

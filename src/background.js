@@ -1,4 +1,4 @@
-import { sign }                       from 'lib/tx'
+import { sign, noncify }              from 'lib/tx'
 import { dispatch, raw }              from 'lib/rpc'
 import { account, save, transaction } from 'lib/storage'
 
@@ -20,7 +20,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         account.address().then(([address]) => {
           Promise.all([
 
-            dispatch(raw.nonce(address)),
             dispatch(raw.balance(address)),
             dispatch(raw.gasPrice)
 
@@ -29,13 +28,21 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         break;
 
       case 'TX_SIGN':
-        account.decrypt(message.secret)
-               .then(sk => sign(message.transaction, sk))
-               .then(sendResponse);
+        account.address()
+               .then(([address]) => dispatch(raw.nonce(address)))
+               .then(({ result }) => noncify(message.transaction, result))
+               .then(tx => {
+                 account.decrypt(message.secret)
+                        .then(sk => sign(tx, sk))
+                        .then(sendResponse);
+
+               });
         break;
 
       case 'TX_SIGNED':
-        transaction.shift().then(sendResponse);
+        transaction.nonce.up()
+                   .then(transaction.shift())
+                   .then(sendResponse);
         break;
     }
     return true;

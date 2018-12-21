@@ -29,13 +29,6 @@ function gasPrice (state = 0, action) {
   else return state;
 }
 
-function nonce (state = null, action) {
-  if (action.type == 'UPDATE' && action.prop == 'nonce') {
-    return action.value;
-  }
-  else return state;
-}
-
 function page (state = 'NewAccountView', action) {
   switch (action.type) {
     case 'ACCOUNT_GEN':
@@ -49,8 +42,7 @@ function page (state = 'NewAccountView', action) {
   }
 }
 
-const transaction = combineReducers({ gasPrice, nonce })
-
-const reducers = combineReducers({ address, balance, page, pending, transaction });
+const transaction = combineReducers({ gasPrice })
+const reducers    = combineReducers({ address, balance, page, pending, transaction });
 
 export default reducers;

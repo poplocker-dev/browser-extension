@@ -29,6 +29,27 @@ export function load (id) {
 export const transaction = {
   pending () { return load('pending') },
 
+  nonce: {
+    current () { return load('nonce').then(n => n || "0x0") },
+
+    up (number=1) {
+      return this.current().then(current => {
+        const nonce = (parseInt(current) + number).toString(16);
+        return save({ nonce });
+      })
+    },
+
+    async track (remote) {
+      const local  = await this.current();
+
+      if (parseInt(remote) > parseInt(local)) {
+        save({ nonce: remote });
+        return remote;
+      }
+      else return local;
+    }
+  },
+
   shift () {
     return this.pending().then(txs => {
       save({ pending: txs.slice(1) });

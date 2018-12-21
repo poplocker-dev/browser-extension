@@ -17,3 +17,9 @@ export function auth (tx) {
 export function sign (rawTx, sk) {
   return Promise.resolve(signer(rawTx, sk));
 }
+
+export function noncify (tx, nonce) {
+  return transaction.nonce.track(nonce).then(updated => {
+    return Object.assign(tx, { nonce: updated });
+  });
+}
