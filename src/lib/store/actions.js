@@ -37,7 +37,8 @@ export function fetchTxInfo () {
     delegateTo
       .background({ type: 'TX_INFO' })
       .then(results => {
-        const [ balance, gasPrice, ] = results.map(r => r.result);
+        const [ balance, gasPrice, gasEstimate ] = results.map(r => r.result);
+        dispatch(update('gasEstimate', gasEstimate));
         dispatch(update('gasPrice', gasPrice));
         dispatch(update('balance', balance));
       });
