@@ -19,13 +19,17 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         break;
 
       case 'TX_INFO':
-        account.address().then(([address]) => {
-          Promise.all([
+        transaction.pending().then(([pending]) => {
+          const params = pending.params[0];
+          account.address().then(([address]) => {
+            Promise.all([
 
-            dispatch(raw.balance(address)),
-            dispatch(raw.gasPrice)
+              dispatch(raw.balance(address)),
+              dispatch(raw.gasPrice),
+              dispatch(raw.gasEstimate(params))
 
-          ]).then(sendResponse);
+            ]).then(sendResponse);
+          });
         });
         break;
 

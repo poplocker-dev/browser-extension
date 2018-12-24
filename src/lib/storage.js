@@ -34,7 +34,7 @@ export const transaction = {
 
     up (number=1) {
       return this.current().then(current => {
-        const nonce = (parseInt(current) + number).toString(16);
+        const nonce = '0x' + (parseInt(current) + number).toString(16);
         return save({ nonce });
       })
     },
