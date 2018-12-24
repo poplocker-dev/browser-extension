@@ -31,7 +31,7 @@ function gasPrice (state = 0, action) {
 
 function gasEstimate (state = 0, action) {
   if (action.type == 'UPDATE' && action.prop == 'gasEstimate') {
-    return action.value;
+    return parseInt(action.value);
   }
   else return state;
 }
