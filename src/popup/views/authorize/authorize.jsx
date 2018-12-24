@@ -6,6 +6,7 @@ import AccountBalance   from './account_balance'
 import TransactionValue from './transaction_value'
 import GasPrice         from './gas_price'
 import GasEstimate      from './gas_estimate'
+import TransactionFee from './transaction_fee'
 
 const AuthorizeView = () => (
   <div className="view authorize-view">
@@ -15,6 +16,7 @@ const AuthorizeView = () => (
       <TransactionValue/>
       <GasPrice/>
       <GasEstimate/>
+      <TransactionFee/>
       <TxSignForm/>
     </TxInfo>
   </div>
