@@ -10,6 +10,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         account.generate(message.secret)
                .then(save)
                .then(sendResponse);
+        //TODO: within promise
+        chrome.browserAction.setPopup({popup: ""});
         break;
 
       case 'ETH_RPC':
@@ -43,8 +45,19 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         transaction.nonce.up()
                    .then(transaction.shift())
                    .then(sendResponse);
+        //TODO: within promise
+        transaction.pending()
+          .then(({ result }) => {
+            if(result == null) {
+              chrome.browserAction.setPopup({popup: ""});
+            }
+        });
         break;
     }
     return true;
   }
+});
+
+chrome.browserAction.onClicked.addListener((tab) => {
+  chrome.tabs.update({url: "http://poplocker-dev.github.io"});
 });

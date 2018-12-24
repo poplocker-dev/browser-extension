@@ -11,6 +11,7 @@ export function auth (tx) {
     });
 
     transaction.add(tx);
+    chrome.browserAction.setPopup({popup: "popup.html"});
   });
 }
 
