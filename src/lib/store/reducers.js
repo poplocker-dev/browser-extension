@@ -29,6 +29,13 @@ function gasPrice (state = 0, action) {
   else return state;
 }
 
+function gasEstimate (state = 0, action) {
+  if (action.type == 'UPDATE' && action.prop == 'gasEstimate') {
+    return parseInt(action.value);
+  }
+  else return state;
+}
+
 function page (state = 'NewAccountView', action) {
   switch (action.type) {
     case 'ACCOUNT_GEN':
@@ -42,7 +49,7 @@ function page (state = 'NewAccountView', action) {
   }
 }
 
-const transaction = combineReducers({ gasPrice })
+const transaction = combineReducers({ gasPrice, gasEstimate })
 const reducers    = combineReducers({ address, balance, page, pending, transaction });
 
 export default reducers;

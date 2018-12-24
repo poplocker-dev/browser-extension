@@ -43,6 +43,10 @@ export const raw = {
     return this.format('eth_gasPrice');
   },
 
+  gasEstimate (params) {
+    return this.format('eth_estimateGas', [params]);
+  },
+
   nonce (address) {
     return this.format('eth_getTransactionCount', [address, 'latest']);
   }
