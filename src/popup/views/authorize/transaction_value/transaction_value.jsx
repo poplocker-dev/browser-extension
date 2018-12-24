@@ -12,10 +12,10 @@ const TransactionValue = ({ transactionValue }) => (
 );
 
 const mapStore = ({ pending }) => {
-  const pendingOne = pending[0].params[0];
+  const value = pending[0].params[0].value || 0;
 
   return {
-    transactionValue: unit.fromWei(pendingOne.value, 'ether')
+    transactionValue: unit.fromWei(value, 'ether')
   }
 };
 
