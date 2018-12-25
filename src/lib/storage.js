@@ -54,13 +54,19 @@ export const transaction = {
     return this.pending().then(txs => {
       save({ pending: txs.slice(1) });
       return txs[0];
-    });
+    })
   },
 
   add (tx) {
     return this.pending().then(txs => {
       save({ pending: [...(txs || []), tx] });
-    });
+    })
+  },
+
+  size() {
+    return this.pending().then(txs => {
+      return txs.length;
+    })
   }
 }
 

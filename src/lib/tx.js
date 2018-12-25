@@ -10,8 +10,12 @@ export function auth (tx) {
         resolve(raw.format('eth_sendRawTransaction', [message.tx], message.id));
     });
 
-    transaction.add(tx);
-    chrome.browserAction.setPopup({popup: "popup.html"});
+    transaction.add(tx)
+      .then(() => transaction.size())
+      .then(size => {
+        chrome.browserAction.setPopup({popup: 'popup.html'});
+        chrome.browserAction.setBadgeText({text: size.toString()});
+      });
   });
 }
 
