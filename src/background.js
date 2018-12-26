@@ -48,18 +48,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         break;
 
       case 'TX_INFO':
-        transaction.pending().then(([pending]) => {
-          const params = pending.params[0];
-          account.address().then(([address]) => {
-            Promise.all([
+        Promise.all([
 
-              dispatch(raw.balance(address)),
-              dispatch(raw.gasPrice),
-              dispatch(raw.gasEstimate(params))
+          dispatch(raw.balance(message.params.from)),
+          dispatch(raw.gasPrice),
+          dispatch(raw.gasEstimate(message.params))
 
-            ]).then(sendResponse);
-          });
-        });
+        ]).then(sendResponse);
         break;
 
       case 'TX_SIGN':
@@ -84,7 +79,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                      } else {
                        chrome.browserAction.setPopup({popup: ''});
                        chrome.browserAction.setBadgeText({text: ''});
-                    }
+                     }
                    })
                    .then(sendResponse);
         break;

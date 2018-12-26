@@ -33,16 +33,18 @@ export function enqueuePending () {
 }
 
 export function fetchTxInfo () {
-  return function (dispatch) {
-    delegateTo
-      .background({ type: 'TX_INFO' })
-      .then(results => {
-        const [ balance, gasPrice, gasEstimate ] = results.map(r => r.result);
-        dispatch(update('gasEstimate', gasEstimate));
-        dispatch(update('gasPrice', gasPrice));
-        dispatch(update('balance', balance));
-      });
+  return async function (dispatch) {
+    const [first] = await transaction.pending();
+    const params  = first.params[0];
+    const results = await delegateTo.background({ type: 'TX_INFO', params });
+
+    const [ balance, gasPrice, gasEstimate ] = results.map(r => r.result);
+
+    dispatch(update('gasEstimate', gasEstimate));
+    dispatch(update('gasPrice', gasPrice));
+    dispatch(update('balance', balance));
   }
+
 }
 
 export function txSigned (tx) {
