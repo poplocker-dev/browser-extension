@@ -40,9 +40,10 @@ export function fetchTxInfo () {
 
     const [ balance, gasPrice, gasEstimate ] = results.map(r => r.result);
 
-    dispatch(update('gasEstimate', gasEstimate));
-    dispatch(update('gasPrice', gasPrice));
-    dispatch(update('balance', balance));
+    dispatch(update('txGasEstimate', gasEstimate));
+    dispatch(update('txGasPrice', gasPrice));
+    dispatch(update('txBalance', balance));
+    dispatch(update('txValue', params.value));
   }
 
 }

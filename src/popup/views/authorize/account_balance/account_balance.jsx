@@ -1,5 +1,6 @@
 import React       from 'react'
 import { connect } from 'react-redux'
+import unit        from 'ethjs-unit'
 import Preloader   from 'ui/loader'
 
 const AccountBalance = ({ balance }) => (
@@ -10,4 +11,8 @@ const AccountBalance = ({ balance }) => (
   </div>
 );
 
-export default connect(({ balance }) => ({ balance }))(AccountBalance);
+const mapStore = (store) => ({
+  balance: unit.fromWei(store.balance, 'ether')
+});
+
+export default connect(mapStore)(AccountBalance);

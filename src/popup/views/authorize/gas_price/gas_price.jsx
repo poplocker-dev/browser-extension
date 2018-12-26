@@ -1,5 +1,6 @@
 import React       from 'react'
 import { connect } from 'react-redux'
+import unit        from 'ethjs-unit'
 import Preloader   from 'ui/loader'
 
 const GasPrice = ({ gasPrice }) => (
@@ -10,10 +11,8 @@ const GasPrice = ({ gasPrice }) => (
   </div>
 );
 
-const mapStore = (store) => {
-  return {
-    gasPrice: store.transaction.gasPrice
-  }
-}
+const mapStore = ({ transaction }) => ({
+  gasPrice: unit.fromWei(transaction.gasPrice, 'gwei')
+});
 
 export default connect(mapStore)(GasPrice);

@@ -7,8 +7,6 @@ import TransactionValue from './transaction_value'
 import GasPrice         from './gas_price'
 import GasEstimate      from './gas_estimate'
 import TransactionFee   from './transaction_fee'
-import RecipientAddress from './recipient_address'
-import RecipientDomain  from './recipient_domain'
 
 const AuthorizeView = () => (
   <div className="view authorize-view">
@@ -19,8 +17,6 @@ const AuthorizeView = () => (
       <GasPrice/>
       <GasEstimate/>
       <TransactionFee/>
-      <RecipientDomain/>
-      <RecipientAddress/>
       <TxSignForm/>
     </TxInfo>
   </div>

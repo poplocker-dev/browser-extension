@@ -21,7 +21,7 @@ class TxSignForm extends React.Component {
 }
 
 const mapStore = ({ pending, balance, transaction }) => {
-  const gasPrice = unit.toWei(transaction.gasPrice, 'gwei');
+  const gasPrice = unit.fromWei(transaction.gasPrice, 'gwei');
   const gasEstimate = transaction.gasEstimate;
   const params = pending[0].params[0];
 

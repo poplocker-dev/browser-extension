@@ -1,7 +1,7 @@
 import React       from 'react'
 import { connect } from 'react-redux'
+import unit        from 'ethjs-unit'
 import Preloader   from 'ui/loader'
-import unit from 'ethjs-unit'
 
 const TransactionFee = ({ transactionFee }) => (
   <div className="transaction-fee">
@@ -11,9 +11,9 @@ const TransactionFee = ({ transactionFee }) => (
   </div>
 );
 
-const mapStore = (store) => {
-  const price = unit.toWei(store.transaction.gasPrice, 'gwei');
-  const estimate = store.transaction.gasEstimate;
+const mapStore = ({ transaction }) => {
+  const price    = unit.fromWei(transaction.gasPrice, 'gwei');
+  const estimate = transaction.gasEstimate;
 
   return {
     transactionFee: unit.fromWei(price * estimate, 'ether')

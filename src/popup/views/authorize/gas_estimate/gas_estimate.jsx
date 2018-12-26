@@ -10,10 +10,8 @@ const GasEstimate = ({ gasEstimate }) => (
   </div>
 );
 
-const mapStore = (store) => {
-  return {
-    gasEstimate: store.transaction.gasEstimate
-  }
-}
+const mapStore = ({ transaction }) => ({
+  gasEstimate: parseInt(transaction.gasEstimate)
+});
 
 export default connect(mapStore)(GasEstimate);
