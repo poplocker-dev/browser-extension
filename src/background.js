@@ -44,7 +44,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         break;
 
       case 'ETH_RPC':
-        dispatch(message).then(sendResponse);
+        dispatch(Object.assign({ url: sender.url }, message)).then(sendResponse);
         break;
 
       case 'TX_INFO':
