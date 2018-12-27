@@ -20,18 +20,11 @@ class TxSignForm extends React.Component {
   }
 }
 
-const mapStore = ({ pending, balance, transaction }) => {
-  const gasPrice = unit.fromWei(transaction.gasPrice, 'gwei');
-  const gasEstimate = transaction.gasEstimate;
-  const params = pending[0].params[0];
-
-  return {
-    currentTx: Object.assign(params,
-                             { gasPrice, balance },
-                             { gasPrice: '0x' + gasPrice.toString(16) },
-                             { gasLimit: '0x' + gasEstimate.toString(16) })
-  }
-};
+const mapStore = ({ pending, balance, transaction }) => ({
+  currentTx: Object.assign(pending[0].params[0],
+                           { gasPrice: transaction.gasPrice },
+                           { gasLimit: transaction.gasEstimate })
+});
 
 const mapDispatch = (dispatch) => ({
   handleSubmit: function (e) {
