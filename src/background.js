@@ -70,18 +70,19 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         break;
 
       case 'TX_SIGNED':
-        transaction.nonce.up()
-                   .then(transaction.shift())
-                   .then(() => transaction.size())
-                   .then(size => {
-                     if (size > 0) {
-                       chrome.browserAction.setBadgeText({text: size.toString()});
-                     } else {
-                       chrome.browserAction.setPopup({popup: ''});
-                       chrome.browserAction.setBadgeText({text: ''});
-                     }
-                   })
-                   .then(sendResponse);
+        dispatch(raw.format('eth_sendRawTransaction', [message.tx], message.id))
+          .then(transaction.nonce.up())
+                           .then(transaction.shift())
+                           .then(() => transaction.size())
+                           .then(size => {
+                             if (size > 0) {
+                               chrome.browserAction.setBadgeText({text: size.toString()});
+                             } else {
+                               chrome.browserAction.setPopup({popup: ''});
+                               chrome.browserAction.setBadgeText({text: ''});
+                            }
+                           })
+                           .then(sendResponse);
         break;
     }
     return true;
