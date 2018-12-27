@@ -6,6 +6,8 @@ import TransactionValue from './transaction_value'
 import GasPrice         from './gas_price'
 import GasEstimate      from './gas_estimate'
 import TransactionFee   from './transaction_fee'
+import RecipientDomain  from './recipient_domain'
+import RecipientAddress from './recipient_address'
 
 class TxInfo extends React.Component {
   componentDidMount() {
@@ -20,6 +22,8 @@ class TxInfo extends React.Component {
         <GasPrice/>
         <GasEstimate/>
         <TransactionFee/>
+        <RecipientDomain/>
+        <RecipientAddress/>
       </div>
     );
   }
