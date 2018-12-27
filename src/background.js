@@ -2,8 +2,7 @@ import { sign, noncify }              from 'lib/tx'
 import { dispatch, raw }              from 'lib/rpc'
 import { account, save, transaction } from 'lib/storage'
 
-initialise();
-
+// TODO: needs refactoring
 function initialise() {
   account.address()
          .then(([address]) => {
@@ -23,10 +22,6 @@ function initialise() {
            }
          });
 }
-
-chrome.browserAction.onClicked.addListener((tab) => {
-  chrome.tabs.update({url: 'http://poplocker-dev.github.io'});
-});
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.port == 'background') {
@@ -87,4 +82,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
     return true;
   }
+});
+
+chrome.browserAction.onClicked.addListener(async () => {
+  const [address] = await account.address();
+  const pending   = await transaction.pending();
+
+  if (address && pending.length == 0)
+    chrome.tabs.create({ 'url': process.env.POPLOCKER_WALLET_URL });
+  else
+    chrome.browserAction.setPopup({ popup: 'popup.html' });
 });

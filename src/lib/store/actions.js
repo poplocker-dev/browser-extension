@@ -26,7 +26,7 @@ export function signTransaction (transaction, secret) {
 export function enqueuePending () {
   return function (dispatch) {
     transaction.pending().then(pending => {
-      if (pending && pending.length > 0)
+      if (pending.length > 0)
         dispatch({ type: 'ENQUEUE_TXS', pending });
     });
   }

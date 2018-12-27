@@ -27,7 +27,9 @@ export function load (id) {
 }
 
 export const transaction = {
-  pending () { return load('pending') },
+  pending () {
+    return load('pending').then(p => p ? p : []);
+  },
 
   nonce: {
     current () { return load('nonce').then(n => n || "0x0") },
@@ -72,7 +74,7 @@ export const transaction = {
 
 export const account = {
   address () {
-    return load('address').then(a => [a] || []);
+    return load('address').then(a => a ? [a] : []);
   },
 
   generate (secret) {
