@@ -11,13 +11,8 @@ const TransactionFee = ({ transactionFee }) => (
   </div>
 );
 
-const mapStore = ({ transaction }) => {
-  const price    = unit.fromWei(transaction.gasPrice, 'gwei');
-  const estimate = transaction.gasEstimate;
-
-  return {
-    transactionFee: unit.fromWei(price * estimate, 'ether')
-  }
-};
+const mapStore = ({ transaction }) => ({
+    transactionFee: unit.fromWei(transaction.gasPrice * transaction.gasEstimate, 'ether')
+});
 
 export default connect(mapStore)(TransactionFee);
