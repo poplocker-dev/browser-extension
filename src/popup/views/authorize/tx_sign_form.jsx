@@ -1,21 +1,34 @@
 import React               from 'react'
 import { connect }         from 'react-redux'
-import Button              from 'ui/button'
 import { signTransaction } from 'lib/store/actions'
+import Button              from 'ui/button'
+import PassField           from 'ui/pass_field'
 
 class TxSignForm extends React.Component {
   constructor (props) {
     super(props);
-    this.inputRef = React.createRef();
+    this.state = { password: '' };
   }
 
   render () {
     return (
       <form className="tx-sign-form" onSubmit={this.props.handleSubmit.bind(this)}>
-        <input ref={this.inputRef} value={this.inputRef.value} type="password"/>
-        <Button icon="human">Authorize</Button>
+
+        <PassField label="Password"
+                   onChange={this.handleChange.bind(this)}
+                   value={this.state.password} />
+        <Button icon="tick" disabled={this.shouldBeDisabled()}>Authorize</Button>
+
       </form>
     )
+  }
+
+  handleChange (e) {
+    this.setState({ password: e.target.value });
+  }
+
+  shouldBeDisabled () {
+    return this.state.password.length == 0;
   }
 }
 
@@ -29,9 +42,9 @@ const mapStore = ({ pending, transaction }) => {
 }
 
 const mapDispatch = (dispatch) => ({
-  handleSubmit: function (e) {
+  handleSubmit: (e) => {
     e.preventDefault();
-    dispatch(signTransaction(this.props.currentTx, this.inputRef.current.value));
+    dispatch(signTransaction(this.props.currentTx, this.state.password));
   }
 });
 

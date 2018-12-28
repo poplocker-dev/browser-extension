@@ -14,10 +14,10 @@
 	line-height: 20px;
   transition: all 0.5s;
   box-shadow: -2px 9px 30px 0px var(--std-button-shadow-color);
-  
+
   &:hover {
     background-color: var(--std-button-darker-color);
-    
+
     .icon {
       transition: all 0.7s;
       background-color: white;
@@ -25,14 +25,17 @@
       &.icon--human {
         background-image: url('~assets/human--alt.svg');
       }
-    }
 
+      &.icon--tick {
+        background-image: url('~assets/tick--alt.svg');
+      }
+    }
   }
-  
+
   .caption {
     flex-basis: 120px;
   }
-  
+
   .icon {
     min-width: 30px;
     min-height: 30px;
@@ -43,6 +46,10 @@
 
     &.icon--human {
       background-image: url('~assets/human.svg');
+    }
+
+    &.icon--tick {
+      background-image: url('~assets/tick.svg');
     }
   }
 }
