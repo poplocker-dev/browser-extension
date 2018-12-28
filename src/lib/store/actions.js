@@ -43,7 +43,7 @@ export function fetchTxInfo () {
     dispatch(update('txGasEstimate', gasEstimate));
     dispatch(update('txGasPrice', gasPrice));
     dispatch(update('txBalance', balance));
-    dispatch(update('txValue', params.value));
+    dispatch(update('txValue', params.value || 0));
   }
 
 }
