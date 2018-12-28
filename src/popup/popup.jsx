@@ -1,9 +1,7 @@
 import React              from 'react'
 import ReactDOM           from 'react-dom'
 import { Provider }       from 'react-redux'
-
-import initOrRedirect     from 'lib/init_or_redirect'
-
+import { initOrRedirect } from 'lib/helpers'
 import FancyCircles       from 'ui/circles'
 import Pager              from './pager'
 import NewAccountView     from './views/new_account'

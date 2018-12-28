@@ -1,6 +1,7 @@
 // TODO: better namespacing
-import { sign, noncify }              from 'lib/tx'
-import { dispatch, raw }              from 'lib/rpc'
+import { sign, noncify } from 'lib/tx'
+import { dispatch, raw } from 'lib/rpc'
+import { badge }         from 'lib/helpers'
 import { account, save, transaction } from 'lib/storage'
 
 chrome.runtime.onInstalled.addListener(() => {
@@ -56,4 +57,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
     return true;
   }
+});
+
+chrome.storage.onChanged.addListener(changes => {
+  if (changes.pending)
+    badge.text = changes.pending.newValue.length || '';
+
+  if (changes.address)
+    changes.address.newValue ? badge.reset() : badge.warning();
 });
