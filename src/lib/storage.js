@@ -28,11 +28,11 @@ export function load (id) {
 
 export const transaction = {
   pending () {
-    return load('pending').then(p => p ? p : []);
+    return load('pending');
   },
 
   nonce: {
-    current () { return load('nonce').then(n => n || "0x0") },
+    current () { return load('nonce'); },
 
     up (number=1) {
       return this.current().then(current => {

@@ -23,15 +23,6 @@ export function signTransaction (transaction, secret) {
   }
 }
 
-export function enqueuePending () {
-  return function (dispatch) {
-    transaction.pending().then(pending => {
-      if (pending.length > 0)
-        dispatch({ type: 'ENQUEUE_TXS', pending });
-    });
-  }
-}
-
 export function fetchTxInfo () {
   return async function (dispatch) {
     const [first] = await transaction.pending();
@@ -46,6 +37,10 @@ export function fetchTxInfo () {
     dispatch(update('txValue', params.value));
   }
 
+}
+
+export function enqueuePending (pending) {
+  return { type: 'ENQUEUE_TXS', pending };
 }
 
 export function txSigned (tx) {

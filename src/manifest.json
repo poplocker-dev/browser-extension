@@ -18,7 +18,8 @@
     }
   ],
   "browser_action": {
-    "default_title": "PopLocker"
+    "default_title": "PopLocker",
+    "default_popup": "popup.html"
   },
   "permissions": ["activeTab", "storage", "https://*.infura.io/"],
   "web_accessible_resources": [
