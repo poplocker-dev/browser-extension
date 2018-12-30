@@ -19,23 +19,14 @@ class TxPanel extends React.Component {
           Confirm your transaction
         </div>
         <div className="row">
-          <div className="caption">
-            Amount:
-          </div>
-          <TransactionValue/>
+          Amount: <TransactionValue/>
         </div>
         <div className="row">
-          <div className="caption">
-            Fees:
-          </div>
-          <TransactionFee/>
+          Fees: <TransactionFee/>
         </div>
-        <hr/>
+        <div className="separator"/>
         <div className="row total">
-          <div className="caption">
-            Total
-          </div>
-          <TransactionTotal/>
+          Total <TransactionTotal/>
         </div>
       </div>
     );
