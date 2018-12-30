@@ -28,15 +28,16 @@ class TxSignForm extends React.Component {
   }
 
   shouldBeDisabled () {
-    return this.state.password.length == 0;
+    return this.state.password.length == 0 || this.props.balance == 0;
   }
 }
 
-const mapStore = ({ pending, transaction }) => {
+const mapStore = ({ pending, transaction, balance }) => {
   const { gasPrice, gasEstimate } = transaction;
   const params = pending[0].params[0];
 
   return {
+    balance,
     currentTx: Object.assign({ gasPrice, gasLimit: gasEstimate }, params)
   }
 }
