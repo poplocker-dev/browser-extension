@@ -1,5 +1,6 @@
 .password-field {
   position: relative;
+  width: 100%;
 
   .preview {
     position: absolute;

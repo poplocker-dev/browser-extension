@@ -1,0 +1,11 @@
+.tx-panel {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border-color);
+  border-radius: 2px;
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+  }
+}

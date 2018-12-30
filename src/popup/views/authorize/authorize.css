@@ -1,0 +1,11 @@
+.authorize-view {
+  .header .caption {
+    font-size: 12px;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+}
+
+.account-balance {
+  text-align: center;
+}

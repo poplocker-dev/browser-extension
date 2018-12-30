@@ -1,0 +1,7 @@
+.account-balance {
+  .amount  {
+    font-size: 44px;
+	  font-weight: bold;
+	  line-height: 60px;
+  }
+}

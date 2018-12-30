@@ -4,7 +4,7 @@
 
   input {
 	  height: 43px;
-	  width: 335px;
+    width: 100%;
     padding-left: 13px;
     padding-right: 61px;
 	  border: 1px solid var(--border-color);

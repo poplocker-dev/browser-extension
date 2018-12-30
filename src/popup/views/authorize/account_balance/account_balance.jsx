@@ -3,10 +3,12 @@ import { connect } from 'react-redux'
 import unit        from 'ethjs-unit'
 import Preloader   from 'ui/loader'
 
+import './account_balance.css'
+
 const AccountBalance = ({ balance }) => (
   <div className="account-balance">
     <Preloader value={ balance }>
-      <div className="balance-amount">{ balance } ETH</div>
+      <div className="amount">{ balance } ETH</div>
     </Preloader>
   </div>
 );
