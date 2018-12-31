@@ -52,7 +52,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
       case 'TX_SIGNED':
         transaction.nonce.up()
-                   .then(transaction.shift)
+                   .then(() => transaction.shift())
                    .then(sendResponse);
         break;
     }
