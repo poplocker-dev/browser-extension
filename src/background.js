@@ -4,12 +4,13 @@ import { dispatch, raw } from 'lib/rpc'
 import { badge }         from 'lib/helpers'
 import { account, save, transaction } from 'lib/storage'
 
-chrome.runtime.onInstalled.addListener(() => {
-  save({
-    address: null,
-    pending: [],
-    nonce: "0x0"
-  });
+chrome.runtime.onInstalled.addListener(({ reason }) => {
+  if (reason == 'install')
+    save({
+      address: null,
+      pending: [],
+      nonce: "0x0"
+    });
 });
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
