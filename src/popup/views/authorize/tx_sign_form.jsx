@@ -43,7 +43,7 @@ const mapStore = ({ pending, transaction, balance }) => {
 }
 
 const mapDispatch = (dispatch) => ({
-  handleSubmit: (e) => {
+  handleSubmit: function (e) {
     e.preventDefault();
     dispatch(signTransaction(this.props.currentTx, this.state.password));
   }
