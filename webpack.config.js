@@ -84,14 +84,16 @@ let config = {
   },
   plugins: [
     new CopyWebpackPlugin([{
-      from: __dirname + '/src/manifest.json',
-      transform: function (content, path) {
+      from: __dirname + '/src/manifest.json', transform: function (content, path) {
         return Buffer.from(JSON.stringify({
           description: process.env.npm_package_description,
           version: process.env.npm_package_version,
           ...JSON.parse(content.toString())
         }))
       }
+    },
+    {
+      context: __dirname + '/src/assets', from: 'icon*.png', to: 'icons'
     }]),
     new HtmlWebpackPlugin({
       filename: __dirname + '/dist/popup.html',
