@@ -62,7 +62,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 chrome.storage.onChanged.addListener(changes => {
   if (changes.pending)
-    badge.text = changes.pending.newValue.length || '';
+    badge.info = changes.pending.newValue.length || '';
 
   if (changes.address)
     changes.address.newValue ? badge.reset() : badge.warning();

@@ -15,9 +15,13 @@ export async function initOrRedirect (render) {
 }
 
 export const badge = {
-  set text(value) {
+  set info (value) {
     this.color = '#386BE1';
-    chrome.browserAction.setBadgeText({ text: `${value}` });
+    this.text = `${value}`;
+  },
+
+  set text(text) {
+    chrome.browserAction.setBadgeText({ text });
   },
 
   set color(value) {
@@ -29,7 +33,7 @@ export const badge = {
   },
 
   warning () {
-    this.color = '#FF0054',
-    this.text  = '!'
+    this.color = '#FF0054';
+    this.text  = '!';
   }
 }
