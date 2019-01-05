@@ -16,6 +16,7 @@ class TxSignForm extends React.Component {
 
         <PassField label="Password"
                    onChange={this.handleChange.bind(this)}
+                   autofocus="true"
                    value={this.state.password} />
         <Button icon="tick" disabled={this.shouldBeDisabled()}>Authorize</Button>
 
