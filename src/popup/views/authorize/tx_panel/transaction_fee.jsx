@@ -6,7 +6,7 @@ import Preloader   from 'ui/loader'
 const TransactionFee = ({ transactionFee }) => (
   <div className="transaction-fee">
     <Preloader value={ transactionFee }>
-      <div className="transaction-fee-amount">{ transactionFee } ETH</div>
+      <div className="transaction-fee-amount">{ transactionFee }&nbsp;ETH</div>
     </Preloader>
   </div>
 );

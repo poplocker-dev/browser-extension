@@ -6,7 +6,7 @@ import Preloader   from 'ui/loader'
 const TransactionTotal = ({ total }) => (
   <div className="transaction-total">
     <Preloader value={ total }>
-      <div className="amount">{ total } ETH</div>
+      <div className="amount">{ total }&nbsp;ETH</div>
     </Preloader>
   </div>
 );

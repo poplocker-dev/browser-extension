@@ -8,7 +8,7 @@ import './account_balance.css'
 const AccountBalance = ({ balance }) => (
   <div className="account-balance">
     <Preloader value={ balance }>
-      <div className="amount">{ balance } ETH</div>
+      <div className="amount">{ balance }&nbsp;ETH</div>
     </Preloader>
   </div>
 );

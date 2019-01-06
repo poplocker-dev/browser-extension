@@ -5,7 +5,7 @@ import Preloader   from 'ui/loader'
 const GasEstimate = ({ gasEstimate }) => (
   <div className="gas-estimate">
     <Preloader value={ gasEstimate }>
-      <div className="gas-estimate-amount">{ gasEstimate } Gas</div>
+      <div className="gas-estimate-amount">{ gasEstimate }&nbsp;Gas</div>
     </Preloader>
   </div>
 );
