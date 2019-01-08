@@ -55,7 +55,7 @@ class AccountForm extends React.Component {
 
         <PassField name="password"
                    label="Password"
-                   autofocus="true"
+                   autoFocus={true}
                    value={this.state.password}
                    error={this.state.passwordError}
                    {...this.handlers} />
