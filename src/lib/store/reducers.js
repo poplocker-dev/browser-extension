@@ -42,6 +42,20 @@ function value (state = 0, action) {
   else return state;
 }
 
+function url (state = 0, action) {
+  if (action.type == 'UPDATE' && action.prop == 'txURL') {
+    return action.value;
+  }
+  else return state;
+}
+
+function to (state = 0, action) {
+  if (action.type == 'UPDATE' && action.prop == 'txTo') {
+    return action.value;
+  }
+  else return state;
+}
+
 function page (state = 'NewAccountView', action) {
   switch (action.type) {
     case 'ACCOUNT_GEN':
@@ -55,7 +69,7 @@ function page (state = 'NewAccountView', action) {
   }
 }
 
-const transaction = combineReducers({ gasPrice, gasEstimate, value })
+const transaction = combineReducers({ gasPrice, gasEstimate, value, url, to })
 const reducers    = combineReducers({ address, balance, page, pending, transaction });
 
 export default reducers;

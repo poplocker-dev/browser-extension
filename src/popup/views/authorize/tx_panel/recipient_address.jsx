@@ -10,12 +10,8 @@ const RecipientAddress = ({ recipientAddress }) => (
   </div>
 );
 
-const mapStore = ({ pending }) => {
-  const to = pending[0].params[0].to || '0x0';
-
-  return {
-    recipientAddress: to
-  }
-};
+const mapStore = ({ transaction }) => ({
+  recipientAddress: transaction.to || 'N/A'
+});
 
 export default connect(mapStore)(RecipientAddress);

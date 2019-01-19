@@ -1,6 +1,7 @@
 import React       from 'react'
 import { connect } from 'react-redux'
 import Preloader   from 'ui/loader'
+import parseDomain from 'parse-domain'
 
 const RecipientDomain = ({ recipientDomain }) => (
   <div className="recipient-domain">
@@ -10,11 +11,18 @@ const RecipientDomain = ({ recipientDomain }) => (
   </div>
 );
 
-const mapStore = ({ pending }) => {
-  const url = pending[0].url;
+const mapStore = ({ transaction }) => {
+  let domain = 'unknown';
+  const parsedDomain = parseDomain(transaction.url, { customTlds: /localhost/ })
+  if (parsedDomain) {
+    domain = '';
+    if (parsedDomain.subdomain) domain += parsedDomain.subdomain + '.';
+    if (parsedDomain.domain) domain += parsedDomain.domain + '.';
+    domain += parsedDomain.tld;
+  }
 
   return {
-    recipientDomain: url // TODO: strip out just the domain, not full URL
+    recipientDomain: domain
   }
 };
 

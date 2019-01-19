@@ -48,6 +48,7 @@
     "redux-thunk": "^2.3.0",
     "safe-event-emitter": "^1.0.1",
     "simple-crypto-js": "^2.0.2",
-    "zxcvbn": "^4.4.2"
+    "zxcvbn": "^4.4.2",
+    "parse-domain": "^2.1.7"
   }
 }
