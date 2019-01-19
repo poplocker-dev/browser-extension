@@ -1,8 +1,11 @@
-import React               from 'react'
-import { connect }         from 'react-redux'
-import { signTransaction } from 'lib/store/actions'
-import Button              from 'ui/button'
-import PassField           from 'ui/pass_field'
+import React                 from 'react'
+import { connect }           from 'react-redux'
+import { signTransaction }   from 'lib/store/actions'
+import { cancelTransaction } from 'lib/store/actions'
+import Button                from 'ui/button'
+import PassField             from 'ui/pass_field'
+
+import './tx_sign_form.css'
 
 class TxSignForm extends React.Component {
   constructor (props) {
@@ -18,8 +21,10 @@ class TxSignForm extends React.Component {
                    onChange={this.handleChange.bind(this)}
                    autoFocus={true}
                    value={this.state.password} />
-        <Button icon="tick" disabled={this.shouldBeDisabled()}>Authorize</Button>
-
+        <div className="row">
+          <Button onClick={this.props.handleCancel.bind(this)}>Cancel</Button>
+          <Button icon="tick" disabled={this.shouldBeDisabled()}>Authorize</Button>
+        </div>
       </form>
     )
   }
@@ -47,6 +52,10 @@ const mapDispatch = (dispatch) => ({
   handleSubmit: function (e) {
     e.preventDefault();
     dispatch(signTransaction(this.props.currentTx, this.state.password));
+  },
+  handleCancel: function (e) {
+    e.preventDefault();
+    dispatch(cancelTransaction());
   }
 });
 

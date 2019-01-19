@@ -55,6 +55,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                    .then(() => transaction.shift())
                    .then(sendResponse);
         break;
+
+      case 'TX_CANCEL':
+        transaction.shift()
+                   .then(sendResponse);
+        break;
     }
     return true;
   }
