@@ -97,7 +97,7 @@ let config = {
     }]),
     new HtmlWebpackPlugin({
       filename: __dirname + '/dist/popup.html',
-      title: 'PopWallet',
+      title: 'PopLocker',
       chunks: ['popup']
     }),
     new Dotenv()
