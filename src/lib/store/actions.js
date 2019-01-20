@@ -23,6 +23,14 @@ export function signTransaction (transaction, secret) {
   }
 }
 
+export function cancelTransaction () {
+  return function (dispatch) {
+    delegateTo
+      .background({ type: 'TX_CANCEL' })
+      .then(window.close);
+  }
+}
+
 export function fetchTxInfo () {
   return async function (dispatch) {
     const [first] = await transaction.pending();
