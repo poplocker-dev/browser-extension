@@ -3,10 +3,10 @@ import { connect } from 'react-redux'
 import Preloader   from 'ui/loader'
 import parseDomain from 'parse-domain'
 
-const RecipientDomain = ({ recipientDomain }) => (
-  <div className="recipient-domain">
-    <Preloader value={ recipientDomain }>
-      <div className="recipient-domain-amount">{ recipientDomain }</div>
+const SenderDomain = ({ senderDomain }) => (
+  <div className="sender-domain">
+    <Preloader value={ senderDomain }>
+      <div className="sender-domain-amount">{ senderDomain }</div>
     </Preloader>
   </div>
 );
@@ -22,8 +22,8 @@ const mapStore = ({ transaction }) => {
   }
 
   return {
-    recipientDomain: domain
+    senderDomain: domain
   }
 };
 
-export default connect(mapStore)(RecipientDomain);
+export default connect(mapStore)(SenderDomain);
