@@ -19,6 +19,7 @@ export function signTransaction (transaction, secret) {
         dispatch(txSigned(signed));
         delegateTo
           .background(txSigned(signed))})
+      .then(window.close)
       .catch(() => dispatch(txSignFailed()))
   }
 }
