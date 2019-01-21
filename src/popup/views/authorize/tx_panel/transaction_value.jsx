@@ -1,7 +1,7 @@
-import React       from 'react'
-import { connect } from 'react-redux'
-import unit        from 'ethjs-unit'
-import Preloader   from 'ui/loader'
+import React              from 'react'
+import { connect }        from 'react-redux'
+import { formatWeiToEth } from 'lib/helpers'
+import Preloader          from 'ui/loader'
 
 const TransactionValue = ({ transactionValue }) => (
   <div className="transaction-value">
@@ -12,7 +12,7 @@ const TransactionValue = ({ transactionValue }) => (
 );
 
 const mapStore = ({ transaction }) => ({
-  transactionValue: unit.fromWei(transaction.value, 'ether')
+  transactionValue: formatWeiToEth(transaction.value)
 });
 
 export default connect(mapStore)(TransactionValue);

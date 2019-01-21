@@ -1,6 +1,7 @@
 import { store }                from 'lib/store'
 import { enqueuePending }       from 'lib/store/actions'
 import { account, transaction } from 'lib/storage'
+import BigNumber                from 'bignumber.js'
 
 export async function initOrRedirect (render) {
   const [address] = await account.address();
@@ -36,4 +37,8 @@ export const badge = {
     this.color = '#FF0054';
     this.text  = '!';
   }
+}
+
+export function formatWeiToEth (value) {
+  return BigNumber(value).dividedBy('1e13').integerValue(BigNumber.ROUND_CEIL).dividedBy('1e5').toFixed();
 }

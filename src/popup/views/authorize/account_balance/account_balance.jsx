@@ -1,7 +1,7 @@
-import React       from 'react'
-import { connect } from 'react-redux'
-import unit        from 'ethjs-unit'
-import Preloader   from 'ui/loader'
+import React              from 'react'
+import { connect }        from 'react-redux'
+import { formatWeiToEth } from 'lib/helpers'
+import Preloader          from 'ui/loader'
 
 import './account_balance.css'
 
@@ -14,7 +14,7 @@ const AccountBalance = ({ balance }) => (
 );
 
 const mapStore = (store) => ({
-  balance: unit.fromWei(store.balance, 'ether')
+  balance: formatWeiToEth(store.balance)
 });
 
 export default connect(mapStore)(AccountBalance);
