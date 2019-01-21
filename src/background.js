@@ -15,6 +15,9 @@ chrome.runtime.onInstalled.addListener(({ reason }) => {
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.port == 'background') {
+
+    message.origin = sender.url;
+
     switch (message.type) {
 
       case 'ACCOUNT_GEN':
@@ -24,7 +27,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         break;
 
       case 'ETH_RPC':
-        dispatch(Object.assign({ url: sender.url }, message)).then(sendResponse);
+        dispatch(message).then(sendResponse);
         break;
 
       case 'TX_INFO':

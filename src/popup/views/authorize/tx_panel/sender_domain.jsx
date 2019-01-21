@@ -13,7 +13,7 @@ const SenderDomain = ({ senderDomain }) => (
 
 const mapStore = ({ transaction }) => {
   let domain = 'unknown';
-  const parsedDomain = parseDomain(transaction.url, { customTlds: /localhost/ })
+  const parsedDomain = parseDomain(transaction.origin, { customTlds: /localhost/ })
   if (parsedDomain) {
     domain = '';
     if (parsedDomain.subdomain) domain += parsedDomain.subdomain + '.';

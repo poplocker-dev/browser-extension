@@ -36,9 +36,7 @@ export function fetchTxInfo () {
     dispatch(update('txBalance', balance));
 
     dispatch(update('txValue', params.value || 0));
-    dispatch(update('txURL', first.url || 'unknown'));
-
-    dispatch(update('txTo', params.to || 'N/A'));
+    dispatch(update('txOrigin', first.origin || null));
   }
 }
 
