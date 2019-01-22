@@ -1,6 +1,7 @@
 import React            from 'react'
 import { connect }      from 'react-redux'
 import { fetchTxInfo }  from 'lib/store/actions'
+import SenderDomain     from './sender_domain'
 import TransactionValue from './transaction_value'
 import TransactionFee   from './transaction_fee'
 import TransactionTotal from './transaction_total'
@@ -17,6 +18,9 @@ class TxPanel extends React.Component {
       <div className="tx-panel">
         <div className="title">
           Confirm your transaction
+        </div>
+        <div className="row">
+          From: <SenderDomain/>
         </div>
         <div className="row">
           Amount: <TransactionValue/>

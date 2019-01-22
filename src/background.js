@@ -15,6 +15,9 @@ chrome.runtime.onInstalled.addListener(({ reason }) => {
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.port == 'background') {
+
+    message.origin = sender.url;
+
     switch (message.type) {
 
       case 'ACCOUNT_GEN':
