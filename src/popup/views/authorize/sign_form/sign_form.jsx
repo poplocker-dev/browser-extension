@@ -4,9 +4,9 @@ import { signTransaction }   from 'lib/store/actions'
 import { cancelTransaction } from 'lib/store/actions'
 import { Button, PassField } from '@poplocker/react-ui'
 
-import './form.css'
+import './sign_form.css'
 
-class TxSignForm extends React.Component {
+class SignForm extends React.Component {
   constructor (props) {
     super(props);
     this.state = { password: '' };
@@ -60,4 +60,4 @@ const mapDispatch = (dispatch) => ({
   }
 });
 
-export default connect(mapStore, mapDispatch)(TxSignForm);
+export default connect(mapStore, mapDispatch)(SignForm);

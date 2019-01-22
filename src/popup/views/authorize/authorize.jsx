@@ -1,10 +1,10 @@
-import React            from 'react'
-import Header           from 'ui/header'
-import { connect }      from 'react-redux'
-import { fetchTxInfo }  from 'lib/store/actions'
-import TxSignForm       from './form'
-import TxInfo           from './info'
-import AccountBalance   from './balance'
+import React           from 'react'
+import Header          from 'ui/header'
+import { connect }     from 'react-redux'
+import { fetchTxInfo } from 'lib/store/actions'
+import SignForm        from './sign_form'
+import TxInfo          from './info'
+import AccountBalance  from './balance'
 
 import './authorize.css'
 
@@ -19,7 +19,7 @@ class AuthorizeView extends React.Component {
         <Header caption="Your total balance"/>
         <AccountBalance/>
         <TxInfo/>
-        <TxSignForm/>
+        <SignForm/>
       </div>
     )
   }
