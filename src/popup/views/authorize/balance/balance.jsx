@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import unit        from 'ethjs-unit'
 import Preloader   from 'ui/loader'
 
-import './account_balance.css'
+import './balance.css'
 
 const AccountBalance = ({ balance }) => (
   <div className="account-balance">

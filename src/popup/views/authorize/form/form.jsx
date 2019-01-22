@@ -5,7 +5,7 @@ import { cancelTransaction } from 'lib/store/actions'
 import Button                from 'ui/button'
 import PassField             from 'ui/pass_field'
 
-import './tx_sign_form.css'
+import './form.css'
 
 class TxSignForm extends React.Component {
   constructor (props) {
