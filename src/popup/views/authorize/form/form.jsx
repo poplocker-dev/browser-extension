@@ -2,8 +2,7 @@ import React                 from 'react'
 import { connect }           from 'react-redux'
 import { signTransaction }   from 'lib/store/actions'
 import { cancelTransaction } from 'lib/store/actions'
-import Button                from 'ui/button'
-import PassField             from 'ui/pass_field'
+import { Button, PassField } from '@poplocker/react-ui'
 
 import './form.css'
 
@@ -23,7 +22,7 @@ class TxSignForm extends React.Component {
                    value={this.state.password}
                    error={this.props.error}/>
         <div className="row">
-          <Button onClick={this.props.handleCancel.bind(this)}>Cancel</Button>
+          <Button icon="arrow" type="reject" onClick={this.props.handleCancel.bind(this)}>Cancel</Button>
           <Button icon="tick" disabled={this.shouldBeDisabled()}>Authorize</Button>
         </div>
       </form>
