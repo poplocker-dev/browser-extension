@@ -60,7 +60,7 @@ function decorate ({ method, id, jsonrpc, params, result }, mergedResult) {
     result: (result || mergedResult),
     params
   }
-  return Object.assign({}, props);
+  return {...props};
 }
 
 function sendToNode (message) {
