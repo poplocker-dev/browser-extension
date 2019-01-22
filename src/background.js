@@ -33,9 +33,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       case 'TX_INFO':
         Promise.all([
 
-          dispatch(raw.balance(message.params.from)),
+          dispatch(raw.balance(message.transaction.from)),
           dispatch(raw.gasPrice),
-          dispatch(raw.gasEstimate(message.params))
+          dispatch(raw.gasEstimate(message.transaction))
 
         ]).then(sendResponse);
         break;
@@ -49,8 +49,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                .then(tx => {
                  account.decrypt(message.secret)
                         .then(sk => sign(tx, sk))
-                        .then(sendResponse);
-               });
+                        .then(sendResponse)
+                        .catch(sendResponse);
+               })
         break;
 
       case 'TX_SIGNED':

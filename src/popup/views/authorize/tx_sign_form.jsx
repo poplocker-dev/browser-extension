@@ -20,7 +20,8 @@ class TxSignForm extends React.Component {
         <PassField label="Password"
                    onChange={this.handleChange.bind(this)}
                    autoFocus={true}
-                   value={this.state.password} />
+                   value={this.state.password}
+                   error={this.props.error}/>
         <div className="row">
           <Button onClick={this.props.handleCancel.bind(this)}>Cancel</Button>
           <Button icon="tick" disabled={this.shouldBeDisabled()}>Authorize</Button>
@@ -38,13 +39,14 @@ class TxSignForm extends React.Component {
   }
 }
 
-const mapStore = ({ pending, transaction, balance }) => {
-  const { gasPrice, gasEstimate } = transaction;
-  const params = pending[0].params[0];
+const mapStore = ({ transaction, errors }) => {
+  const { gasPrice, gasEstimate, balance } = transaction.pricing;
+  const { current } = transaction.pending;
 
   return {
     balance,
-    currentTx: Object.assign({ gasPrice, gasLimit: gasEstimate }, params)
+    error: errors.txSign || null,
+    currentTx: {...current, gasPrice, gasLimit: gasEstimate }
   }
 }
 

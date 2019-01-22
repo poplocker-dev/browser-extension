@@ -6,14 +6,15 @@ import parseDomain from 'parse-domain'
 const SenderDomain = ({ senderDomain }) => (
   <div className="sender-domain">
     <Preloader value={ senderDomain }>
-      <div className="sender-domain-amount">{ senderDomain }</div>
+      <div className="amount sender-domain-amount">{ senderDomain }</div>
     </Preloader>
   </div>
 );
 
 const mapStore = ({ transaction }) => {
+  const origin = transaction.pending.current.origin;
   let domain = 'unknown';
-  const parsedDomain = parseDomain(transaction.origin, { customTlds: /localhost/ })
+  const parsedDomain = parseDomain(origin, { customTlds: /localhost/ })
   if (parsedDomain) {
     domain = '';
     if (parsedDomain.subdomain) domain += parsedDomain.subdomain + '.';

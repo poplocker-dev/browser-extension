@@ -1,5 +1,4 @@
 import { delegateTo }  from 'lib/messaging'
-import { transaction } from 'lib/storage'
 
 export function newAccount (secret) {
   return function (dispatch) {
@@ -18,34 +17,25 @@ export function signTransaction (transaction, secret) {
       .then(signed => {
         dispatch(txSigned(signed));
         delegateTo
-          .background(txSigned(signed))})
-      .then(window.close)
-      .catch(() => dispatch(txSignFailed()))
+          .background(txSigned(signed))
+          .then(window.close)})
+      .catch(() => dispatch(txSignFailed('Authentication Failed.')))
   }
 }
 
 export function cancelTransaction () {
-  return function (dispatch) {
+  return function () {
     delegateTo
       .background({ type: 'TX_CANCEL' })
       .then(window.close);
   }
 }
 
-export function fetchTxInfo () {
+export function fetchTxInfo (transaction) {
   return async function (dispatch) {
-    const [first] = await transaction.pending();
-    const params  = first.params[0];
-    const results = await delegateTo.background({ type: 'TX_INFO', params });
+    const results = await delegateTo.background({ type: 'TX_INFO', transaction });
 
-    const [ balance, gasPrice, gasEstimate ] = results.map(r => r.result);
-
-    dispatch(update('txGasEstimate', gasEstimate));
-    dispatch(update('txGasPrice', gasPrice));
-    dispatch(update('txBalance', balance));
-
-    dispatch(update('txValue', params.value || 0));
-    dispatch(update('txOrigin', first.origin || null));
+    dispatch(update('pricing', results.map(r => r.result)));
   }
 }
 
@@ -60,9 +50,10 @@ export function txSigned (tx) {
   }
 }
 
-export function txSignFailed () {
+export function txSignFailed (message) {
   return {
-    type: 'TX_SIGN_FAILED'
+    type: 'TX_SIGN_FAILED',
+    message
   }
 }
 
