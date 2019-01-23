@@ -13,7 +13,7 @@ const TransactionValue = ({ value }) => (
 
 const mapStore = ({ transaction }) => {
   return {
-    value: unit.fromWei(transaction.pending.current.value, 'ether')
+    value: unit.fromWei(transaction.pending.current.params.value || 0, 'ether')
   };
 };
 

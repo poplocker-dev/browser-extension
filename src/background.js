@@ -33,9 +33,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       case 'TX_INFO':
         Promise.all([
 
-          dispatch(raw.balance(message.transaction.from)),
+          dispatch(raw.balance(message.transaction.params.from)),
           dispatch(raw.gasPrice),
-          dispatch(raw.gasEstimate(message.transaction))
+          dispatch(raw.gasEstimate(message.transaction.params))
 
         ]).then(sendResponse);
         break;

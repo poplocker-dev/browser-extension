@@ -13,7 +13,7 @@ const TransactionTotal = ({ total }) => (
 
 const mapStore = ({ transaction }) => {
   const { gasPrice, gasEstimate } = transaction.pricing;
-  const value = transaction.pending.current.value;
+  const value = transaction.pending.current.params.value || 0;
   const total = (gasPrice * gasEstimate) + parseInt(value);
 
   return {

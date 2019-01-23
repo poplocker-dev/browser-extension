@@ -9,7 +9,10 @@ function address (state = null, action) {
 
 function pending (state = [], action) {
   if (action.type == 'ENQUEUE_TXS') {
-    const txs = action.pending.map(({params, origin}) => ({...params[0], origin }));
+
+    const txs = action.pending.map(({params, origin}) => {
+      return { params: params[0], origin }
+    });
 
     return { current: txs[0], all: txs }
   }

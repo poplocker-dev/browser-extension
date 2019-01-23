@@ -45,14 +45,14 @@ const mapStore = ({ transaction, errors }) => {
   return {
     balance,
     error: errors.txSign || null,
-    currentTx: {...current, gasPrice, gasLimit: gasEstimate }
+    tx: {...current.params, gasPrice, gasLimit: gasEstimate }
   }
 }
 
 const mapDispatch = (dispatch) => ({
   handleSubmit: function (e) {
     e.preventDefault();
-    dispatch(signTransaction(this.props.currentTx, this.state.password));
+    dispatch(signTransaction(this.props.tx, this.state.password));
   },
   handleCancel: function (e) {
     e.preventDefault();
