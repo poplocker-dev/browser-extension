@@ -12,17 +12,21 @@ const TransactionInfo = () => (
       Confirm your transaction
     </div>
     <div className="row">
-      From: <SenderDomain/>
+      <span className="row-label">From:</span>
+      <SenderDomain/>
     </div>
     <div className="row">
-      Amount: <Value/>
+      <span className="row-label">Amount:</span>
+      <Value/>
     </div>
     <div className="row">
-      Fees: <Fee/>
+      <span className="row-label">Fees:</span>
+      <Fee/>
     </div>
     <div className="separator"/>
     <div className="row total">
-      Total <Total/>
+      <span className="row-label">Total:</span>
+      <Total/>
     </div>
   </div>
 );

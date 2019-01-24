@@ -6,7 +6,7 @@ import parseDomain from 'parse-domain'
 const SenderDomain = ({ senderDomain }) => (
   <div className="sender-domain">
     <Preloader value={ senderDomain }>
-      <div className="amount sender-domain-amount">{ senderDomain }</div>
+      <div className="amount elipsis">{ senderDomain }</div>
     </Preloader>
   </div>
 );
