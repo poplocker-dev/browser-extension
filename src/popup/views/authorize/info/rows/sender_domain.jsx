@@ -13,10 +13,22 @@ const SenderDomain = ({ transaction }) => (
 
 const domain = (transaction) => {
   const origin = transaction.pending.current.origin;
-  const { subdomain, domain, tld } = parseDomain(origin, { customTlds: /localhost/ });
-  const [parsed] = `${subdomain}.${domain}.${tld}`.split('.').filter(i => i != "");
+  let domain = 'unknown';
 
-  return parsed || 'unknown';
+  const parsedDomain = parseDomain(origin, { customTlds: /localhost/ })
+;
+  if (parsedDomain) {
+
+    domain = '';
+
+    if (parsedDomain.subdomain) domain += parsedDomain.subdomain + '.';
+
+    if (parsedDomain.domain) domain += parsedDomain.domain + '.';
+
+    domain += parsedDomain.tld;
+
+  }
+  return domain;
 }
 
 export default SenderDomain;

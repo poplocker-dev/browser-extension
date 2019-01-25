@@ -1,19 +1,19 @@
 import React       from 'react'
-import { connect } from 'react-redux'
 import Preloader   from 'ui/loader'
 
 import './recipient_address.css'
 
-const RecipientAddress = ({ recipientAddress }) => (
-  <div className="recipient-address">
-    <Preloader value={ recipientAddress }>
-      <div className="amount recipient-address-value">{ recipientAddress }</div>
+const RecipientAddress = ({ transaction }) => (
+  <div className="row recipient-address">
+    <span className="row-label">To:</span>
+    <Preloader value={ transaction.pending.current }>
+      <div className="amount recipient-address-value">{ address(transaction) }</div>
     </Preloader>
   </div>
 );
 
-const mapStore = ({ transaction }) => ({
-  recipientAddress: transaction.pending.current.params.to || 'N/A'
-});
+const address = (transaction) => {
+  return transaction.pending.current.params.to || 'N/A';
+}
 
-export default connect(mapStore)(RecipientAddress);
+export default RecipientAddress;

@@ -1,5 +1,4 @@
 import React              from 'react'
-import { connect }        from 'react-redux'
 import { updatePricing }  from 'lib/store/actions'
 
 class GasPrice extends React.Component {
@@ -10,7 +9,7 @@ class GasPrice extends React.Component {
 
   componentDidUpdate() {
     if (!this.state.initialGasPrice) {
-      this.setState({ initialGasPrice: this.props.pricing.gasPrice });
+      this.setState({ initialGasPrice: this.props.transaction.pricing.gasPrice });
     }
   }
 
@@ -22,7 +21,7 @@ class GasPrice extends React.Component {
           min="1"
           max={ 10 * parseInt(this.state.initialGasPrice) }
           step="1"
-          value={ parseInt(this.props.pricing.gasPrice) }
+          value={ parseInt(this.props.transaction.pricing.gasPrice) }
           onChange={ this.handleChange.bind(this) }
         />
       );
@@ -32,15 +31,9 @@ class GasPrice extends React.Component {
   }
 
   handleChange (e) {
-    this.props.pricing.gasPrice = '0x' + parseInt(e.target.value).toString(16);
-    this.props.dispatch(updatePricing(this.props.pricing));
+    this.props.transaction.pricing.gasPrice = '0x' + parseInt(e.target.value).toString(16);
+    this.props.dispatch(updatePricing(this.props.transaction.pricing));
   }
 }
 
-const mapStore = ({ transaction }) => {
-  return {
-    pricing: transaction.pricing
-  }
-};
-
-export default connect(mapStore)(GasPrice);
+export default GasPrice;
