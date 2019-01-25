@@ -1,8 +1,7 @@
-import React                 from 'react'
-import { connect }           from 'react-redux'
-import { signTransaction }   from 'lib/store/actions'
-import { cancelTransaction } from 'lib/store/actions'
-import { Button, PassField } from '@poplocker/react-ui'
+import React                                  from 'react'
+import { connect }                            from 'react-redux'
+import { Button, PassField }                  from '@poplocker/react-ui'
+import { signTransaction, cancelTransaction } from 'lib/store/actions'
 
 import './sign_form.css'
 
@@ -21,6 +20,7 @@ class SignForm extends React.Component {
                    autoFocus={true}
                    value={this.state.password}
                    error={this.props.error}/>
+
         <div className="row">
           <Button icon="arrow" type="reject" onClick={this.props.handleCancel.bind(this)}>Cancel</Button>
           <Button icon="tick" disabled={this.shouldBeDisabled()}>Authorize</Button>

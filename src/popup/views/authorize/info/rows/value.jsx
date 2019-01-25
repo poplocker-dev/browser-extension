@@ -1,20 +1,18 @@
 import React       from 'react'
-import { connect } from 'react-redux'
 import unit        from 'ethjs-unit'
 import Preloader   from 'ui/loader'
 
-const TransactionValue = ({ value }) => (
-  <div className="transaction-value">
-    <Preloader value={value}>
-      <div className="amount">{value} ETH</div>
+const TransactionValue = ({ transaction }) => (
+  <div className="row transaction-value">
+    <span className="row-label">Amount:</span>
+    <Preloader value={ transaction.pending.current }>
+      <div className="amount">{ value(transaction) } ETH</div>
     </Preloader>
   </div>
 );
 
-const mapStore = ({ transaction }) => {
-  return {
-    value: unit.fromWei(transaction.pending.current.params.value || 0, 'ether')
-  };
-};
+const value = (tx) => (
+  unit.fromWei(tx.pending.current.params.value || 0, 'ether')
+);
 
-export default connect(mapStore)(TransactionValue);
+export default TransactionValue;
