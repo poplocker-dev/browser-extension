@@ -31,9 +31,24 @@
     }
   }
 
+  .row-label {
+    margin-right: 10px;
+  }
+
+  .amount {
+    white-space: nowrap;
+  }
+
+  .elipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   .separator {
     width: 100%;
     margin: 18px auto;
     border-top: 1px solid var(--border-color);
   }
 }
+

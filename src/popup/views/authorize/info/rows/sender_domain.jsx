@@ -1,30 +1,22 @@
 import React       from 'react'
-import { connect } from 'react-redux'
 import Preloader   from 'ui/loader'
 import parseDomain from 'parse-domain'
 
-const SenderDomain = ({ senderDomain }) => (
-  <div className="sender-domain">
-    <Preloader value={ senderDomain }>
-      <div className="amount sender-domain-amount">{ senderDomain }</div>
+const SenderDomain = ({ transaction }) => (
+  <div className="row sender-domain">
+    <span className="row-label">From:</span>
+    <Preloader value={ transaction.pending.current }>
+      <div className="amount elipsis">{ domain(transaction) }</div>
     </Preloader>
   </div>
 );
 
-const mapStore = ({ transaction }) => {
+const domain = (transaction) => {
   const origin = transaction.pending.current.origin;
-  let domain = 'unknown';
-  const parsedDomain = parseDomain(origin, { customTlds: /localhost/ })
-  if (parsedDomain) {
-    domain = '';
-    if (parsedDomain.subdomain) domain += parsedDomain.subdomain + '.';
-    if (parsedDomain.domain) domain += parsedDomain.domain + '.';
-    domain += parsedDomain.tld;
-  }
+  const { subdomain, domain, tld } = parseDomain(origin, { customTlds: /localhost/ });
+  const [parsed] = `${subdomain}.${domain}.${tld}`.split('.').filter(i => i != "");
 
-  return {
-    senderDomain: domain
-  }
-};
+  return parsed || 'unknown';
+}
 
-export default connect(mapStore)(SenderDomain);
+export default SenderDomain;
