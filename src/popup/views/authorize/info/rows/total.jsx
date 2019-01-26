@@ -1,6 +1,6 @@
-import React       from 'react'
-import unit        from 'ethjs-unit'
-import Preloader   from 'ui/loader'
+import React              from 'react'
+import { formatWeiToEth } from 'lib/helpers'
+import Preloader          from 'ui/loader'
 
 const TransactionTotal = ({ transaction }) => (
   <div className="row total">
@@ -16,7 +16,7 @@ const total = (tx) => {
   const value = tx.pending.current.params.value || 0;
   const total = (gasPrice * gasEstimate) + parseInt(value);
 
-  return unit.fromWei(total, 'ether');
+  return formatWeiToEth(total);
 };
 
 export default TransactionTotal;
