@@ -9,35 +9,28 @@ function address (state = null, action) {
 
 function pending (state = [], action) {
   if (action.type == 'ENQUEUE_TXS') {
-    return action.pending;
+
+    const txs = action.pending.map(({params, origin}) => {
+      return { params: params[0], origin }
+    });
+
+    return { current: txs[0], all: txs }
+  }
+  else
+    return state;
+}
+
+function pricing (state = { balance: 0, gasPrice: 0, gasEstimate: 0 }, action) {
+  if (action.type == 'UPDATE' && action.prop == 'pricing') {
+    const [ balance, gasPrice, gasEstimate ] = action.value;
+    return { balance, gasPrice, gasEstimate }
   }
   else return state;
 }
 
-function balance (state = 0, action) {
-  if (action.type == 'UPDATE' && action.prop == 'txBalance') {
-    return action.value;
-  }
-  else return state;
-}
-
-function gasPrice (state = 0, action) {
-  if (action.type == 'UPDATE' && action.prop == 'txGasPrice') {
-    return action.value;
-  }
-  else return state;
-}
-
-function gasEstimate (state = 0, action) {
-  if (action.type == 'UPDATE' && action.prop == 'txGasEstimate') {
-    return action.value;
-  }
-  else return state;
-}
-
-function value (state = 0, action) {
-  if (action.type == 'UPDATE' && action.prop == 'txValue') {
-    return action.value;
+function errors (state = {}, action) {
+  if (action.type == 'TX_SIGN_FAILED') {
+    return {...state, txSign: action.message };
   }
   else return state;
 }
@@ -55,7 +48,7 @@ function page (state = 'NewAccountView', action) {
   }
 }
 
-const transaction = combineReducers({ gasPrice, gasEstimate, value })
-const reducers    = combineReducers({ address, balance, page, pending, transaction });
+const transaction = combineReducers({ pricing, pending });
+const reducers    = combineReducers({ address, page, transaction, errors });
 
 export default reducers;

@@ -3,18 +3,18 @@ import { connect }        from 'react-redux'
 import { formatWeiToEth } from 'lib/helpers'
 import Preloader          from 'ui/loader'
 
-import './account_balance.css'
+import './balance.css'
 
 const AccountBalance = ({ balance }) => (
   <div className="account-balance">
     <Preloader value={ balance }>
-      <div className="amount">{ balance }&nbsp;ETH</div>
+      <div className="amount">{ balance } ETH</div>
     </Preloader>
   </div>
 );
 
-const mapStore = (store) => ({
-  balance: formatWeiToEth(store.balance)
+const mapStore = ({ transaction }) => ({
+  balance: formatWeiToEth(transaction.pricing.balance)
 });
 
 export default connect(mapStore)(AccountBalance);

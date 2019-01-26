@@ -1,6 +1,6 @@
 export const delegateTo = {
   send: (msg, port) => {
-    let message = Object.assign(msg, { port });
+    let message = {...msg, port};
 
     return new Promise((resolve, reject) => {
       chrome.runtime.sendMessage(message, (response) => {
@@ -53,7 +53,7 @@ export class Proxy {
     if (callback)
       this.queue.push({ method: payload.method, id: payload.id, callback });
 
-    window.postMessage(Object.assign({ type: 'ETH_RPC', channel: this.up }, payload), '*');
+    window.postMessage({ type: 'ETH_RPC', channel: this.up, ...payload }, '*');
     return this;
   }
 }

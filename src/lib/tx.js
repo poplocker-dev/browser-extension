@@ -20,6 +20,6 @@ export function sign (rawTx, sk) {
 
 export function noncify (tx, nonce) {
   return transaction.nonce.track(nonce).then(updated => {
-    return Object.assign(tx, { nonce: updated });
+    return {...tx, nonce: updated};
   });
 }

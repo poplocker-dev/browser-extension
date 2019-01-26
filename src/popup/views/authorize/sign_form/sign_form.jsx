@@ -1,0 +1,63 @@
+import React                                  from 'react'
+import { connect }                            from 'react-redux'
+import { Button, PassField }                  from '@poplocker/react-ui'
+import { signTransaction, cancelTransaction } from 'lib/store/actions'
+
+import './sign_form.css'
+
+class SignForm extends React.Component {
+  constructor (props) {
+    super(props);
+    this.state = { password: '' };
+  }
+
+  render () {
+    return (
+      <form className="tx-sign-form" onSubmit={this.props.handleSubmit.bind(this)}>
+
+        <PassField label="Password"
+                   onChange={this.handleChange.bind(this)}
+                   autoFocus={true}
+                   value={this.state.password}
+                   error={this.props.error}/>
+
+        <div className="row">
+          <Button icon="arrow" type="reject" onClick={this.props.handleCancel.bind(this)}>Cancel</Button>
+          <Button icon="tick" disabled={this.shouldBeDisabled()}>Authorize</Button>
+        </div>
+      </form>
+    )
+  }
+
+  handleChange (e) {
+    this.setState({ password: e.target.value });
+  }
+
+  shouldBeDisabled () {
+    return this.state.password.length == 0 || this.props.balance == 0;
+  }
+}
+
+const mapStore = ({ transaction, errors }) => {
+  const { gasPrice, gasEstimate, balance } = transaction.pricing;
+  const { current } = transaction.pending;
+
+  return {
+    balance,
+    error: errors.txSign || null,
+    tx: {...current.params, gasPrice, gasLimit: gasEstimate }
+  }
+}
+
+const mapDispatch = (dispatch) => ({
+  handleSubmit: function (e) {
+    e.preventDefault();
+    dispatch(signTransaction(this.props.tx, this.state.password));
+  },
+  handleCancel: function (e) {
+    e.preventDefault();
+    dispatch(cancelTransaction());
+  }
+});
+
+export default connect(mapStore, mapDispatch)(SignForm);

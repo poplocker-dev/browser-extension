@@ -86,7 +86,10 @@ export const account = {
         resolve(data);
         w.terminate();
       }
-      w.onerror = () => reject();
+      w.onerror = () => {
+        reject();
+        w.terminate();
+      }
     });
   },
 
@@ -101,7 +104,10 @@ export const account = {
           resolve(data);
           w.terminate();
         }
-        w.onerror = () => reject();
+        w.onerror = () => {
+          reject();
+          w.terminate();
+        }
       });
     });
   }
