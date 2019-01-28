@@ -1,4 +1,5 @@
 import React                                  from 'react'
+import toBN                                   from 'number-to-bn'
 import { connect }                            from 'react-redux'
 import { Button, PassField }                  from '@poplocker/react-ui'
 import { signTransaction, cancelTransaction } from 'lib/store/actions'
@@ -18,6 +19,7 @@ class SignForm extends React.Component {
         <PassField label="Password"
                    onChange={this.handleChange.bind(this)}
                    autoFocus={true}
+                   disabled={noFunds(this.props.transaction)}
                    value={this.state.password}
                    error={this.props.error}/>
 
@@ -34,26 +36,38 @@ class SignForm extends React.Component {
   }
 
   shouldBeDisabled () {
-    return this.state.password.length == 0 || this.props.balance == 0;
+    return this.state.password.length == 0 || noFunds(this.props.transaction);
   }
 }
 
-const mapStore = ({ transaction, errors }) => {
-  const { gasPrice, gasEstimate, balance } = transaction.pricing;
-  const { current } = transaction.pending;
+const noFunds = (tx) => {
+  const { balance, fee } = tx.pricing;
+  const value            = toBN(tx.pending.current.params.value);
 
+  return balance.lt(value.add(fee));
+}
+
+const noFundsError = (tx) => {
+  return noFunds(tx) ? 'Not enough funds.' : false;
+}
+
+const mapStore = ({ transaction, errors }) => {
   return {
-    balance,
-    error: errors.txSign || null,
-    tx: {...current.params, gasPrice, gasLimit: gasEstimate }
+    transaction,
+    error: errors.txSign || noFundsError(transaction) || null,
   }
 }
 
 const mapDispatch = (dispatch) => ({
   handleSubmit: function (e) {
     e.preventDefault();
-    dispatch(signTransaction(this.props.tx, this.state.password));
+
+    const { gasPrice, gasEstimate } = this.props.transaction.pricing;
+    const tx = {...this.props.transaction.pending.current.params, gasPrice, gasLimit: gasEstimate }
+
+    dispatch(signTransaction(tx, this.state.password));
   },
+
   handleCancel: function (e) {
     e.preventDefault();
     dispatch(cancelTransaction());

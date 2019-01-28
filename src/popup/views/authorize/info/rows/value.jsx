@@ -1,6 +1,6 @@
-import React       from 'react'
-import unit        from 'ethjs-unit'
-import Preloader   from 'ui/loader'
+import React     from 'react'
+import unit      from 'ethjs-unit'
+import Preloader from 'ui/loader'
 
 const TransactionValue = ({ transaction }) => (
   <div className="row transaction-value">

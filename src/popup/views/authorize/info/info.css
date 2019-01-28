@@ -39,7 +39,8 @@
     white-space: nowrap;
   }
 
-  .elipsis {
+  .ellipsis {
+    max-width: 213px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

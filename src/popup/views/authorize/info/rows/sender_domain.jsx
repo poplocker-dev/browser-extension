@@ -6,7 +6,7 @@ const SenderDomain = ({ transaction }) => (
   <div className="row sender-domain">
     <span className="row-label">From:</span>
     <Preloader value={ transaction.pending.current }>
-      <div className="amount elipsis">{ domain(transaction) }</div>
+      <div className="amount ellipsis">{ domain(transaction) }</div>
     </Preloader>
   </div>
 );

@@ -11,10 +11,8 @@ const TransactionFee = ({ transaction }) => (
   </div>
 );
 
-const fee = (transaction) => {
-  const { gasPrice, gasEstimate } = transaction.pricing;
-
-  return unit.fromWei(gasPrice * gasEstimate, 'ether');
-};
+const fee = (transaction) => (
+  unit.fromWei(transaction.pricing.fee, 'ether')
+);
 
 export default TransactionFee;

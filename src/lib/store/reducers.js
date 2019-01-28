@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux'
+import toBN                from 'number-to-bn'
 
 function address (state = null, action) {
   if (action.type == 'ACCOUNT_READY') {
@@ -20,10 +21,18 @@ function pending (state = [], action) {
     return state;
 }
 
-function pricing (state = { balance: 0, gasPrice: 0, gasEstimate: 0 }, action) {
+function pricing (state, action) {
+  state = state || {
+    fee: toBN(0),
+    balance: toBN(0),
+    gasPrice: toBN(0),
+    gasEstimate: toBN(0)
+  }
+
   if (action.type == 'UPDATE' && action.prop == 'pricing') {
-    const [ balance, gasPrice, gasEstimate ] = action.value;
-    return { balance, gasPrice, gasEstimate }
+    const [balance, gasPrice, gasEstimate] = action.value.map(toBN);
+
+    return { balance, gasPrice, gasEstimate, fee: gasPrice.mul(gasEstimate) }
   }
   else return state;
 }

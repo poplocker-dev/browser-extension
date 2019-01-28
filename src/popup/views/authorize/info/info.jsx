@@ -15,10 +15,10 @@ const TransactionInfo = (tx) => (
     </div>
 
     <SenderDomain {...tx}/>
-    <Value {...tx}/>
-    <Fee {...tx}/>
+    <Value        {...tx}/>
+    <Fee          {...tx}/>
     <div className="separator"/>
-    <Total {...tx}/>
+    <Total        {...tx}/>
 
   </div>
 );
