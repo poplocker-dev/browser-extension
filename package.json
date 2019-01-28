@@ -43,6 +43,7 @@
     "ethjs-signer": "^0.1.1",
     "ethjs-unit": "^0.1.6",
     "history": "^4.7.2",
+    "number-to-bn": "^1.7.0",
     "parse-domain": "^2.1.7",
     "postcss-nested": "^4.1.1",
     "react-redux": "^5.1.1",
