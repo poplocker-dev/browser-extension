@@ -36,6 +36,7 @@
   "dependencies": {
     "@parity/api": "^2.1.24",
     "@poplocker/react-ui": "github:poplocker-dev/react-ui",
+    "bignumber.js": "^8.0.2",
     "classnames": "^2.2.6",
     "ethereumjs-wallet": "^0.6.3",
     "ethjs-provider-http": "^0.1.6",

@@ -43,6 +43,12 @@ export function fetchTxInfo (transaction) {
   }
 }
 
+export function updatePricing (pricing) {
+  return async function (dispatch) {
+    dispatch(update('pricing', [pricing.balance, pricing.gasPrice, pricing.gasEstimate]));
+  }
+}
+
 export function enqueuePending (pending) {
   return { type: 'ENQUEUE_TXS', pending };
 }
