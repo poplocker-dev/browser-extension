@@ -1,6 +1,6 @@
-import React              from 'react'
-import { formatWeiToEth } from 'lib/helpers'
-import Preloader          from 'ui/loader'
+import React     from 'react'
+import unit      from 'ethjs-unit'
+import Preloader from 'ui/loader'
 
 const TransactionValue = ({ transaction }) => (
   <div className="row transaction-value">
@@ -12,7 +12,7 @@ const TransactionValue = ({ transaction }) => (
 );
 
 const value = (tx) => (
-  formatWeiToEth(tx.pending.current.params.value || 0)
+  unit.fromWei(tx.pending.current.params.value || 0, 'ether')
 );
 
 export default TransactionValue;

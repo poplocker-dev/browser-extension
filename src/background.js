@@ -37,7 +37,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           dispatch(raw.gasPrice),
           dispatch(raw.gasEstimate(message.transaction.params))
 
-        ]).then(sendResponse);
+        ]).then(sendResponse).catch(sendResponse);
         break;
 
       case 'TX_SIGN':

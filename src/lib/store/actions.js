@@ -33,9 +33,13 @@ export function cancelTransaction () {
 
 export function fetchTxInfo (transaction) {
   return async function (dispatch) {
-    const results = await delegateTo.background({ type: 'TX_INFO', transaction });
-
-    dispatch(update('pricing', results.map(r => r.result)));
+    try {
+      const results = await delegateTo.background({ type: 'TX_INFO', transaction });
+      dispatch(update('pricing', results.map(r => r.result)));
+    }
+    catch(e) {
+      dispatch(txSignFailed('Transaction will fail.'));
+    }
   }
 }
 

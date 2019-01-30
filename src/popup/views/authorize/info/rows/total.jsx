@@ -1,6 +1,7 @@
-import React              from 'react'
-import { formatWeiToEth } from 'lib/helpers'
-import Preloader          from 'ui/loader'
+import React     from 'react'
+import Preloader from 'ui/loader'
+import unit      from 'ethjs-unit'
+import toBN      from 'number-to-bn'
 
 const TransactionTotal = ({ transaction }) => (
   <div className="row total">
@@ -12,11 +13,8 @@ const TransactionTotal = ({ transaction }) => (
 );
 
 const total = (tx) => {
-  const { gasPrice, gasEstimate } = tx.pricing;
-  const value = tx.pending.current.params.value || 0;
-  const total = (gasPrice * gasEstimate) + parseInt(value);
-
-  return formatWeiToEth(total);
+  const value = toBN(tx.pending.current.params.value || 0);
+  const total = tx.pricing.fee.add(value);
 };
 
 export default TransactionTotal;

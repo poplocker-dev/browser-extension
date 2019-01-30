@@ -15,7 +15,6 @@ const TransactionInfo = (tx) => (
     <div className="title">
       Confirm your transaction
     </div>
-
     {
       tx.showAdvanced? (
         <RecipientAddress {...tx}/>
@@ -23,12 +22,13 @@ const TransactionInfo = (tx) => (
         <SenderDomain {...tx}/>
       )
     }
-    <Value {...tx}/>
-    <Fee {...tx}/>
+    <Value    {...tx}/>
+    <Fee      {...tx}/>
     <GasPrice {...tx}/>
+    <Value    {...tx}/>
+    <Fee      {...tx}/>
     <div className="separator"/>
-    <Total {...tx}/>
-
+    <Total    {...tx}/>
   </div>
 );
 
