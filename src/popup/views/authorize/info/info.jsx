@@ -1,35 +1,35 @@
-import React            from 'react'
-import { connect }      from 'react-redux'
-import SenderDomain     from './rows/sender_domain'
-import RecipientAddress from './rows/recipient_address'
-import Value            from './rows/value'
-import Fee              from './rows/fee'
-import GasPrice         from './rows/gas_price'
-import Total            from './rows/total'
+import React    from 'react'
+import Domain   from './rows/domain'
+import Value    from './rows/value'
+import Fee      from './rows/fee'
+import GasPrice from './rows/gas_price'
+import Total    from './rows/total'
 
 import './info.css'
 
-const TransactionInfo = (tx) => (
-  <div className="transaction-info">
+const TransactionInfo = (props) => {
+  return  (
+    <div className="transaction-info">
+      <div className="title">
+        Confirm your transaction
+      </div>
 
-    <div className="title">
-      Confirm your transaction
+      <Domain   {...props}/>
+      <Value    {...props}/>
+      <Fee      {...props}/>
+      { sliders(props) }
+      <div className="separator"/>
+      <Total    {...props}/>
+
     </div>
-    {
-      tx.showAdvanced? (
-        <RecipientAddress {...tx}/>
-      ) : (
-        <SenderDomain {...tx}/>
-      )
-    }
-    <Value    {...tx}/>
-    <Fee      {...tx}/>
-    <GasPrice {...tx}/>
-    <Value    {...tx}/>
-    <Fee      {...tx}/>
-    <div className="separator"/>
-    <Total    {...tx}/>
-  </div>
-);
+  );
+}
 
-export default connect(({ transaction }) => ({ transaction }))(TransactionInfo);
+const sliders = ({ advanced, transaction }) => {
+  if (advanced)
+    return <GasPrice transaction={transaction}/>
+  else
+    return null;
+}
+
+export default TransactionInfo;

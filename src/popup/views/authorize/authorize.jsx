@@ -15,7 +15,7 @@ class AuthorizeView extends React.Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(fetchTxInfo(this.props.current));
+    this.props.dispatch(fetchTxInfo(this.props.transaction.pending.current));
   }
 
   render () {
@@ -23,7 +23,7 @@ class AuthorizeView extends React.Component {
       <div className="view authorize-view">
         <Header caption="Your total balance"/>
         <AccountBalance/>
-        <TxInfo showAdvanced={ this.state.showAdvanced }/>
+        <TxInfo advanced={this.state.showAdvanced} {...this.props} />
         <button onClick={ this.handleChange.bind(this) }>
           { this.state.showAdvanced? 'Hide Advanced' : 'Show Advanced' }
         </button>
@@ -32,13 +32,9 @@ class AuthorizeView extends React.Component {
     )
   }
 
-  handleChange (e) {
+  handleChange () {
     this.setState({ showAdvanced: !this.state.showAdvanced });
   }
 }
 
-const mapStore = ({ transaction }) => ({
-  current: transaction.pending.current
-});
-
-export default connect(mapStore)(AuthorizeView);
+export default connect(({ transaction }) => ({ transaction }))(AuthorizeView);

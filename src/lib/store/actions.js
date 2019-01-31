@@ -43,9 +43,9 @@ export function fetchTxInfo (transaction) {
   }
 }
 
-export function updatePricing (pricing) {
+export function updatePricing ({ balance, gasPrice, gasEstimate }) {
   return async function (dispatch) {
-    dispatch(update('pricing', [pricing.balance, pricing.gasPrice, pricing.gasEstimate]));
+    dispatch(update('pricing', [balance, gasPrice, gasEstimate]));
   }
 }
 

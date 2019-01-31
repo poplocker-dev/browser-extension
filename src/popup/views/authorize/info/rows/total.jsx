@@ -15,6 +15,8 @@ const TransactionTotal = ({ transaction }) => (
 const total = (tx) => {
   const value = toBN(tx.pending.current.params.value || 0);
   const total = tx.pricing.fee.add(value);
+
+  return unit.fromWei(total, 'ether');
 };
 
 export default TransactionTotal;

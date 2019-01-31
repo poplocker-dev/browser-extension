@@ -1,39 +1,43 @@
-import React              from 'react'
-import { updatePricing }  from 'lib/store/actions'
+import React             from 'react'
+import { connect }       from 'react-redux'
+import { updatePricing } from 'lib/store/actions'
 
 class GasPrice extends React.Component {
   constructor (props) {
     super(props);
-    this.state = { initialGasPrice: null }
+    this.state    = { value: 1, base: null }
+    this.pricing  = props.transaction.pricing;
+    this.dispatch = props.dispatch;
   }
 
-  componentDidUpdate() {
-    if (!this.state.initialGasPrice) {
-      this.setState({ initialGasPrice: this.props.transaction.pricing.gasPrice });
-    }
+  componentDidMount () {
+    this.setState({ base: this.pricing });
   }
 
   render () {
-    if (this.props.showAdvanced) {
-      return ( 
-        <input className="gas-price-slider"
-          type="range"
-          min="1"
-          max={ 10 * parseInt(this.state.initialGasPrice) }
-          step="1"
-          value={ parseInt(this.props.transaction.pricing.gasPrice) }
-          onChange={ this.handleChange.bind(this) }
-        />
-      );
-    } else {
-      return null;
-    }
+    return (
+      <input className="gas-price-slider"
+             type="range"
+             min="1"
+             max="100"
+             step="1"
+             value={this.state.value}
+             onChange={this.handleChange.bind(this)}
+      />
+    );
   }
 
   handleChange (e) {
-    this.props.transaction.pricing.gasPrice = '0x' + parseInt(e.target.value).toString(16);
-    this.props.dispatch(updatePricing(this.props.transaction.pricing));
+    if (this.state.base) {
+      this.setState({ value: e.target.value });
+
+      const newPrice = this.state.base.gasPrice
+                           .muln(parseInt(e.target.value))
+                           .divn(10);
+
+      this.dispatch(updatePricing({...this.pricing, gasPrice: newPrice }));
+    }
   }
 }
 
-export default GasPrice;
+export default connect()(GasPrice);
