@@ -1,6 +1,6 @@
 import React              from 'react'
 import { connect }        from 'react-redux'
-import { formatWeiToEth } from 'lib/helpers'
+import { fixedEth }       from 'lib/helpers'
 import Preloader          from 'ui/loader'
 
 import './balance.css'
@@ -14,7 +14,7 @@ const AccountBalance = ({ balance }) => (
 );
 
 const mapStore = ({ transaction }) => ({
-  balance: formatWeiToEth(transaction.pricing.balance)
+  balance: fixedEth(transaction.pricing.balance)
 });
 
 export default connect(mapStore)(AccountBalance);
