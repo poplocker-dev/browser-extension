@@ -34,6 +34,7 @@ function pricing (state, action) {
 
     return { balance, gasPrice, gasEstimate, fee: gasPrice.mul(gasEstimate) }
   }
+
   else return state;
 }
 

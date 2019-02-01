@@ -1,18 +1,10 @@
 :root {
   --foreground-color: #353A41;
   --background-color: #FFFFFF;
-  --label-color: #4880FF;
-  --border-color: #DBDBDB;
-  --border-focus-color: #b4b4b4;
-  --invalid-color: #FF0054;
   --weak-pass-color: #FD6D30;
   --medium-pass-color: #FBC812;
   --good-pass-color: #7C6FFC;
   --strong-pass-color: #5AC897;
-  --std-button-color: #4880FF;
-  --std-button-shadow-color: rgba(72,128,255,0.50);
-  --std-button-darker-color: #386BE1;
-  --std-button-fg: #FFFFFF;
 }
 
 *, *:before, *:after {

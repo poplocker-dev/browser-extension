@@ -2,7 +2,7 @@ import React             from 'react'
 import { connect }       from 'react-redux'
 import { updatePricing } from 'lib/store/actions'
 
-class GasPrice extends React.Component {
+class GasPriceSlider extends React.Component {
   constructor (props) {
     super(props);
     this.state    = { value: 1, base: null }
@@ -40,4 +40,4 @@ class GasPrice extends React.Component {
   }
 }
 
-export default connect()(GasPrice);
+export default connect()(GasPriceSlider);

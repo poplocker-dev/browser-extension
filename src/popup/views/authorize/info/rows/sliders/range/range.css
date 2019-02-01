@@ -1,0 +1,19 @@
+.range {
+  font-size: 13px;
+  text-transform: capitalize;
+
+  input {
+    width: 100%;
+  }
+
+  .from-to {
+    opacity: 0.6;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between
+  }
+
+  &:first-child {
+    margin-bottom: 5px;
+  }
+}

@@ -40,6 +40,7 @@ class SignForm extends React.Component {
   }
 }
 
+// TODO: move it to <Total/>
 const noFunds = (tx) => {
   const { balance, fee } = tx.pricing;
   const value            = toBN(tx.pending.current.params.value || 0);

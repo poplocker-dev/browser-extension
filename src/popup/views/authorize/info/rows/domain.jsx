@@ -5,17 +5,23 @@ import parseDomain from 'parse-domain'
 const Domain = ({ transaction, advanced }) => (
   <div className="row domain">
     <span className="row-label">{advanced? 'From:' : 'To:'}</span>
-    <Preloader value={ transaction.pending.current }>
+
+    <Preloader value={transaction.pending.current}>
+
       <div className="amount ellipsis" alt={`from ${domain(transaction)}`}>
         { advanced? recipient(transaction) : domain(transaction) }
       </div>
+
     </Preloader>
   </div>
 );
 
-const recipient = (tx) => {
-  return tx.pending.current.params.to || 'N/A';
-}
+const recipient = (tx) => (
+  <span className="recipient">
+    { tx.pending.current.params.to || 'N/A' }
+  </span>
+)
+
 
 const domain = (transaction) => {
   const origin = transaction.pending.current.origin;

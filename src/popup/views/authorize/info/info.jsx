@@ -1,9 +1,9 @@
-import React    from 'react'
-import Domain   from './rows/domain'
-import Value    from './rows/value'
-import Fee      from './rows/fee'
-import GasPrice from './rows/gas_price'
-import Total    from './rows/total'
+import React   from 'react'
+import Fee     from './rows/fee'
+import Value   from './rows/value'
+import Total   from './rows/total'
+import Domain  from './rows/domain'
+import Sliders from './rows/sliders'
 
 import './info.css'
 
@@ -27,7 +27,7 @@ const TransactionInfo = (props) => {
 
 const sliders = ({ advanced, transaction }) => {
   if (advanced)
-    return <GasPrice transaction={transaction}/>
+    return <Sliders {...transaction}/>
   else
     return null;
 }
