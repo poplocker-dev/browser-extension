@@ -40,4 +40,11 @@ body {
     font-family: Orkney;
     src: url('~assets/orkney_r.woff2') format('woff2');
   }
+
+  @font-face {
+    font-family: Orkney;
+    src: url('~assets/orkney_m.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+  }
 }
