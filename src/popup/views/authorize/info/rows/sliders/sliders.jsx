@@ -18,6 +18,7 @@ class Sliders extends React.Component {
     }
   }
 
+  // TODO: Fix gas estimate range to be 1x -- 2x
   render () {
     return (
       <div className="row sliders">

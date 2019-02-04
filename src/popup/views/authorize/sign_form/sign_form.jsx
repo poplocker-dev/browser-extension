@@ -1,7 +1,8 @@
-import React                                  from 'react'
-import toBN                                   from 'number-to-bn'
-import { connect }                            from 'react-redux'
-import { Button, PassField }                  from '@poplocker/react-ui'
+import React                 from 'react'
+import toBN                  from 'number-to-bn'
+import { connect }           from 'react-redux'
+import { toHex }             from 'lib/helpers'
+import { Button, PassField } from '@poplocker/react-ui'
 import { signTransaction, cancelTransaction } from 'lib/store/actions'
 
 import './sign_form.css'
@@ -63,7 +64,9 @@ const mapDispatch = (dispatch) => ({
   handleSubmit: function (e) {
     e.preventDefault();
 
-    const { gasPrice, gasEstimate } = this.props.transaction.pricing;
+    const gasPrice    = toHex(this.props.transaction.pricing.gasPrice);
+    const gasEstimate = toHex(this.props.transaction.pricing.gasEstimate);
+
     const tx = {...this.props.transaction.pending.current.params, gasPrice, gasLimit: gasEstimate }
 
     dispatch(signTransaction(tx, this.state.password));

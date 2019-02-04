@@ -46,3 +46,7 @@ export function fixedEth (bigNumber) {
 
   return unit.fromWei(rounded, 'ether');
 }
+
+export function toHex (bignumber) {
+  return '0x' + bignumber.toString(16);
+}

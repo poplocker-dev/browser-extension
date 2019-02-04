@@ -70,9 +70,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 chrome.storage.onChanged.addListener(changes => {
-  if (changes.pending)
+  if (changes.pending && changes.pending.newValue)
     badge.info = changes.pending.newValue.length || '';
 
-  if (changes.address)
+  if (changes.address && changes.address.newValue)
     changes.address.newValue ? badge.reset() : badge.warning();
 });
