@@ -36,7 +36,8 @@
   },
   "dependencies": {
     "@parity/api": "^2.1.24",
-    "@poplocker/react-ui": "github:poplocker-dev/react-ui",
+    "@poplocker/react-ui": "https://github.com/poplocker-dev/react-ui",
+    "add": "^2.0.6",
     "big.js": "^5.2.2",
     "classnames": "^2.2.6",
     "ethereumjs-wallet": "^0.6.3",
@@ -54,6 +55,7 @@
     "redux-thunk": "^2.3.0",
     "safe-event-emitter": "^1.0.1",
     "simple-crypto-js": "^2.0.2",
+    "yarn": "^1.13.0",
     "zxcvbn": "^4.4.2"
   }
 }
