@@ -19,14 +19,25 @@ class SignForm extends React.Component {
 
         <PassField label="Password"
                    onChange={this.handleChange.bind(this)}
-                   autoFocus={true}
+                   tabIndex={1}
+                   autoFocus
                    disabled={noFunds(this.props.transaction)}
                    value={this.state.password}
                    error={this.props.error}/>
 
         <div className="row">
-          <Button icon="arrow" type="reject" onClick={this.props.handleCancel.bind(this)}>Cancel</Button>
-          <Button icon="tick" disabled={this.shouldBeDisabled()}>Authorize</Button>
+          <Button tabIndex={-1}
+                  type="button"
+                  icon="close"
+                  kind="reject"
+                  onClick={this.props.handleCancel.bind(this)}>
+            Reject
+          </Button>
+          <Button autoFocus={true}
+                  icon="tick"
+                  disabled={this.shouldBeDisabled()}>
+            Authorize
+          </Button>
         </div>
       </form>
     )
@@ -45,6 +56,10 @@ class SignForm extends React.Component {
 const noFunds = (tx) => {
   const { balance, fee } = tx.pricing;
   const value            = toBN(tx.pending.current.params.value || 0);
+
+  // TODO: fix this with null initial values
+  if (balance.eq(toBN(0)) && fee.eq(toBN(0)))
+    return false;
 
   return balance.lt(value.add(fee));
 }

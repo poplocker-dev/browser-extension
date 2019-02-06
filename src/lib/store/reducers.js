@@ -21,6 +21,8 @@ function pending (state = [], action) {
     return state;
 }
 
+// TODO: change defaults to null and update initial state depending on these values
+// unsettled state should not be treated as error
 function pricing (state, action) {
   state = state || {
     fee         : toBN(0),
