@@ -1,5 +1,12 @@
+import React from 'react'
 import toBN                from 'number-to-bn'
 import { combineReducers } from 'redux'
+
+// TODO: improve this abomination ✝!
+const NewAccountView = React.lazy(() => import('../../popup/views/new_account'));
+const LoadingView    = React.lazy(() => import('../../popup/views/loading'));
+const SuccessView    = React.lazy(() => import('../../popup/views/success'));
+const AuthorizeView  = React.lazy(() => import('../../popup/views/authorize'));
 
 function address (state = null, action) {
   if (action.type == 'ACCOUNT_READY') {
@@ -47,14 +54,14 @@ function errors (state = {}, action) {
   else return state;
 }
 
-function page (state = 'NewAccountView', action) {
+function page (state = NewAccountView, action) {
   switch (action.type) {
     case 'ACCOUNT_GEN':
-      return 'LoadingView';
+      return LoadingView;
     case 'ACCOUNT_READY':
-      return 'SuccessView';
+      return SuccessView;
     case 'ENQUEUE_TXS':
-      return 'AuthorizeView';
+      return AuthorizeView;
     default:
       return state;
   }

@@ -5,6 +5,7 @@ const path = require('path');
 const Dotenv = require('dotenv-webpack');
 
 let config = {
+  devtool: false,
   entry: {
     background: './src/background.js',
     popup: './src/popup/popup.jsx',
