@@ -1,6 +1,6 @@
-import React     from 'react'
-import unit      from 'ethjs-unit'
-import Preloader from 'ui/loader'
+import React        from 'react'
+import Preloader    from 'ui/loader'
+import { fixedEth } from 'lib/helpers'
 
 const TransactionFee = ({ transaction }) => (
   <div className="row transaction-fee">
@@ -9,10 +9,8 @@ const TransactionFee = ({ transaction }) => (
       <div className="amount">{ fee(transaction) } ETH</div>
     </Preloader>
   </div>
-);
+)
 
-const fee = (transaction) => (
-  unit.fromWei(transaction.pricing.fee, 'ether')
-);
+const fee = (transaction) => fixedEth(transaction.pricing.fee);
 
 export default TransactionFee;

@@ -1,7 +1,7 @@
-import React     from 'react'
-import Preloader from 'ui/loader'
-import unit      from 'ethjs-unit'
-import toBN      from 'number-to-bn'
+import React        from 'react'
+import Preloader    from 'ui/loader'
+import toBN         from 'number-to-bn'
+import { fixedEth } from 'lib/helpers'
 
 const TransactionTotal = ({ transaction }) => (
   <div className="row total">
@@ -16,7 +16,7 @@ const total = (tx) => {
   const value = toBN(tx.pending.current.params.value || 0);
   const total = tx.pricing.fee.add(value);
 
-  return unit.fromWei(total, 'ether');
+  return fixedEth(total);
 };
 
 export default TransactionTotal;
