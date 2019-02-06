@@ -28,6 +28,7 @@ const domain = (transaction) => {
   const parts  = parseDomain(origin, { customTlds: /localhost/ });
   const parsed = Object.values(parts)
                        .filter(i => i != "")
+                       .reverse()
                        .join('.');
 
   return parsed || 'unknown';
