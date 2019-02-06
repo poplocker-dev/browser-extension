@@ -1,4 +1,4 @@
 {
   "presets": [["@babel/preset-env", { "targets": "last 10 chrome versions" }], "@babel/preset-react"],
-  "plugins": ["@babel/plugin-proposal-object-rest-spread"]
+  "plugins": ["@babel/plugin-proposal-object-rest-spread", "@babel/plugin-syntax-dynamic-import"]
 }
