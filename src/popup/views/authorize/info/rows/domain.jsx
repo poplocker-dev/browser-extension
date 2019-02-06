@@ -4,7 +4,7 @@ import parseDomain from 'parse-domain'
 
 const Domain = ({ transaction, advanced }) => (
   <div className="row domain">
-    <span className="row-label">{advanced? 'From:' : 'To:'}</span>
+    <span className="row-label">{advanced? 'To:' : 'From:'}</span>
 
     <Preloader value={transaction.pending.current}>
 
