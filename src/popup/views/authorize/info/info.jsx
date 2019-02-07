@@ -1,9 +1,10 @@
-import React   from 'react'
-import Fee     from './rows/fee'
-import Value   from './rows/value'
-import Total   from './rows/total'
-import Domain  from './rows/domain'
-import Sliders from './rows/sliders'
+import React       from 'react'
+import { connect } from 'react-redux'
+import Fee         from './rows/fee'
+import Value       from './rows/value'
+import Total       from './rows/total'
+import Domain      from './rows/domain'
+import Sliders     from './rows/sliders'
 
 import './info.css'
 
@@ -25,11 +26,11 @@ const TransactionInfo = (props) => {
   );
 }
 
-const sliders = ({ advanced, transaction }) => {
-  if (advanced)
+const sliders = ({ advancedMode, transaction }) => {
+  if (advancedMode)
     return <Sliders {...transaction}/>
   else
     return null;
 }
 
-export default TransactionInfo;
+export default connect(({ advancedMode }) => ({ advancedMode }))(TransactionInfo);

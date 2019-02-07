@@ -67,7 +67,14 @@ function page (state = NewAccountView, action) {
   }
 }
 
+function advancedMode (state = false, action) {
+  if (action.type == 'TOGGLE_ADVANCED')
+    return !state;
+  else
+    return state;
+}
+
 const transaction = combineReducers({ pricing, pending });
-const reducers    = combineReducers({ address, page, transaction, errors });
+const reducers    = combineReducers({ address, page, transaction, errors, advancedMode });
 
 export default reducers;

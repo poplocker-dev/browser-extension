@@ -1,7 +1,7 @@
 .transaction-info {
   display: flex;
   padding: 15px;
-  margin-bottom: 17px;
+  margin-bottom: 15px;
   flex-direction: column;
   border: 1px solid var(--border-color);
   border-radius: 2px;

@@ -1,5 +1,22 @@
 .tx-sign-form {
+  display: flex;
+  flex-direction: column;
+
   .row {
     display: flex;
+    margin-bottom: 15px;
+  }
+
+  .show-advanced {
+    margin-top: 5px;
+  }
+
+  .show-advanced .btn {
+    width: 100%;
+    justify-content: center;
+
+    .caption {
+      margin-right: 3px;
+    }
   }
 }

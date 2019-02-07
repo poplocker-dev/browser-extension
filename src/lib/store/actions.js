@@ -94,3 +94,9 @@ export function update (prop, value) {
     value
   }
 }
+
+export function toggleAdvanced () {
+  return {
+    type: 'TOGGLE_ADVANCED'
+  }
+}

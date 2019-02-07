@@ -29,7 +29,7 @@ body {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    padding: 0 20px 32px 20px;
+    padding: 0 20px;
 
     *:not(.fancy-circles) {
       z-index: 2;

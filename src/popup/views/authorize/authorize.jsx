@@ -23,10 +23,9 @@ class AuthorizeView extends React.Component {
       <div className="view authorize-view">
         <Header caption="Your total balance"/>
         <AccountBalance/>
-        <TxInfo advanced={this.state.showAdvanced} {...this.props} />
-        <button onClick={ this.handleChange.bind(this) }>
-          { this.state.showAdvanced? 'Hide Advanced' : 'Show Advanced' }
-        </button>
+
+        <TxInfo {...this.props} />
+
         <SignForm/>
       </div>
     )

@@ -3,27 +3,38 @@ import toBN                  from 'number-to-bn'
 import { connect }           from 'react-redux'
 import { toHex }             from 'lib/helpers'
 import { Button, PassField } from '@poplocker/react-ui'
-import { signTransaction, cancelTransaction } from 'lib/store/actions'
+import { signTransaction,
+         cancelTransaction,
+         toggleAdvanced } from 'lib/store/actions'
 
 import './sign_form.css'
 
 class SignForm extends React.Component {
   constructor (props) {
     super(props);
-    this.state = { password: '' };
+    this.state = { password: '', showAdvanced: false };
   }
 
   render () {
     return (
       <form className="tx-sign-form" onSubmit={this.props.handleSubmit.bind(this)}>
 
-        <PassField label="Password"
-                   onChange={this.handleChange.bind(this)}
-                   tabIndex={1}
-                   autoFocus
-                   disabled={noFunds(this.props.transaction)}
-                   value={this.state.password}
-                   error={this.props.error}/>
+        <div className="row">
+          <PassField label="Password"
+                     onChange={this.handleChange.bind(this)}
+                     tabIndex={1}
+                     autoFocus
+                     disabled={noFunds(this.props.transaction)}
+                     value={this.state.password}
+                     error={this.props.error}/>
+        </div>
+
+        <div className="row show-advanced">
+          <Button type="button" kind="light" icon="arrow" responsive
+                  onClick={this.props.handleAdvanced.bind(this)}>
+            { this.props.advancedMode? 'Hide Advanced' : 'Show Advanced' }
+          </Button>
+        </div>
 
         <div className="row">
           <Button tabIndex={-1}
@@ -68,9 +79,10 @@ const noFundsError = (tx) => {
   return noFunds(tx) ? 'Not enough funds.' : false;
 }
 
-const mapStore = ({ transaction, errors }) => {
+const mapStore = ({ transaction, errors, advancedMode }) => {
   return {
     transaction,
+    advancedMode,
     error: errors.txSign || noFundsError(transaction) || null,
   }
 }
@@ -90,7 +102,9 @@ const mapDispatch = (dispatch) => ({
   handleCancel: function (e) {
     e.preventDefault();
     dispatch(cancelTransaction());
-  }
+  },
+
+  handleAdvanced: function () { dispatch(toggleAdvanced()) }
 });
 
 export default connect(mapStore, mapDispatch)(SignForm);
