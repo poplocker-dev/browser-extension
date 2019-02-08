@@ -11,15 +11,19 @@
   box-sizing: border-box;
 }
 
+*:focus {
+  outline: none;
+}
+
 textarea:focus, input:focus {
   outline: none;
 }
 
 body {
   margin: 0;
+  min-width: 375px;
+  min-heigth: 388px;
 	color: var(--foreground-color);
-	min-width: 375px;
-	min-height: 388px;
   font-size: 13px;
   font-family: Orkney, Helvetica, sans-serif;
 	line-height: 19px;

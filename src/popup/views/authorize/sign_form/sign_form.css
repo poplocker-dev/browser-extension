@@ -1,22 +1,35 @@
 .tx-sign-form {
   display: flex;
+  margin-bottom: 20px;
   flex-direction: column;
 
   .row {
     display: flex;
     margin-bottom: 15px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 
-  .show-advanced {
+  .row.show-advanced {
     margin-top: 5px;
+
+    .btn {
+      width: 100%;
+      justify-content: center;
+
+      .caption {
+        margin-right: 3px;
+      }
+    }
   }
 
-  .show-advanced .btn {
-    width: 100%;
-    justify-content: center;
+  .row.buttons {
+    justify-content: space-between;
 
-    .caption {
-      margin-right: 3px;
+    .btn {
+      width: 45%;
     }
   }
 }
