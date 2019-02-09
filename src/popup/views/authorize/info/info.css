@@ -22,7 +22,7 @@
     justify-content: space-between;
 
     &.total {
-      margin: 10px 0;
+      margin: 3px 0;
 
       *:last-child {
         font-size: 27px;
