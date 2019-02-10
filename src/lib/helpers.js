@@ -1,5 +1,4 @@
-import big                      from 'bn.js'
-import unit                      from 'ethjs-unit'
+import BigNumber                from 'bignumber.js'
 import { store }                from 'lib/store'
 import { enqueuePending }       from 'lib/store/actions'
 import { account, transaction } from 'lib/storage'
@@ -40,11 +39,10 @@ export const badge = {
   }
 }
 
-export function fixedEth (bigNumber) {
-  const factor  = new big(1e13);
-  const rounded = bigNumber.divRound(factor).mul(factor);
-
-  return unit.fromWei(rounded, 'ether');
+export function fixedEth (bn) {
+  return BigNumber(bn.toString(10)).dividedBy('1e13')
+           .integerValue(BigNumber.ROUND_CEIL)
+           .dividedBy('1e5').toFixed();
 }
 
 export function toHex (bignumber) {

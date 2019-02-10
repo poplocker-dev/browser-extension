@@ -11,10 +11,8 @@ class Sliders extends React.Component {
     this.dispatch = props.dispatch;
 
     this.state = {
-      gasPriceMul:    1,
-      gasEstimateMul: 1,
-      gasPrice:    this.base.gasPrice,
-      gasEstimate: this.base.gasEstimate
+      mult: Math.ceil(this.base.gasPrice.toNumber()/1000000000),
+      gasPrice: this.base.gasPrice
     }
   }
 
@@ -26,31 +24,24 @@ class Sliders extends React.Component {
         <Range label="transfer"
                from="slower"
                to="quicker"
-               value={this.state.gasPriceMul}
-               onChange={e => this.handleChange(e, 'gasPrice')}
-        />
-        <Range label="size"
-               from="smaller"
-               to="quicker"
-               value={this.state.gasEstimateMul}
-               onChange={e => this.handleChange(e, 'gasEstimate')}
+               value={this.state.mult}
+               onChange={this.handleChange.bind(this)}
         />
       </div>
     );
   }
 
-  handleChange (e, name) {
+  handleChange (e) {
     const { value } = e.target;
 
     if (this.base) {
       this.setState({
 
-        [`${name}Mul`]: value,
-        [name]: this.base[name].muln(parseInt(value)).divn(10)
+        mult: value,
+        gasPrice: this.base.gasPrice.muln(parseInt(value)).divn(10)
 
       }, () => {
-        const { gasPrice, gasEstimate } = this.state;
-        this.dispatch(updatePricing({...this.base, gasPrice, gasEstimate}));
+        this.dispatch(updatePricing({...this.base, gasPrice: this.state.gasPrice}));
       });
     }
   }

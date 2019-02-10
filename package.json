@@ -41,6 +41,7 @@
     "@poplocker/react-ui": "https://github.com/poplocker-dev/react-ui",
     "add": "^2.0.6",
     "big.js": "^5.2.2",
+    "bignumber.js": "^8.0.2",
     "classnames": "^2.2.6",
     "ethereumjs-wallet": "^0.6.3",
     "ethjs-provider-http": "^0.1.6",
