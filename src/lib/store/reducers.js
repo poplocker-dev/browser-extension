@@ -61,7 +61,7 @@ function page (state = NewAccountView, action) {
     case 'ACCOUNT_READY':
       return SuccessView;
     case 'ENQUEUE_TXS':
-      return SuccessView;
+      return AuthorizeView;
     default:
       return state;
   }
