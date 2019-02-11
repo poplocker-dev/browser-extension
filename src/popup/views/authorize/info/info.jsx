@@ -4,7 +4,6 @@ import Fee         from './rows/fee'
 import Value       from './rows/value'
 import Total       from './rows/total'
 import Domain      from './rows/domain'
-import Sliders     from './rows/sliders'
 
 import './info.css'
 
@@ -18,19 +17,11 @@ const TransactionInfo = (props) => {
       <Domain   {...props}/>
       <Value    {...props}/>
       <Fee      {...props}/>
-      { sliders(props) }
       <div className="separator"/>
       <Total    {...props}/>
 
     </div>
   );
-}
-
-const sliders = ({ advancedMode, transaction }) => {
-  if (advancedMode)
-    return <Sliders {...transaction}/>
-  else
-    return null;
 }
 
 export default connect(({ advancedMode }) => ({ advancedMode }))(TransactionInfo);
