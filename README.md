@@ -26,6 +26,9 @@ finally:
 ```
 $ npm run build
 ```
+### Ropsten vs Mainnet
+
+PopLocker is still under heavy development for now we recommend to use testing networks like Ropsten. If you want to use Mainnet though, just update `RPC_URL` in `.env` file accordingly.
 
 ## Running in development mode
 
