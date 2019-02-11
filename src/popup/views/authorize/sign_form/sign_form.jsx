@@ -95,9 +95,10 @@ const mapDispatch = (dispatch) => ({
     const gasPrice    = toHex(this.props.transaction.pricing.gasPrice);
     const gasEstimate = toHex(this.props.transaction.pricing.gasEstimate);
 
+    const { txId } = this.props.transaction.pending.current;
     const tx = {...this.props.transaction.pending.current.params, gasPrice, gasLimit: gasEstimate }
 
-    dispatch(signTransaction(tx, this.state.password));
+    dispatch(signTransaction(tx, this.state.password, txId));
   },
 
   handleCancel: function (e) {

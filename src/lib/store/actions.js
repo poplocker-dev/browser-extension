@@ -10,14 +10,14 @@ export function newAccount (secret) {
   }
 }
 
-export function signTransaction (transaction, secret) {
+export function signTransaction (transaction, secret, txId) {
   return function (dispatch) {
     delegateTo
       .background({ type: 'TX_SIGN', transaction, secret })
       .then(signed => {
-        dispatch(txSigned(signed));
+        dispatch(txSigned(signed, txId));
         delegateTo
-          .background(txSigned(signed))
+          .background(txSigned(signed, txId))
           .then(window.close)})
       .catch(() => dispatch(txSignFailed('Authentication Failed.')))
   }
@@ -53,10 +53,11 @@ export function enqueuePending (pending) {
   return { type: 'ENQUEUE_TXS', pending };
 }
 
-export function txSigned (tx) {
+export function txSigned (tx, txId) {
   return {
     type: 'TX_SIGNED',
-    tx
+    tx,
+    txId
   }
 }
 

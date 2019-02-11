@@ -61,6 +61,7 @@ export const transaction = {
 
   add (tx) {
     return this.pending().then(txs => {
+      tx.txId = Math.random().toString(36).substr(2, 5);
       save({ pending: [...(txs || []), tx] });
     })
   },
