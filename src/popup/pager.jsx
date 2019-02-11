@@ -1,8 +1,9 @@
-import React from 'react'
-import { connect } from 'react-redux'
+import React        from 'react'
+import { Bouncing } from '@poplocker/react-ui'
+import { connect }  from 'react-redux'
 
 const Pager = ({ page }) => (
-  <React.Suspense fallback={<div>Loading...</div>}>
+  <React.Suspense fallback={<Bouncing/>}>
     { React.createElement(page) }
   </React.Suspense>
 );

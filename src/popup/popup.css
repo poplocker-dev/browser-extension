@@ -22,7 +22,7 @@ textarea:focus, input:focus {
 body {
   margin: 0;
   min-width: 375px;
-  min-heigth: 388px;
+  min-height: 388px;
 	color: var(--foreground-color);
   font-size: 13px;
   font-family: Orkney, Helvetica, sans-serif;
