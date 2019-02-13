@@ -5,6 +5,10 @@ A Google Chrome/Chromium browser extension for [Pop Locker project](https://gith
 
 # Running and building instructions
 
+Source code in "stable" condition is marked with version release tags.
+
+Download [latest release](https://github.com/poplocker-dev/browser-extension/releases) or clone the repo and switch to latest release tag.
+
 ## Prerequisites
 
 - nodejs
