@@ -34,6 +34,8 @@ $ npm run build
 
 PopLocker is still under heavy development for now we recommend to use testing networks like Ropsten. If you want to use Mainnet though, just update `RPC_URL` in `.env` file accordingly.
 
+The current version of PopLocker has no way to backup or recover keys (this will be possible soon in a future release with Universal Login functionality) therefore if using mainnet and PopLocker is uninstalled (or your device is lost) **you will lose access to your funds**. 
+
 ## Running in development mode
 
 issue: 
@@ -48,5 +50,5 @@ In Google Chrome or Chromium open Menu ↦ More tools ↦ Extensions.
 
 Toggle "Developer Mode" in top right. Click "Load unpacked", open `dist/` directory of the extension's source tree. PopLocker should appear on the list of available extensions.
 
-**If you use Metamask**: disable it otherwise it will clash with PopLocker. Only one shall rule them all.
+**If you use Metamask**: disable it otherwise it will clash with PopLocker.
 
