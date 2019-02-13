@@ -73,6 +73,6 @@ chrome.storage.onChanged.addListener(changes => {
   if (changes.pending && changes.pending.newValue)
     badge.info = changes.pending.newValue.length || '';
 
-  if (changes.address && changes.address.newValue)
+  if (changes.address)
     changes.address.newValue ? badge.reset() : badge.warning();
 });
