@@ -23,7 +23,10 @@ To build and install clone the repo and within root directory issue:
 $ yarn
 ```
 
-next copy `.env.sample` to `.env` and update placeholder values.
+next copy `.env.sample` to `.env` and update placeholder values. `RPC_URL` can be set to any Ethereum node - here are Ropsten and Mainnet nodes for convenience (however also see **Ropsten vs Mainnet""):
+
+https://mainnet.infura.io/v3/da2b4575adf34626a444ed36c11c1939
+https://ropsten.infura.io/v3/da2b4575adf34626a444ed36c11c1939
 
 finally:
 
