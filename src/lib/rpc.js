@@ -19,7 +19,6 @@ export function dispatch (message) {
 
       default:
         return sendToNode(message);
-
     }
   }
   return result().then(r => decorate(message, r));
@@ -52,20 +51,16 @@ export const raw = {
   }
 }
 
-function decorate ({ method, id, jsonrpc, params, result }, mergedResult) {
-  const props = {
-    method,
-    id,
-    jsonrpc,
-    result: (result || mergedResult),
-    params
-  }
-  return {...props};
+function decorate ({ method, id, jsonrpc }, result) {
+  return {...{ method, id, jsonrpc, result }};
+}
+
+function strip({ id, method, jsonrpc, params }) {
+  // parity strict nodes don't like extra props
+  return { id, method, jsonrpc, params };
 }
 
 function sendToNode (message) {
-  // parity strict nodes don't like extra props
-  const { id, method, jsonrpc, params } = message;
-  return eth.sendAsync({ id, method, jsonrpc, params });
+  return eth.sendAsync(strip(message));
 }
 
