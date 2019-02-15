@@ -13,8 +13,8 @@ const AccountBalance = ({ balance }) => (
   </div>
 );
 
-const mapStore = ({ transaction }) => ({
-  balance: fixedEth(transaction.pricing.balance)
+const mapStore = ({ tx }) => ({
+  balance: fixedEth(tx.pricing.balance)
 });
 
 export default connect(mapStore)(AccountBalance);

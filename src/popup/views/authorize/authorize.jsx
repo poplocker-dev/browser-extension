@@ -15,7 +15,7 @@ class AuthorizeView extends React.Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(fetchTxInfo(this.props.transaction.pending.current));
+    this.props.dispatch(fetchTxInfo(this.props.tx.current));
   }
 
   render () {
@@ -23,9 +23,7 @@ class AuthorizeView extends React.Component {
       <div className="view authorize-view">
         <Header caption="Your total balance"/>
         <AccountBalance/>
-
         <TxInfo {...this.props} />
-
         <SignForm/>
       </div>
     )
@@ -36,4 +34,4 @@ class AuthorizeView extends React.Component {
   }
 }
 
-export default connect(({ transaction }) => ({ transaction }))(AuthorizeView);
+export default connect(({ tx }) => ({ tx }))(AuthorizeView);

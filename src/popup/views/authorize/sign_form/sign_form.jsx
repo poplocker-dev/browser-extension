@@ -24,7 +24,7 @@ class SignForm extends React.Component {
                      onChange={this.handleChange.bind(this)}
                      tabIndex={1}
                      autoFocus
-                     disabled={noFunds(this.props.transaction)}
+                     disabled={noFunds(this.props.tx)}
                      value={this.state.password}
                      error={this.props.error}/>
         </div>
@@ -52,14 +52,14 @@ class SignForm extends React.Component {
   }
 
   shouldBeDisabled () {
-    return this.state.password.length == 0 || noFunds(this.props.transaction);
+    return this.state.password.length == 0 || noFunds(this.props.tx);
   }
 }
 
 // TODO: move it to <Total/>
 const noFunds = (tx) => {
   const { balance, fee } = tx.pricing;
-  const value            = toBN(tx.pending.current.params.value || 0);
+  const value            = toBN(tx.current.params.value || 0);
 
   // TODO: fix this with null initial values
   if (balance.eq(toBN(0)) && fee.eq(toBN(0)))
@@ -72,11 +72,11 @@ const noFundsError = (tx) => {
   return noFunds(tx) ? 'Not enough funds.' : false;
 }
 
-const mapStore = ({ transaction, errors, advancedMode }) => {
+const mapStore = ({ tx, errors, advancedMode }) => {
   return {
-    transaction,
+    tx,
     advancedMode,
-    error: errors.txSign || noFundsError(transaction) || null,
+    error: errors.txSign || noFundsError(tx) || null,
   }
 }
 
@@ -84,11 +84,11 @@ const mapDispatch = (dispatch) => ({
   handleSubmit: function (e) {
     e.preventDefault();
 
-    const gasPrice    = toHex(this.props.transaction.pricing.gasPrice);
-    const gasEstimate = toHex(this.props.transaction.pricing.gasEstimate);
+    const gasPrice    = toHex(this.props.tx.pricing.gasPrice);
+    const gasEstimate = toHex(this.props.tx.pricing.gasEstimate);
 
-    const { txId } = this.props.transaction.pending.current;
-    const tx = {...this.props.transaction.pending.current.params, gasPrice, gasLimit: gasEstimate }
+    const { txId } = this.props.tx.current;
+    const tx = {...this.props.tx.current.params, gasPrice, gasLimit: gasEstimate }
 
     dispatch(signTransaction(tx, this.state.password, txId));
   },

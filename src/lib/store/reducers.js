@@ -1,6 +1,7 @@
 import React from 'react'
 import toBN                from 'number-to-bn'
 import { combineReducers } from 'redux'
+import reduceReducers from 'reduce-reducers';
 
 // TODO: improve this abomination ✝!
 const NewAccountView = React.lazy(() => import('../../popup/views/new_account'));
@@ -17,13 +18,17 @@ function address (state = null, action) {
 
 function pending (state = [], action) {
   if (action.type == 'ENQUEUE_TXS') {
-
-    const txs = action.pending.map(({params, origin, txId}) => {
+    return action.pending.map(({params, origin, txId}) => {
       return { params: params[0], origin, txId }
     });
-
-    return { current: txs[0], all: txs }
   }
+  else
+    return state;
+}
+
+function firstPending (state = null, action) {
+  if (action.type == 'ENQUEUE_TXS')
+    return state[0] || null;
   else
     return state;
 }
@@ -74,7 +79,8 @@ function advancedMode (state = false, action) {
     return state;
 }
 
-const transaction = combineReducers({ pricing, pending });
-const reducers    = combineReducers({ address, page, transaction, errors, advancedMode });
+const current  = reduceReducers(pending, firstPending);
+const tx       = combineReducers({ pricing, pending, current });
+const reducers = combineReducers({ address, page, tx, errors, advancedMode });
 
 export default reducers;
