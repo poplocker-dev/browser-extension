@@ -1,6 +1,6 @@
 // TODO: better namespacing
 import { sign, noncify } from 'lib/tx'
-import { dispatch, raw } from 'lib/rpc'
+import { dispatch, raw } from 'lib/dispatcher'
 import { badge }         from 'lib/helpers'
 import { account, save, transaction } from 'lib/storage'
 

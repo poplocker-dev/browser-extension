@@ -1,4 +1,4 @@
-import { delegateTo }  from 'lib/messaging'
+import { delegateTo }  from 'lib/rpc'
 
 export function newAccount (secret) {
   return function (dispatch) {
@@ -43,9 +43,10 @@ export function fetchTxInfo (transaction) {
   }
 }
 
-export function updatePricing ({ balance, gasPrice, gasEstimate }) {
-  return async function (dispatch) {
-    dispatch(update('pricing', [balance, gasPrice, gasEstimate]));
+export function updatePricing (pricing) {
+  return {
+    type: 'UPDATE_PRICING',
+    pricing
   }
 }
 
@@ -85,14 +86,6 @@ export function accountReady (address) {
 export function accountFailed () {
   return {
     type: 'ACCOUNT_FAILED'
-  }
-}
-
-export function update (prop, value) {
-  return {
-    type: 'UPDATE',
-    prop,
-    value
   }
 }
 

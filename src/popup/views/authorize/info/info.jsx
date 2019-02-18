@@ -14,11 +14,11 @@ const TransactionInfo = (props) => {
         Confirm your transaction
       </div>
 
-      <Domain   {...props}/>
-      <Value    {...props}/>
-      <Fee      {...props}/>
-      <div className="separator"/>
-      <Total    {...props}/>
+      {/* <Domain   {...props}/> */}
+      {/* <Value    {...props}/> */}
+      {/* <Fee      {...props}/> */}
+      {/* <div className="separator"/> */}
+      {/* <Total    {...props}/> */}
 
     </div>
   );

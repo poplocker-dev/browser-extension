@@ -1,5 +1,5 @@
 import { transaction }    from 'lib/storage'
-import { raw }            from 'lib/rpc'
+import { raw }            from 'lib/dispatcher'
 import { sign as signer } from 'ethjs-signer'
 
 export function auth (tx) {
