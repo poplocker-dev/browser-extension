@@ -5,13 +5,10 @@ import parseDomain from 'parse-domain'
 const Domain = ({ tx, advancedMode }) => (
   <div className="row domain">
     <span className="row-label">{advancedMode? 'To:' : 'From:'}</span>
-
     <Preloader value={tx.current}>
-
       <div className="amount ellipsis" alt={`from ${domain(tx)}`}>
         { advancedMode? recipient(tx) : domain(tx) }
       </div>
-
     </Preloader>
   </div>
 );

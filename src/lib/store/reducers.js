@@ -9,18 +9,6 @@ const LoadingView    = React.lazy(() => import('../../popup/views/loading'));
 const SuccessView    = React.lazy(() => import('../../popup/views/success'));
 const AuthorizeView  = React.lazy(() => import('../../popup/views/authorize'));
 
-const initialState = {
-  address: null,
-  tx: {
-    pricing: {
-      fee: null,
-      balance: null,
-      gasPrice: null,
-      gasEstimate: null,
-    }
-  }
-}
-
 function address (state = null, action) {
   if (action.type == 'ACCOUNT_READY') {
     return action.address
@@ -40,7 +28,7 @@ function pending (state = [], action) {
 
 function firstPending (state = null, action) {
   if (action.type == 'ENQUEUE_TXS')
-    return state[0] || null;
+    return (state.length > 0) ? state[0] : null;
   else
     return state;
 }
@@ -85,4 +73,4 @@ const current  = reduceReducers(pending, firstPending);
 const tx       = combineReducers({ pricing, pending, current });
 const reducers = combineReducers({ address, page, tx, errors, advancedMode });
 
-export { reducers, initialState};
+export { reducers };

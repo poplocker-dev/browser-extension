@@ -25,7 +25,6 @@ export function dispatch (message) {
 }
 
 function decorate ({ method, id, jsonrpc }, result) {
-  console.log('result', result);
   return {...{ method, id, jsonrpc, result }};
 }
 

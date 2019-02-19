@@ -24,12 +24,12 @@ class AuthorizeView extends React.Component {
     return (
       <div className="view authorize-view">
         <Header caption="Your total balance"/>
-        {/* <AccountBalance/> */}
-        {/* <TxInfo/> */}
+        <AccountBalance/>
+        <TxInfo/>
         {/* <SignForm/> */}
       </div>
     )
   }
 }
 
-export default connect(({ tx }) =>  ({ current: tx.current })(AuthorizeView);
+export default connect(({ tx }) =>  ({ current: tx.current }))(AuthorizeView);
