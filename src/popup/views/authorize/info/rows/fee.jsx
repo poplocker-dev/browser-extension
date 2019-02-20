@@ -6,9 +6,7 @@ const TransactionFee = ({ tx }) => (
   <div className="row transaction-fee">
     <span className="row-label">Fees:</span>
     <Preloader value={ tx.pricing }>
-      <div className="dupa">
-        { fee(tx) }
-      </div>
+      <div className="amount">{fee(tx)} ETH</div>
     </Preloader>
   </div>
 )
