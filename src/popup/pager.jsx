@@ -3,7 +3,7 @@ import { Bouncing } from '@poplocker/react-ui'
 import { connect }  from 'react-redux'
 
 function view (v) {
-  return React.lazy(() => import(`./views/${v}`));
+  return React.lazy(() => import(`./views/${v}/${v}`));
 }
 
 const Pager = ({ page }) => (

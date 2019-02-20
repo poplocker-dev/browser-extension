@@ -1,4 +1,3 @@
-// TODO: better namespacing
 import { sign, noncify }              from 'lib/tx'
 import { dispatch }                   from 'lib/dispatcher'
 import { badge }                      from 'lib/helpers'
@@ -11,7 +10,6 @@ chrome.runtime.onInstalled.addListener(({ reason }) => {
       pending: [],
       nonce: "0x0"
     });
-  // TODO: badge.reload()
 });
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
@@ -57,6 +55,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 });
 
+transaction.pending().then(p => {
+  if (p.length > 0)
+    badge.info = p.length;
+});
+
 chrome.storage.onChanged.addListener(changes => {
   if (changes.pending && changes.pending.newValue)
     badge.info = changes.pending.newValue.length || '';
@@ -64,3 +67,4 @@ chrome.storage.onChanged.addListener(changes => {
   if (changes.address)
     changes.address.newValue ? badge.reset() : badge.warning();
 });
+
