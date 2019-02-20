@@ -1,11 +1,9 @@
 import React                 from 'react'
-import toBN                  from 'number-to-bn'
 import { connect }           from 'react-redux'
 import { toHex }             from 'lib/helpers'
 import { Button, PassField } from '@poplocker/react-ui'
-import { signTransaction,
-         cancelTransaction,
-         toggleAdvanced } from 'lib/store/actions'
+
+import { signTransaction, cancelTransaction, toggleAdvanced } from 'lib/store/actions'
 
 import './sign_form.css'
 
@@ -24,7 +22,7 @@ class SignForm extends React.Component {
                      onChange={this.handleChange.bind(this)}
                      tabIndex={1}
                      autoFocus
-                     disabled={noFunds(this.props.tx)}
+                     disabled={this.props.noFunds}
                      value={this.state.password}
                      error={this.props.error}/>
         </div>
@@ -52,31 +50,16 @@ class SignForm extends React.Component {
   }
 
   shouldBeDisabled () {
-    return this.state.password.length == 0 || noFunds(this.props.tx);
+    return this.state.password.length == 0 || this.props.noFunds
   }
-}
-
-// TODO: move it to <Total/>
-const noFunds = (tx) => {
-  const { balance, fee } = tx.pricing;
-  const value            = toBN(tx.current.params.value || 0);
-
-  // TODO: fix this with null initial values
-  if (balance.eq(toBN(0)) && fee.eq(toBN(0)))
-    return false;
-
-  return balance.lt(value.add(fee));
-}
-
-const noFundsError = (tx) => {
-  return noFunds(tx) ? 'Not enough funds.' : false;
 }
 
 const mapStore = ({ tx, errors, advancedMode }) => {
   return {
     tx,
     advancedMode,
-    error: errors.txSign || noFundsError(tx) || null,
+    noFunds: errors.noFunds,
+    error: errors.txSign || errors.txInfo || errors.noFunds || null
   }
 }
 
@@ -86,11 +69,10 @@ const mapDispatch = (dispatch) => ({
 
     const gasPrice    = toHex(this.props.tx.pricing.gasPrice);
     const gasEstimate = toHex(this.props.tx.pricing.gasEstimate);
+    const params      = {...this.props.tx.current.params, gasPrice, gasLimit: gasEstimate};
+    const { txId, blockNonce } = this.props.tx.current;
 
-    const { txId } = this.props.tx.current;
-    const tx = {...this.props.tx.current.params, gasPrice, gasLimit: gasEstimate }
-
-    dispatch(signTransaction(tx, this.state.password, txId));
+    dispatch(signTransaction(params, txId, blockNonce, this.state.password));
   },
 
   handleCancel: function (e) {

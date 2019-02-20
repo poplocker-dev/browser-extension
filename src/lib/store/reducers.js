@@ -41,10 +41,9 @@ function pricing (state = null, action) {
   else return state;
 }
 
-// TODO: better errors handling
-function errors (state = {}, action) {
-  if (action.type == 'TX_SIGN_FAILED') {
-    return {...state, txSign: action.message };
+function blockNonce (state = null, action) {
+  if (action.type == 'UPDATE_NONCE') {
+    return action.nonce;
   }
   else return state;
 }
@@ -69,8 +68,30 @@ function page (state = NewAccountView, action) {
   }
 }
 
+function txInfoError (state = null, action) {
+  if (action.type == 'TX_INFO_FAILED')
+    return action.message;
+  else
+    return state;
+}
+
+function txSignError (state = null, action) {
+  if (action.type == 'TX_SIGN_FAILED')
+    return action.message;
+  else
+    return state;
+}
+
+function noFundsError (state = false, action) {
+  if (action.type == 'NO_FUNDS')
+    return true
+  else
+    return state;
+}
+
 const current  = reduceReducers(pending, firstPending);
-const tx       = combineReducers({ pricing, pending, current });
+const tx       = combineReducers({ pricing, pending, current, blockNonce });
+const errors   = combineReducers({ txInfo: txInfoError, txSign: txSignError, noFunds: noFundsError });
 const reducers = combineReducers({ address, page, tx, errors, advancedMode });
 
 export { reducers };

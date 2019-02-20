@@ -1,7 +1,7 @@
 // TODO: better namespacing
-import { sign, noncify } from 'lib/tx'
-import { dispatch, raw } from 'lib/dispatcher'
-import { badge }         from 'lib/helpers'
+import { sign, noncify }              from 'lib/tx'
+import { dispatch }                   from 'lib/dispatcher'
+import { badge }                      from 'lib/helpers'
 import { account, save, transaction } from 'lib/storage'
 
 chrome.runtime.onInstalled.addListener(({ reason }) => {
@@ -11,6 +11,7 @@ chrome.runtime.onInstalled.addListener(({ reason }) => {
       pending: [],
       nonce: "0x0"
     });
+  // TODO: badge.reload()
 });
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
@@ -27,33 +28,20 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         break;
 
       case 'ETH_RPC':
-        dispatch(message).then(sendResponse);
+        dispatch(message).then(sendResponse)
+                         .catch(sendResponse);
         break;
 
-      case 'TX_INFO':
-        Promise.all([
-
-          dispatch(raw.balance(message.transaction.params.from)),
-          dispatch(raw.gasPrice),
-          dispatch(raw.gasEstimate(message.transaction.params))
-
-        ]).then(sendResponse).catch(sendResponse);
+      case 'TX_SIGN': {
+        noncify(message.tx, message.blockNonce).then(tx => {
+          account.decrypt(message.secret)
+                 .then(sk => sign(tx, sk))
+                 .then(sendResponse)
+                 .catch(sendResponse)});
         break;
+      }
 
-      case 'TX_SIGN':
-        account.address()
-               .then(([address]) =>
-                     dispatch(raw.nonce(address)))
-               .then(({ result }) =>
-                     noncify(message.transaction, result))
-               .then(tx => {
-                 account.decrypt(message.secret)
-                        .then(sk => sign(tx, sk))
-                        .then(sendResponse)
-                        .catch(sendResponse);
-               })
-        break;
-
+      // tx.js/auth listens to it too
       case 'TX_SIGNED':
         transaction.nonce.up()
                    .then(() => transaction.shift())

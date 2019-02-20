@@ -1,3 +1,5 @@
+import { account } from 'lib/storage'
+
 // poke background.js to do
 // something funny
 export const delegateTo = {
@@ -7,7 +9,7 @@ export const delegateTo = {
     return new Promise((resolve, reject) => {
       chrome.runtime.sendMessage(message, (response) => {
         if (chrome.runtime.lastError || !response) {
-          reject();
+          reject(chrome.runtime.lastError);
         }
         else resolve(response);
       });
@@ -76,6 +78,14 @@ export const ethRpc = {
       this.send(raw.gasPrice),
       this.send(raw.gasEstimate(tx.params))
     ]);
+  },
+
+  getLatestNonce () {
+    return account.address().then(([a]) => this.send(raw.nonce(a)));
+  },
+
+  sendRawTx (tx, id) {
+    return this.send(raw.tx(tx, id));
   }
 }
 
@@ -105,5 +115,9 @@ export const raw = {
 
   nonce (address) {
     return this.format('eth_getTransactionCount', [address, 'latest']);
+  },
+
+  tx (tx, id) {
+    return this.format('eth_sendRawTransaction', tx, id);
   }
 }
