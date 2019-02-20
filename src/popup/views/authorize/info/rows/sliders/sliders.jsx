@@ -11,12 +11,11 @@ class Sliders extends React.Component {
     this.dispatch = props.dispatch;
 
     this.state = {
-      mult: Math.ceil(this.base.gasPrice.toNumber()/1000000000),
-      gasPrice: this.base.gasPrice
+      initialGasPrice: this.base.gasPrice,
+      currentGasPrice: this.base.gasPrice
     }
   }
 
-  // TODO: Fix gas estimate range to be 1x -- 2x
   render () {
     return (
       <div className="row sliders">
@@ -24,7 +23,9 @@ class Sliders extends React.Component {
         <Range label="transfer"
                from="slower"
                to="quicker"
-               value={this.state.mult}
+               min="1"
+               max={this.state.initialGasPrice*10}
+               value={this.state.currentGasPrice}
                onChange={this.handleChange.bind(this)}
         />
       </div>
@@ -37,11 +38,9 @@ class Sliders extends React.Component {
     if (this.base) {
       this.setState({
 
-        mult: value,
-        gasPrice: this.base.gasPrice.muln(parseInt(value)).divn(10)
-
+        currentGasPrice: value
       }, () => {
-        this.dispatch(updatePricing({...this.base, gasPrice: this.state.gasPrice}));
+        this.dispatch(updatePricing({...this.base, gasPrice: this.state.currentGasPrice}));
       });
     }
   }
