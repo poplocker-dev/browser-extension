@@ -18,7 +18,7 @@ const TransactionInfo = (props) => {
       <Domain   {...props}/>
       <Value    {...props}/>
       <Fee      {...props}/>
-      { sliders(props) }
+      <Sliders  {...props}/>
       <div className="separator"/>
       <Total    {...props}/>
 
@@ -26,11 +26,5 @@ const TransactionInfo = (props) => {
   );
 }
 
-const sliders = ({ advancedMode, transaction }) => {
-  if (advancedMode)
-    return <Sliders {...transaction}/>
-  else
-    return null;
-}
-
 export default connect(({ advancedMode }) => ({ advancedMode }))(TransactionInfo);
+

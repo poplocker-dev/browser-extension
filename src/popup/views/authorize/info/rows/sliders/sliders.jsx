@@ -6,30 +6,37 @@ import { updatePricing } from 'lib/store/actions'
 class Sliders extends React.Component {
   constructor (props) {
     super(props);
+  }
 
-    this.base     = props.pricing;
-    this.dispatch = props.dispatch;
+  componentDidUpdate() {
 
-    this.state = {
-      initialGasPrice: this.base.gasPrice,
-      currentGasPrice: this.base.gasPrice
+    if (!this.base) {   
+      this.base     = this.props.transaction.pricing;
+      this.dispatch = this.props.dispatch;
+
+      this.setState({ initialGasPrice: this.base.gasPrice, currentGasPrice: this.base.gasPrice });
+
     }
   }
 
   render () {
-    return (
-      <div className="row sliders">
+    if (this.props.advancedMode) {
+      return (
+        <div className="row sliders">
 
-        <Range label="transfer"
-               from="slower"
-               to="quicker"
-               min="1"
-               max={this.state.initialGasPrice*10}
-               value={this.state.currentGasPrice}
-               onChange={this.handleChange.bind(this)}
-        />
-      </div>
-    );
+          <Range label="transfer"
+                 from="slower"
+                 to="quicker"
+                 min="1"
+                 max={this.state.initialGasPrice*10}
+                 value={this.state.currentGasPrice}
+                 onChange={this.handleChange.bind(this)}
+          />
+        </div>
+      );
+    } else {
+      return null;
+    }
   }
 
   handleChange (e) {
@@ -46,4 +53,5 @@ class Sliders extends React.Component {
   }
 }
 
-export default connect()(Sliders);
+export default connect(({ advancedMode }) => ({ advancedMode }))(Sliders);
+
