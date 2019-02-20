@@ -56,7 +56,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 transaction.pending().then(p => {
-  if (p.length > 0)
+  if (p && p.length > 0)
     badge.info = p.length;
 });
 
