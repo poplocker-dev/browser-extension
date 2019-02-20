@@ -5,7 +5,7 @@ class ProxyProvider extends SafeEventEmitter {
   constructor (host, timeout) {
     super();
 
-    this.host    = 'popwallet';
+    this.host    = 'poplocker';
     this.timeout = timeout || 0;
     this.proxy   = new Proxy('ETH_TX', 'ETH_RX');
   }
