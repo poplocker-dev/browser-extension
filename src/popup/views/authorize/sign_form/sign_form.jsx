@@ -24,9 +24,9 @@ class SignForm extends React.Component {
                      onChange={this.handleChange.bind(this)}
                      tabIndex={1}
                      autoFocus
-                     disabled={noFunds(this.props.transaction)}
+                     disabled={noFunds(this.props.transaction) || txWillFail(this.props.errors)}
                      value={this.state.password}
-                     error={this.props.error}/>
+                     error={this.props.errorMessage}/>
         </div>
 
         <div className="row show-advanced">
@@ -60,7 +60,7 @@ class SignForm extends React.Component {
   }
 
   shouldBeDisabled () {
-    return this.state.password.length == 0 || noFunds(this.props.transaction);
+    return this.state.password.length == 0 || noFunds(this.props.transaction) || txWillFail(this.props.errors);
   }
 }
 
@@ -80,11 +80,17 @@ const noFundsError = (tx) => {
   return noFunds(tx) ? 'Not enough funds.' : false;
 }
 
+// TODO: need a way to distinguish failing txs from authentication fails, dirty string comparison for now
+const txWillFail = (errors) => {
+  return errors.txSign == "Transaction will fail." ? true : false;
+}
+
 const mapStore = ({ transaction, errors, advancedMode }) => {
   return {
     transaction,
+    errors,
     advancedMode,
-    error: errors.txSign || noFundsError(transaction) || null,
+    errorMessage: errors.txSign || noFundsError(transaction) || null,
   }
 }
 
