@@ -1,7 +1,7 @@
 import React        from 'react'
 import toBN         from 'number-to-bn'
 import { fixedEth } from 'lib/helpers'
-import Preloader    from 'ui/loader'
+import Preloader    from 'ui/preloader'
 
 const TransactionValue = ({ tx }) => (
   <div className="row transaction-value">

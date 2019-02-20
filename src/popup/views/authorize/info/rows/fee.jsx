@@ -1,5 +1,5 @@
 import React        from 'react'
-import Preloader    from 'ui/loader'
+import Preloader    from 'ui/preloader'
 import { fixedEth } from 'lib/helpers'
 
 const TransactionFee = ({ tx }) => (

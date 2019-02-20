@@ -1,7 +1,7 @@
 import React        from 'react'
 import { connect }  from 'react-redux'
 import { fixedEth } from 'lib/helpers'
-import Preloader    from 'ui/loader'
+import Preloader    from 'ui/preloader'
 
 import './balance.css'
 

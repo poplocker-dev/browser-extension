@@ -1,5 +1,5 @@
 import React        from 'react'
-import Preloader    from 'ui/loader'
+import Preloader    from 'ui/preloader'
 import toBN         from 'number-to-bn'
 import { fixedEth } from 'lib/helpers'
 import { noFunds }  from 'lib/store/actions'

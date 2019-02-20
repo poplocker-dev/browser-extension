@@ -1,5 +1,5 @@
 import React       from 'react'
-import Preloader   from 'ui/loader'
+import Preloader   from 'ui/preloader'
 import parseDomain from 'parse-domain'
 
 const Domain = ({ tx, advancedMode }) => (
