@@ -8,7 +8,7 @@ const SuccessView = () => (
   <div className="success-view">
     <Header/>
     <h2>Your account was successfully generated</h2>
-    <Button icon="tick" onClick={window.close}>Close</Button>
+    <Button icon="tick" onClick={window.close} autoFocus={true}>Close</Button>
   </div>
 )
 
