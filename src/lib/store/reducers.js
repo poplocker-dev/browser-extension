@@ -1,13 +1,6 @@
-import React from 'react'
 import { combineReducers } from 'redux'
-import reduceReducers from 'reduce-reducers';
-import toBN from 'number-to-bn'
-
-// TODO: improve this abomination ✝!
-const NewAccountView = React.lazy(() => import('../../popup/views/new_account'));
-const LoadingView    = React.lazy(() => import('../../popup/views/loading'));
-const SuccessView    = React.lazy(() => import('../../popup/views/success'));
-const AuthorizeView  = React.lazy(() => import('../../popup/views/authorize'));
+import reduceReducers      from 'reduce-reducers';
+import toBN                from 'number-to-bn'
 
 function address (state = null, action) {
   if (action.type == 'ACCOUNT_READY') {
@@ -55,14 +48,14 @@ function advancedMode (state = false, action) {
     return state;
 }
 
-function page (state = NewAccountView, action) {
+function page (state = 'new_account', action) {
   switch (action.type) {
     case 'ACCOUNT_GEN':
-      return LoadingView;
+      return 'loading';
     case 'ACCOUNT_READY':
-      return SuccessView;
+      return 'success';
     case 'ENQUEUE_TXS':
-      return AuthorizeView;
+      return 'authorize';
     default:
       return state;
   }
