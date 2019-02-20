@@ -1,13 +1,14 @@
 import React        from 'react'
 import Preloader    from 'ui/preloader'
 import toBN         from 'number-to-bn'
+import { connect }  from 'react-redux'
 import { fixedEth } from 'lib/helpers'
 import { noFunds }  from 'lib/store/actions'
 
 class TransactionTotal extends React.Component {
-  componentDidMount () {
+  componentDidUpdate () {
     if (this.noFunds(this.props.tx))
-      this.props.dispatch(noFunds());
+      this.props.dispatch(noFunds('Not enough funds.'));
   }
 
   render () {
@@ -39,4 +40,4 @@ class TransactionTotal extends React.Component {
   }
 }
 
-export default TransactionTotal;
+export default connect()(TransactionTotal);

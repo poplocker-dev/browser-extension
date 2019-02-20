@@ -75,9 +75,10 @@ export function txSignFailed (message) {
   }
 }
 
-export function noFunds () {
+export function noFunds (message) {
   return {
-    type: 'NO_FUNDS'
+    type: 'NO_FUNDS',
+    message
   }
 }
 

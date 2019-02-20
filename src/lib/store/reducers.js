@@ -75,9 +75,9 @@ function txSignError (state = null, action) {
     return state;
 }
 
-function noFundsError (state = false, action) {
+function noFundsError (state = null, action) {
   if (action.type == 'NO_FUNDS')
-    return true
+    return action.message;
   else
     return state;
 }
