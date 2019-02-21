@@ -82,10 +82,6 @@ export const ethRpc = {
 
   getLatestNonce () {
     return account.address().then(([a]) => this.send(raw.nonce(a)));
-  },
-
-  sendRawTx (tx, id) {
-    return this.send(raw.tx(tx, id));
   }
 }
 
@@ -117,7 +113,7 @@ export const raw = {
     return this.format('eth_getTransactionCount', [address, 'latest']);
   },
 
-  tx (tx, id) {
-    return this.format('eth_sendRawTransaction', tx, id);
+  tx (tx) {
+    return this.format('eth_sendRawTransaction', [tx]);
   }
 }

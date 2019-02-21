@@ -1,12 +1,12 @@
 import { transaction }    from 'lib/storage'
-import { ethRpc }         from 'lib/rpc'
+import { raw }            from 'lib/rpc'
 import { sign as signer } from 'ethjs-signer'
 
 export function auth (tx) {
   return new Promise(resolve => {
     chrome.runtime.onMessage.addListener(function handleSign(message) {
       if ( message.type == 'TX_SIGNED' && message.txId == tx.txId) {
-        resolve(ethRpc.sendRawTx([message.tx], message.id));
+        resolve(raw.tx(message.tx));
         chrome.runtime.onMessage.removeListener(handleSign);
       }
     });
