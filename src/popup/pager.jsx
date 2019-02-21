@@ -2,9 +2,13 @@ import React        from 'react'
 import { Bouncing } from '@poplocker/react-ui'
 import { connect }  from 'react-redux'
 
+function view (v) {
+  return React.lazy(() => import(`./views/${v}/${v}`));
+}
+
 const Pager = ({ page }) => (
   <React.Suspense fallback={<Bouncing/>}>
-    { React.createElement(page) }
+    { React.createElement(view(page)) }
   </React.Suspense>
 );
 

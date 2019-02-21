@@ -1,12 +1,6 @@
-import React from 'react'
-import toBN                from 'number-to-bn'
 import { combineReducers } from 'redux'
-
-// TODO: improve this abomination ✝!
-const NewAccountView = React.lazy(() => import('../../popup/views/new_account'));
-const LoadingView    = React.lazy(() => import('../../popup/views/loading'));
-const SuccessView    = React.lazy(() => import('../../popup/views/success'));
-const AuthorizeView  = React.lazy(() => import('../../popup/views/authorize'));
+import reduceReducers      from 'reduce-reducers';
+import toBN                from 'number-to-bn'
 
 function address (state = null, action) {
   if (action.type == 'ACCOUNT_READY') {
@@ -17,54 +11,34 @@ function address (state = null, action) {
 
 function pending (state = [], action) {
   if (action.type == 'ENQUEUE_TXS') {
-
-    const txs = action.pending.map(({params, origin, txId}) => {
+    return action.pending.map(({params, origin, txId}) => {
       return { params: params[0], origin, txId }
     });
-
-    return { current: txs[0], all: txs }
   }
   else
     return state;
 }
 
-// TODO: change defaults to null and update initial state depending on these values
-// unsettled state should not be treated as error
-function pricing (state, action) {
-  state = state || {
-    fee         : toBN(0),
-    balance     : toBN(0),
-    gasPrice    : toBN(0),
-    gasEstimate : toBN(0)
-  }
+function firstPending (state = null, action) {
+  if (action.type == 'ENQUEUE_TXS')
+    return (state.length > 0) ? state[0] : null;
+  else
+    return state;
+}
 
-  if (action.type == 'UPDATE' && action.prop == 'pricing') {
-    const [balance, gasPrice, gasEstimate] = action.value.map(toBN);
-
+function pricing (state = null, action) {
+  if (action.type == 'UPDATE_PRICING') {
+    const [balance, gasPrice, gasEstimate] = action.pricing.map(toBN);
     return { balance, gasPrice, gasEstimate, fee: gasPrice.mul(gasEstimate) }
   }
-
   else return state;
 }
 
-function errors (state = {}, action) {
-  if (action.type == 'TX_SIGN_FAILED') {
-    return {...state, txSign: action.message };
+function blockNonce (state = null, action) {
+  if (action.type == 'UPDATE_NONCE') {
+    return action.nonce;
   }
   else return state;
-}
-
-function page (state = NewAccountView, action) {
-  switch (action.type) {
-    case 'ACCOUNT_GEN':
-      return LoadingView;
-    case 'ACCOUNT_READY':
-      return SuccessView;
-    case 'ENQUEUE_TXS':
-      return AuthorizeView;
-    default:
-      return state;
-  }
 }
 
 function advancedMode (state = false, action) {
@@ -74,7 +48,43 @@ function advancedMode (state = false, action) {
     return state;
 }
 
-const transaction = combineReducers({ pricing, pending });
-const reducers    = combineReducers({ address, page, transaction, errors, advancedMode });
+function page (state = 'new_account', action) {
+  switch (action.type) {
+    case 'ACCOUNT_GEN':
+      return 'loading';
+    case 'ACCOUNT_READY':
+      return 'success';
+    case 'ENQUEUE_TXS':
+      return 'authorize';
+    default:
+      return state;
+  }
+}
 
-export default reducers;
+function txInfoError (state = null, action) {
+  if (action.type == 'TX_INFO_FAILED')
+    return action.message;
+  else
+    return state;
+}
+
+function txSignError (state = null, action) {
+  if (action.type == 'TX_SIGN_FAILED')
+    return action.message;
+  else
+    return state;
+}
+
+function noFundsError (state = null, action) {
+  if (action.type == 'NO_FUNDS')
+    return action.message;
+  else
+    return state;
+}
+
+const current  = reduceReducers(pending, firstPending);
+const tx       = combineReducers({ pricing, pending, current, blockNonce });
+const errors   = combineReducers({ txInfo: txInfoError, txSign: txSignError, noFunds: noFundsError });
+const reducers = combineReducers({ address, page, tx, errors, advancedMode });
+
+export { reducers };

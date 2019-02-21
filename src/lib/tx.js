@@ -6,7 +6,7 @@ export function auth (tx) {
   return new Promise(resolve => {
     chrome.runtime.onMessage.addListener(function handleSign(message) {
       if ( message.type == 'TX_SIGNED' && message.txId == tx.txId) {
-        resolve(raw.format('eth_sendRawTransaction', [message.tx], message.id));
+        resolve(raw.tx(message.tx));
         chrome.runtime.onMessage.removeListener(handleSign);
       }
     });

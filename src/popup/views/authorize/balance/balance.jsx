@@ -1,11 +1,11 @@
-import React              from 'react'
-import { connect }        from 'react-redux'
-import { fixedEth }       from 'lib/helpers'
-import Preloader          from 'ui/loader'
+import React        from 'react'
+import { connect }  from 'react-redux'
+import { fixedEth } from 'lib/helpers'
+import Preloader    from 'ui/preloader'
 
 import './balance.css'
 
-const AccountBalance = ({ balance }) => (
+const Balance = ({ balance }) => (
   <div className="account-balance">
     <Preloader value={ balance }>
       <div className="amount">{ balance } ETH</div>
@@ -13,8 +13,8 @@ const AccountBalance = ({ balance }) => (
   </div>
 );
 
-const mapStore = ({ transaction }) => ({
-  balance: fixedEth(transaction.pricing.balance)
+const mapStore = ({ tx }) => ({
+  balance: tx.pricing && fixedEth(tx.pricing.balance)
 });
 
-export default connect(mapStore)(AccountBalance);
+export default connect(mapStore)(Balance);

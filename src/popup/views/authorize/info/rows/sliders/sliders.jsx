@@ -10,8 +10,8 @@ class Sliders extends React.Component {
 
   componentDidUpdate() {
 
-    if (!this.base) {   
-      this.base     = this.props.transaction.pricing;
+    if (!this.base) {
+      this.base     = this.props.tx.pricing;
       this.dispatch = this.props.dispatch;
 
       this.setState({ initialGasPrice: this.base.gasPrice, currentGasPrice: this.base.gasPrice });
@@ -47,7 +47,7 @@ class Sliders extends React.Component {
 
         currentGasPrice: value
       }, () => {
-        this.dispatch(updatePricing({...this.base, gasPrice: this.state.currentGasPrice}));
+        this.dispatch(updatePricing([this.base.balance, this.state.currentGasPrice, this.base.gasEstimate]));
       });
     }
   }
