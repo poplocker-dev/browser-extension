@@ -23,10 +23,10 @@ export function signTransaction (transaction, secret, txId) {
   }
 }
 
-export function cancelTransaction () {
+export function cancelTransaction (txId) {
   return function () {
     delegateTo
-      .background({ type: 'TX_CANCEL' })
+      .background({ type: 'TX_CANCEL', txId })
       .then(window.close);
   }
 }

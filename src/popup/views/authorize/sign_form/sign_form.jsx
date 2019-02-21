@@ -109,7 +109,9 @@ const mapDispatch = (dispatch) => ({
 
   handleCancel: function (e) {
     e.preventDefault();
-    dispatch(cancelTransaction());
+
+    const { txId } = this.props.transaction.pending.current;
+    dispatch(cancelTransaction(txId));
   },
 
   handleAdvanced: function () { dispatch(toggleAdvanced()) }

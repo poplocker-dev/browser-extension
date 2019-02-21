@@ -8,6 +8,8 @@ export function auth (tx) {
       if ( message.type == 'TX_SIGNED' && message.txId == tx.txId) {
         resolve(raw.format('eth_sendRawTransaction', [message.tx], message.id));
         chrome.runtime.onMessage.removeListener(handleSign);
+      } else if ( message.type == 'TX_CANCEL' && message.txId == tx.txId) {
+        chrome.runtime.onMessage.removeListener(handleSign);
       }
     });
     transaction.add(tx);
