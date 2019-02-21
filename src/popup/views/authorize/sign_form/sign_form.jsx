@@ -30,6 +30,7 @@ class SignForm extends React.Component {
         <div className="row show-advanced">
           <Button type="button" kind="light" icon="arrow"
                   tabIndex={-1}
+                  disabled={this.props.errors.txInfo}
                   onClick={this.props.handleAdvanced.bind(this)}>
             { this.props.advancedMode? 'Hide Advanced' : 'Show Advanced' }
           </Button>
@@ -86,7 +87,7 @@ const mapDispatch = (dispatch) => ({
   handleCancel: function (e) {
     e.preventDefault();
 
-    const { txId } = this.props.transaction.pending.current;
+    const { txId } = this.props.tx.current;
     dispatch(cancelTransaction(txId));
   },
 
