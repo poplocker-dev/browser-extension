@@ -15,16 +15,15 @@ const TransactionInfo = (props) => {
         Confirm your transaction
       </div>
 
-      <Domain   {...props}/>
-      <Value    {...props}/>
-      <Fee      {...props}/>
-      <Sliders  {...props}/>
+      <Domain {...props}/>
+      <Value tx={props.tx}/>
+      <Fee tx={props.tx}/>
+      <Sliders {...props}/>
       <div className="separator"/>
-      <Total    {...props}/>
+      <Total tx={props.tx}/>
 
     </div>
   );
 }
 
-export default connect(({ advancedMode }) => ({ advancedMode }))(TransactionInfo);
-
+export default connect(({ advancedMode, tx }) => ({ advancedMode, tx }))(TransactionInfo);

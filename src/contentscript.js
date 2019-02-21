@@ -1,8 +1,8 @@
-import { delegateTo, Proxy } from 'lib/messaging'
+import { delegateTo, RpcProxy } from 'lib/rpc'
 
 dirtyInjectProvider();
 
-const proxy = new Proxy('ETH_RX', 'ETH_TX');
+const proxy = new RpcProxy('ETH_RX', 'ETH_TX');
 proxy.handle(handleBackground);
 
 function dirtyInjectProvider () {

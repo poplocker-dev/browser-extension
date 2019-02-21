@@ -1,11 +1,9 @@
 import React                 from 'react'
-import toBN                  from 'number-to-bn'
 import { connect }           from 'react-redux'
 import { toHex }             from 'lib/helpers'
 import { Button, PassField } from '@poplocker/react-ui'
-import { signTransaction,
-         cancelTransaction,
-         toggleAdvanced } from 'lib/store/actions'
+
+import { signTransaction, cancelTransaction, toggleAdvanced } from 'lib/store/actions'
 
 import './sign_form.css'
 
@@ -24,9 +22,9 @@ class SignForm extends React.Component {
                      onChange={this.handleChange.bind(this)}
                      tabIndex={1}
                      autoFocus
-                     disabled={noFunds(this.props.transaction) || txWillFail(this.props.errors)}
+                     disabled={this.props.errors.noFunds || this.props.errors.txInfo}
                      value={this.state.password}
-                     error={this.props.errorMessage}/>
+                     error={this.props.passError}/>
         </div>
 
         <div className="row show-advanced">
@@ -60,37 +58,16 @@ class SignForm extends React.Component {
   }
 
   shouldBeDisabled () {
-    return this.state.password.length == 0 || noFunds(this.props.transaction) || txWillFail(this.props.errors);
+    return this.state.password.length == 0 || this.props.errors.noFunds
   }
 }
 
-// TODO: move it to <Total/>
-const noFunds = (tx) => {
-  const { balance, fee } = tx.pricing;
-  const value            = toBN(tx.pending.current.params.value || 0);
-
-  // TODO: fix this with null initial values
-  if (balance.eq(toBN(0)) && fee.eq(toBN(0)))
-    return false;
-
-  return balance.lt(value.add(fee));
-}
-
-const noFundsError = (tx) => {
-  return noFunds(tx) ? 'Not enough funds.' : false;
-}
-
-// TODO: need a way to distinguish failing txs from authentication fails, dirty string comparison for now
-const txWillFail = (errors) => {
-  return errors.txSign == "Transaction will fail." ? true : false;
-}
-
-const mapStore = ({ transaction, errors, advancedMode }) => {
+const mapStore = ({ tx, errors, advancedMode }) => {
   return {
-    transaction,
-    errors,
+    tx,
     advancedMode,
-    errorMessage: errors.txSign || noFundsError(transaction) || null,
+    errors,
+    passError: errors.txSign || errors.txInfo || errors.noFunds || null
   }
 }
 
@@ -98,13 +75,12 @@ const mapDispatch = (dispatch) => ({
   handleSubmit: function (e) {
     e.preventDefault();
 
-    const gasPrice    = toHex(this.props.transaction.pricing.gasPrice);
-    const gasEstimate = toHex(this.props.transaction.pricing.gasEstimate);
+    const gasPrice    = toHex(this.props.tx.pricing.gasPrice);
+    const gasEstimate = toHex(this.props.tx.pricing.gasEstimate);
+    const params      = {...this.props.tx.current.params, gasPrice, gasLimit: gasEstimate};
+    const { txId, blockNonce } = this.props.tx.current;
 
-    const { txId } = this.props.transaction.pending.current;
-    const tx = {...this.props.transaction.pending.current.params, gasPrice, gasLimit: gasEstimate }
-
-    dispatch(signTransaction(tx, this.state.password, txId));
+    dispatch(signTransaction(params, txId, blockNonce, this.state.password));
   },
 
   handleCancel: function (e) {

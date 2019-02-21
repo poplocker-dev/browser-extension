@@ -1,5 +1,5 @@
 import SafeEventEmitter from 'safe-event-emitter'
-import { Proxy } from 'lib/messaging'
+import { RpcProxy }     from 'lib/rpc'
 
 class ProxyProvider extends SafeEventEmitter {
   constructor (host, timeout) {
@@ -7,7 +7,7 @@ class ProxyProvider extends SafeEventEmitter {
 
     this.host    = 'poplocker';
     this.timeout = timeout || 0;
-    this.proxy   = new Proxy('ETH_TX', 'ETH_RX');
+    this.proxy   = new RpcProxy('ETH_TX', 'ETH_RX');
   }
 
   sendAsync (payload, callback) { this.proxy.send(payload, callback); }

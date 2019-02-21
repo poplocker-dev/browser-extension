@@ -1,22 +1,43 @@
 import React        from 'react'
-import Preloader    from 'ui/loader'
+import Preloader    from 'ui/preloader'
 import toBN         from 'number-to-bn'
+import { connect }  from 'react-redux'
 import { fixedEth } from 'lib/helpers'
+import { noFunds }  from 'lib/store/actions'
 
-const TransactionTotal = ({ transaction }) => (
-  <div className="row total">
-    <span className="row-label">Total:</span>
-    <Preloader value={ transaction.pending.current }>
-      <div className="amount">{ total(transaction) } ETH</div>
-    </Preloader>
-  </div>
-);
+class TransactionTotal extends React.Component {
+  componentDidUpdate () {
+    if (this.noFunds(this.props.tx))
+      this.props.dispatch(noFunds('Not enough funds.'));
+  }
 
-const total = (tx) => {
-  const value = toBN(tx.pending.current.params.value || 0);
-  const total = tx.pricing.fee.add(value);
+  render () {
+    return (
+      <div className="row total">
+        <span className="row-label">Total:</span>
+        <Preloader value={ this.props.tx.pricing }>
+          <div className="amount">{ this.total(this.props.tx) } ETH</div>
+        </Preloader>
+      </div>
+    )
+  }
 
-  return fixedEth(total);
-};
+  total (tx) {
+    const value = toBN(tx.current.params.value || 0);
+    const total = tx.pricing ? tx.pricing.fee.add(value) : 0;
 
-export default TransactionTotal;
+    return fixedEth(total);
+  }
+
+  noFunds (tx) {
+    if (tx.pricing) {
+      const { balance, fee } = tx.pricing;
+      const value = toBN(tx.current.params.value || 0);
+
+      return balance.lt(value.add(fee));
+    }
+    else return false;
+  }
+}
+
+export default connect()(TransactionTotal);
