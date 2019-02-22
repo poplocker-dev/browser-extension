@@ -1,9 +1,20 @@
-import { delegateTo, RpcProxy } from 'lib/rpc'
+import { delegateTo, RpcProxy, PopLockerApiProxy } from 'lib/rpc'
 
 dirtyInjectProvider();
 
-const proxy = new RpcProxy('ETH_RX', 'ETH_TX');
-proxy.handle(handleBackground);
+const rpcProxy = new RpcProxy('ETH_RX', 'ETH_TX');
+rpcProxy.handle((payload) => {
+  return delegateTo.background(payload)
+    .then(response => rpcProxy.send(response))
+  }
+);
+
+const popLockerApiProxy = new PopLockerApiProxy('POPLOCKER_RX', 'POPLOCKER_TX');
+popLockerApiProxy.handle((payload) => {
+  return delegateTo.background(payload)
+    .then(response => popLockerApiProxy.send(response))
+  }
+);
 
 function dirtyInjectProvider () {
   const el = document.createElement('script');
@@ -16,9 +27,4 @@ function dirtyInjectProvider () {
   };
 
   container.insertBefore(el, container.children[0]);
-}
-
-function handleBackground (payload) {
-  return delegateTo.background(payload)
-    .then(response => proxy.send(response))
 }

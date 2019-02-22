@@ -65,6 +65,47 @@ export class RpcProxy {
   }
 }
 
+export class PopLockerApiProxy {
+  constructor (up, down) {
+    this.up       = up;
+    this.down     = down;
+    this.queue    = [];
+    this.handlers = [];
+
+    window.addEventListener('message', ({ source, data }) => {
+      if (source != window) return;
+
+      if (data.type == 'POPLOCKER_API' && (data.channel == this.down)) {
+        if (this.queue.length > 0) {
+          const found = this.queue.findIndex(i => (i.method == data.method && i.id == data.id));
+
+          if (found != -1) {
+            // calls callback(error, result)
+            this.queue[found].callback.call(this, null, data);
+            this.queue.splice(found, 1);
+          }
+        }
+
+        if (this.handlers.length > 0)
+          this.handlers.forEach(h => h.call(this, data));
+      }
+    }, false);
+  }
+
+  handle (callback) {
+    this.handlers.push(callback)
+    return this;
+  }
+
+  send (payload, callback) {
+    if (callback)
+      this.queue.push({ method: payload.method, id: payload.id, callback });
+
+    window.postMessage({ type: 'POPLOCKER_API', channel: this.up, ...payload }, '*');
+    return this;
+  }
+}
+
 // calls background.js directly
 // passing JSON RPC to eth node
 export const ethRpc = {

@@ -50,6 +50,31 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         transaction.shift()
                    .then(sendResponse);
         break;
+
+      case 'POPLOCKER_API':
+        return new Promise((resolve, reject) => {
+
+          switch (message.method) {
+
+            case 'getSmartLockerState':
+              resolve({
+                method: message.method,
+                id: message.id,
+                result: 'TODO - Simple, Pending or the Name of retrieved smart locker'
+              });
+              break;
+
+            case 'setSmartLockerAddress':
+              resolve({
+                method: message.method,
+                id: message.id,
+                result: 'TODO - address set to ' + message.address
+              });
+              break;
+
+          }
+        }).then(sendResponse);
+        break;
     }
     return true;
   }
