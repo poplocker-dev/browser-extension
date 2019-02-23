@@ -24,8 +24,11 @@ export const delegateTo = {
 // calls background.js through
 // proxy. Used by contentscript.js
 // that lives in separate DOM
-export class RpcProxy {
-  constructor (up, down) {
+// TODO: move out of rpc to somewhere generic
+export class MessagingProxy {
+
+  constructor (type, up, down) {
+    this.type     = type;
     this.up       = up;
     this.down     = down;
     this.queue    = [];
@@ -34,7 +37,7 @@ export class RpcProxy {
     window.addEventListener('message', ({ source, data }) => {
       if (source != window) return;
 
-      if (data.type == 'ETH_RPC' && (data.channel == this.down)) {
+      if (data.type == this.type && (data.channel == this.down)) {
         if (this.queue.length > 0) {
           const found = this.queue.findIndex(i => (i.method == data.method && i.id == data.id));
 
@@ -60,51 +63,11 @@ export class RpcProxy {
     if (callback)
       this.queue.push({ method: payload.method, id: payload.id, callback });
 
-    window.postMessage({ type: 'ETH_RPC', channel: this.up, ...payload }, '*');
+    window.postMessage({ type: this.type, channel: this.up, ...payload }, '*');
     return this;
   }
 }
 
-export class PopLockerApiProxy {
-  constructor (up, down) {
-    this.up       = up;
-    this.down     = down;
-    this.queue    = [];
-    this.handlers = [];
-
-    window.addEventListener('message', ({ source, data }) => {
-      if (source != window) return;
-
-      if (data.type == 'POPLOCKER_API' && (data.channel == this.down)) {
-        if (this.queue.length > 0) {
-          const found = this.queue.findIndex(i => (i.method == data.method && i.id == data.id));
-
-          if (found != -1) {
-            // calls callback(error, result)
-            this.queue[found].callback.call(this, null, data);
-            this.queue.splice(found, 1);
-          }
-        }
-
-        if (this.handlers.length > 0)
-          this.handlers.forEach(h => h.call(this, data));
-      }
-    }, false);
-  }
-
-  handle (callback) {
-    this.handlers.push(callback)
-    return this;
-  }
-
-  send (payload, callback) {
-    if (callback)
-      this.queue.push({ method: payload.method, id: payload.id, callback });
-
-    window.postMessage({ type: 'POPLOCKER_API', channel: this.up, ...payload }, '*');
-    return this;
-  }
-}
 
 // calls background.js directly
 // passing JSON RPC to eth node
