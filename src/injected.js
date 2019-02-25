@@ -11,23 +11,27 @@ else {
 window.popLockerProxy = new MessagingProxy('POPLOCKER_API', 'POPLOCKER_TX', 'POPLOCKER_RX');
 window.popLockerMessageId = 1;
 window.poplocker = {
-  getSmartLockerState : () => {
+  getSmartLockerState : callback => {
     popLockerProxy.send(
       {
         method: 'getSmartLockerState',
         id: popLockerMessageId++
       },
-      (proxy, response) => {alert(response.result)}
-     );
+      (proxy, response) => {
+        if (callback) callback(response.result);
+      }
+    )
   },
-  setSmartLockerAddress : address => {
+  setSmartLockerAddress : (address, callback) => {
     popLockerProxy.send(
       {
         method: 'setSmartLockerAddress',
         address: address,
         id: popLockerMessageId++
       },
-      (proxy, response) => {alert(response.result)}
-     );
+      (proxy, response) => {
+        if (callback) callback(response.result);
+      }
+    )
   }
 }

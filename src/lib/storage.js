@@ -75,7 +75,22 @@ export const transaction = {
 
 export const account = {
   address () {
-    return load('address').then(a => a ? [a] : []);
+    return Promise.all([this.deviceAddress(), this.smartLockerAddress()])
+                  .then(([deviceAddress, smartLockerAddress]) => {
+                    if (deviceAddress) {
+                      return smartLockerAddress ? [smartLockerAddress] : [deviceAddress];
+                    } else {
+                      return null;
+                    }
+                  })
+  },
+
+  deviceAddress () {
+    return load('deviceAddress');
+  },
+
+  smartLockerAddress () {
+    return load('smartLockerAddress');
   },
 
   generate (secret) {

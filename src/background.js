@@ -6,7 +6,8 @@ import { account, save, transaction } from 'lib/storage'
 chrome.runtime.onInstalled.addListener(({ reason }) => {
   if (reason == 'install')
     save({
-      address: null,
+      deviceAddress: null,
+      smartLockerAddress: null,
       pending: [],
       nonce: "0x0"
     });
@@ -52,33 +53,39 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         break;
 
       case 'POPLOCKER_API':
-        return new Promise((resolve, reject) => {
+        switch (message.method) {
 
-          switch (message.method) {
+          case 'getSmartLockerState':
+            Promise.all([account.deviceAddress(), account.smartLockerAddress()])
+                    // TODO: return Simple or Pending or name of SmartLocker - depending on deviceAddress and smartLockerAddress
+                   .then(([deviceAddress, smartLockerAddress]) => popLockerApiResponse(message, deviceAddress + '/' + smartLockerAddress))
+                   .then(sendResponse)
+                   .catch(() => popLockerApiResponse(message, null))
+                   .then(sendResponse);
+          break;
 
-            case 'getSmartLockerState':
-              resolve({
-                method: message.method,
-                id: message.id,
-                result: 'TODO - Simple, Pending or the Name of retrieved smart locker'
-              });
-              break;
+          case 'setSmartLockerAddress':
+            save( { smartLockerAddress: message.address } )
+              .then(() => popLockerApiResponse(message, true))
+              .then(sendResponse)
+              .catch(() => popLockerApiResponse(message, false))
+              .then(sendResponse);
+          break;
 
-            case 'setSmartLockerAddress':
-              resolve({
-                method: message.method,
-                id: message.id,
-                result: 'TODO - address set to ' + message.address
-              });
-              break;
-
-          }
-        }).then(sendResponse);
+        }
         break;
+
     }
     return true;
   }
 });
+
+// TODO: move this to helpers and rename to better name?
+function popLockerApiResponse({ method, id }, result) {
+  return new Promise((resolve, reject) => {
+    resolve( {...{ method, id, result } } );
+  })
+}
 
 transaction.pending().then(p => {
   if (p && p.length > 0)
@@ -89,7 +96,6 @@ chrome.storage.onChanged.addListener(changes => {
   if (changes.pending && changes.pending.newValue)
     badge.info = changes.pending.newValue.length || '';
 
-  if (changes.address)
-    changes.address.newValue ? badge.reset() : badge.warning();
+  if (changes.deviceAddress)
+    changes.deviceAddress.newValue ? badge.reset() : badge.warning();
 });
-

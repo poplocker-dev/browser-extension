@@ -5,15 +5,15 @@ export function newAccount (secret) {
     dispatch({ type: 'ACCOUNT_GEN' });
     delegateTo
       .background({ type: 'ACCOUNT_GEN', secret })
-      .then(account => dispatch(accountReady(account.address)))
+      .then(account => dispatch(accountReady(account.deviceAddress)))
       .catch(() => dispatch(accountFailed()));
   }
 }
 
-export function accountReady (address) {
+export function accountReady (deviceAddress) {
   return {
     type: 'ACCOUNT_READY',
-    address
+    deviceAddress
   }
 }
 

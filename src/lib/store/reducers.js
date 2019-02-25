@@ -2,9 +2,9 @@ import { combineReducers } from 'redux'
 import reduceReducers      from 'reduce-reducers';
 import toBN                from 'number-to-bn'
 
-function address (state = null, action) {
+function deviceAddress (state = null, action) {
   if (action.type == 'ACCOUNT_READY') {
-    return action.address
+    return action.deviceAddress
   }
   else return state;
 }
@@ -85,6 +85,6 @@ function noFundsError (state = null, action) {
 const current  = reduceReducers(pending, firstPending);
 const tx       = combineReducers({ pricing, pending, current, blockNonce });
 const errors   = combineReducers({ txInfo: txInfoError, txSign: txSignError, noFunds: noFundsError });
-const reducers = combineReducers({ address, page, tx, errors, advancedMode });
+const reducers = combineReducers({ deviceAddress, page, tx, errors, advancedMode });
 
 export { reducers };
