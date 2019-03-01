@@ -24,7 +24,6 @@ export const delegateTo = {
 // calls background.js through
 // proxy. Used by contentscript.js
 // that lives in separate DOM
-// TODO: move out of rpc to somewhere generic
 export class MessagingProxy {
 
   constructor (type, up, down) {
