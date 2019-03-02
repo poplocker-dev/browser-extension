@@ -55,10 +55,17 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       case 'POPLOCKER_API':
         switch (message.method) {
 
-          case 'getSmartLockerState':
-            Promise.all([account.deviceAddress(), account.smartLockerAddress()])
-                    // TODO: return Simple or Pending or name of SmartLocker - depending on deviceAddress and smartLockerAddress
-                   .then(([deviceAddress, smartLockerAddress]) => popLockerApiResponse(message, deviceAddress + '/' + smartLockerAddress))
+          case 'getDeviceAddress':
+            account.deviceAddress()
+                   .then(deviceAddress => popLockerApiResponse(message, deviceAddress))
+                   .then(sendResponse)
+                   .catch(() => popLockerApiResponse(message, null))
+                   .then(sendResponse);
+          break;
+
+          case 'getSmartLockerAddress':
+            account.smartLockerAddress()
+                   .then(smartLockerAddress => popLockerApiResponse(message, smartLockerAddress))
                    .then(sendResponse)
                    .catch(() => popLockerApiResponse(message, null))
                    .then(sendResponse);
@@ -82,9 +89,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 // TODO: move this to helpers and rename to better name?
 function popLockerApiResponse({ method, id }, result) {
-  return new Promise((resolve, reject) => {
-    resolve( {...{ method, id, result } } );
-  })
+  return Promise.resolve( {...{ method, id, result } } );
 }
 
 transaction.pending().then(p => {

@@ -1,15 +1,15 @@
-import { delegateTo, MessagingProxy } from 'lib/rpc'
+import { delegateTo, RpcProxy } from 'lib/rpc'
 
 dirtyInjectProvider();
 
-const rpcProxy = new MessagingProxy('ETH_RPC', 'ETH_RX', 'ETH_TX');
+const rpcProxy = new RpcProxy('ETH_RPC', 'ETH_RX', 'ETH_TX');
 rpcProxy.handle((payload) => {
   return delegateTo.background(payload)
     .then(response => rpcProxy.send(response))
   }
 );
 
-const popLockerProxy = new MessagingProxy('POPLOCKER_API', 'POPLOCKER_RX', 'POPLOCKER_TX');
+const popLockerProxy = new RpcProxy('POPLOCKER_API', 'POPLOCKER_RX', 'POPLOCKER_TX');
 popLockerProxy.handle((payload) => {
   return delegateTo.background(payload)
     .then(response => popLockerProxy.send(response))
