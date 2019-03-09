@@ -5,11 +5,11 @@ import * as EthRPC       from 'ethjs-rpc'
 
 const eth = new EthRPC(new HttpProvider(process.env.RPC_URL));
 
-export function dispatch (message) {
+export function ethDispatch (message) {
   const result = () => {
     switch (message.method) {
 
-      // non-private by default for now
+        // non-private by default for now
       case 'eth_requestAccounts':
       case 'eth_accounts':
         return account.address();
@@ -19,6 +19,26 @@ export function dispatch (message) {
 
       default:
         return sendToNode(message);
+    }
+  }
+  return result().then(r => decorate(message, r));
+}
+
+export function apiDispatch (message) {
+  const result = () => {
+    switch (message.method) {
+
+      case 'getDeviceAddress':
+        return account.deviceAddress();
+
+      case 'getSmartLockerAddress':
+        return account.smartLockerAddress();
+
+      case 'setSmartLockerAddress':
+        return account.setSmartLockerAddress(message.address);
+
+      default:
+        return Promise.reject(`No such method: ${message.method}`);
     }
   }
   return result().then(r => decorate(message, r));

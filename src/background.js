@@ -1,5 +1,5 @@
 import { sign, signMetaTx, noncify }  from 'lib/tx'
-import { dispatch }                   from 'lib/dispatcher'
+import { ethDispatch, apiDispatch }   from 'lib/dispatcher'
 import { badge }                      from 'lib/helpers'
 import { account, save, transaction } from 'lib/storage'
 import { smartLocker }                from 'lib/smartlocker'
@@ -28,8 +28,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         break;
 
       case 'ETH_RPC':
-        dispatch(message).then(sendResponse)
-                         .catch(sendResponse);
+        ethDispatch(message).then(sendResponse)
+                            .catch(sendResponse);
+        break;
+
+      case 'POPLOCKER_API':
+        apiDispatch(message).then(sendResponse)
+                            .catch(sendResponse);
         break;
 
       case 'TX_SIGN':
@@ -67,46 +72,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         transaction.shift()
                    .then(sendResponse);
         break;
-
-      case 'POPLOCKER_API':
-        switch (message.method) {
-
-          case 'getDeviceAddress':
-            account.deviceAddress()
-                   .then(deviceAddress => popLockerApiResponse(message, deviceAddress))
-                   .then(sendResponse)
-                   .catch(() => popLockerApiResponse(message, null))
-                   .then(sendResponse);
-          break;
-
-          case 'getSmartLockerAddress':
-            account.smartLockerAddress()
-                   .then(smartLockerAddress => popLockerApiResponse(message, smartLockerAddress))
-                   .then(sendResponse)
-                   .catch(() => popLockerApiResponse(message, null))
-                   .then(sendResponse);
-          break;
-
-          case 'setSmartLockerAddress':
-            save( { smartLockerAddress: message.address } )
-              .then(() => popLockerApiResponse(message, true))
-              .then(sendResponse)
-              .catch(() => popLockerApiResponse(message, false))
-              .then(sendResponse);
-          break;
-
-        }
-        break;
-
     }
     return true;
   }
 });
-
-// TODO: move this to helpers and rename to better name?
-function popLockerApiResponse({ method, id }, result) {
-  return Promise.resolve( {...{ method, id, result } } );
-}
 
 transaction.pending().then(p => {
   if (p && p.length > 0)

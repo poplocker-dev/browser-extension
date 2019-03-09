@@ -93,6 +93,10 @@ export const account = {
     return load('smartLockerAddress');
   },
 
+  setSmartLockerAddress (addr) {
+    return save({ smartLockerAddress: addr });
+  },
+
   generate (secret) {
     return new Promise((resolve, reject) => {
       const w = new Encryptor();
