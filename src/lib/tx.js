@@ -1,6 +1,6 @@
 import { transaction }    from 'lib/storage'
 import { raw }            from 'lib/rpc'
-import { smartLocker }    from 'lib/smartlocker'
+import smartLocker        from 'lib/smartlocker'
 import { sign as signer } from 'ethjs-signer'
 
 export function auth (tx) {
@@ -24,7 +24,7 @@ export function sign (rawTx, sk) {
 // TODO: remove deviceAddress() when gas relayers
 export function signMetaTx (rawTx, sk, deviceAddress, smartLockerAddress, smartLockerNonce) {
   const metaTx = smartLocker.createMetaTx(rawTx, sk, smartLockerAddress, smartLockerNonce);
-  // TODO: when gas relayers, metaTx will be broadcast to them 
+  // TODO: when gas relayers, metaTx will be broadcast to them
   //return Promise.resolve(metaTx);
 
   // TODO: until gas relayers, send web3 transaction from local device (hence sign again)

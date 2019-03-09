@@ -84,7 +84,7 @@ export const ethRpc = {
   },
 
   getLatestNonce () {
-    return account.address().then(([a]) => this.send(raw.nonce(a)));
+    return account.address.current().then(([a]) => this.send(raw.nonce(a)));
   }
 }
 

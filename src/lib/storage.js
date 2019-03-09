@@ -74,23 +74,33 @@ export const transaction = {
 }
 
 export const account = {
-  address () {
-    return Promise.all([this.deviceAddress(), this.smartLockerAddress()])
-                  .then(([deviceAddress, smartLockerAddress]) => {
-                    if (deviceAddress) {
-                      return smartLockerAddress ? [smartLockerAddress] : [deviceAddress];
-                    } else {
-                      return null;
-                    }
-                  })
-  },
+  address: {
+    device () {
+      return load('deviceAddress');
+    },
 
-  deviceAddress () {
-    return load('deviceAddress');
-  },
+    locker () {
+      return load('smartLockerAddress');
+    },
 
-  smartLockerAddress () {
-    return load('smartLockerAddress');
+    current () {
+      return Promise.all([this.device(), this.locker()])
+                    .then(([deviceAddress, smartLockerAddress]) => {
+                      if (deviceAddress) {
+                        return smartLockerAddress ? [smartLockerAddress] : [deviceAddress];
+                      } else {
+                        return null;
+                      }
+                    });
+    },
+
+    all () {
+      return Promise.all([this.device(), this.locker()]);
+    },
+
+    setLocker (addr) {
+      return save({ smartLockerAddress: addr });
+    }
   },
 
   setSmartLockerAddress (addr) {

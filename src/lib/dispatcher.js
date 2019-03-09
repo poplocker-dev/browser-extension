@@ -1,5 +1,6 @@
 import { account }       from 'lib/storage'
 import { auth }          from 'lib/tx'
+import smartLocker       from 'lib/smartlocker'
 import * as HttpProvider from 'ethjs-provider-http'
 import * as EthRPC       from 'ethjs-rpc'
 
@@ -12,7 +13,7 @@ export function ethDispatch (message) {
         // non-private by default for now
       case 'eth_requestAccounts':
       case 'eth_accounts':
-        return account.address();
+        return account.address.current();
 
       case 'eth_sendTransaction':
         return auth(message).then(sendToNode);
@@ -29,13 +30,16 @@ export function apiDispatch (message) {
     switch (message.method) {
 
       case 'getDeviceAddress':
-        return account.deviceAddress();
+        return account.address.device();
 
       case 'getSmartLockerAddress':
-        return account.smartLockerAddress();
+        return account.address.locker();
 
       case 'setSmartLockerAddress':
-        return account.setSmartLockerAddress(message.address);
+        return account.address.setLocker(message.address);
+
+      case 'getSmartLockerState':
+        return account.address.all().then(results => smartLocker.getState(...results));
 
       default:
         return Promise.reject(`No such method: ${message.method}`);

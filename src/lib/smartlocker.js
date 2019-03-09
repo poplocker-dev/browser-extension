@@ -12,7 +12,7 @@ const mockSmartLockerRegistrarAddress = '0xad50194DbAC5B25707d62A1eA42060BC0Fb1c
 const mockSmartLockerRegistrarABI = [{"constant":true,"inputs":[{"name":"_address","type":"address"}],"name":"getName","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"name","type":"string"},{"indexed":false,"name":"_address","type":"address"}],"name":"MockSmartLockerCreated","type":"event"}];
 const mockSmartLockerRegistrarContract = new Contract(mockSmartLockerRegistrarAddress, mockSmartLockerRegistrarABI, provider);
 
-export const smartLocker = {
+const smartLocker = {
 
   getNextNonce (smartLockerAddress) {
     const smartLockerContract = new Contract(smartLockerAddress, smartLockerABI, provider);
@@ -82,3 +82,5 @@ export const smartLocker = {
     });
   }
 }
+
+export default smartLocker;
