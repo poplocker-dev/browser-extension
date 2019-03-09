@@ -28,7 +28,7 @@ class SignForm extends React.Component {
         </div>
 
         <div className="row show-advanced">
-          <Button type="button" kind="light" icon="arrow"
+          <Button type="button" kind="light" icon="settings"
                   tabIndex={-1}
                   disabled={this.props.errors.txInfo}
                   onClick={this.props.handleAdvanced.bind(this)}>

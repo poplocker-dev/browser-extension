@@ -1,10 +1,9 @@
-import React             from 'react'
-import { connect }       from 'react-redux'
-import { ethRpc }        from 'lib/rpc'
-import Header            from 'ui/header'
-import SignForm          from './sign_form'
-import TxInfo            from './info'
-import AccountBalance    from './balance'
+import React       from 'react'
+import { connect } from 'react-redux'
+import { ethRpc }  from 'lib/rpc'
+import SignForm    from './sign_form'
+import TxInfo      from './info'
+import Header      from './header'
 
 import { updatePricing, updateBlockNonce, txInfoFailed } from 'lib/store/actions'
 import './authorize.css'
@@ -32,8 +31,7 @@ class AuthorizeView extends React.Component {
   render () {
     return (
       <div className="view authorize-view">
-        <Header caption="Your total balance"/>
-        <AccountBalance/>
+        <Header/>
         <TxInfo/>
         <SignForm/>
       </div>
