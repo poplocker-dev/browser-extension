@@ -17,6 +17,15 @@ class SignForm extends React.Component {
     return (
       <form className="tx-sign-form" onSubmit={this.props.handleSubmit.bind(this)}>
 
+        <div className="row show-advanced">
+          <Button type="button" kind="light" icon="settings"
+                  tabIndex={-1}
+                  disabled={this.props.errors.txInfo}
+                  onClick={this.props.handleAdvanced.bind(this)}>
+            { this.props.advancedMode? 'Hide Advanced' : 'Show Advanced' }
+          </Button>
+        </div>
+
         <div className="row">
           <PassField label="Password"
                      onChange={this.handleChange.bind(this)}
@@ -25,15 +34,6 @@ class SignForm extends React.Component {
                      disabled={this.props.errors.noFunds || this.props.errors.txInfo}
                      value={this.state.password}
                      error={this.props.passError}/>
-        </div>
-
-        <div className="row show-advanced">
-          <Button type="button" kind="light" icon="settings"
-                  tabIndex={-1}
-                  disabled={this.props.errors.txInfo}
-                  onClick={this.props.handleAdvanced.bind(this)}>
-            { this.props.advancedMode? 'Hide Advanced' : 'Show Advanced' }
-          </Button>
         </div>
 
         <div className="row buttons">

@@ -11,7 +11,7 @@ initOrRedirect(store => {
   ReactDOM.render(
     <Provider store={store}>
       <>
-        <FancyCircles number="8"/>
+        <FancyCircles number='8'/>
         <Pager/>
       </>
     </Provider>,
