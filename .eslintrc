@@ -22,6 +22,7 @@
     "process": true
   },
   "rules": {
+    "no-trailing-spaces": "error",
     "react/prop-types": "off",
     "no-console": ["error", { "allow": ["error"] }]
   }
