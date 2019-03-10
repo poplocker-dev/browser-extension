@@ -1,5 +1,5 @@
 import React          from 'react'
-import logo           from 'assets/logo.svg'
+import logo           from 'assets/logo-small.svg'
 import AccountBalance from './balance'
 
 import './header.css'
