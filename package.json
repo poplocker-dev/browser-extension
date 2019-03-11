@@ -47,7 +47,6 @@
     "ethjs-provider-http": "^0.1.6",
     "ethjs-rpc": "^0.2.0",
     "ethjs-signer": "^0.1.1",
-    "ethjs-unit": "^0.1.6",
     "history": "^4.7.2",
     "number-to-bn": "^1.7.0",
     "parse-domain": "^2.1.7",
