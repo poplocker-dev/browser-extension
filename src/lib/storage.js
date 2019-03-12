@@ -1,5 +1,6 @@
-import Encryptor from './workers/encryptor.worker.js';
-import Decryptor from './workers/decryptor.worker.js';
+import Encryptor from './workers/encryptor.worker.js'
+import Decryptor from './workers/decryptor.worker.js'
+import { toHex } from 'lib/helpers'
 
 export function save (payload) {
   return new Promise((resolve, reject) => {
@@ -36,7 +37,7 @@ export const transaction = {
 
     up (number=1) {
       return this.current().then(current => {
-        const nonce = '0x' + (parseInt(current) + number).toString(16);
+        const nonce = toHex(parseInt(current) + number);
         return save({ nonce });
       })
     },
