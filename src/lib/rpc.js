@@ -73,11 +73,13 @@ export const ethRpc = {
   },
 
   getTxPricing (tx) {
-    return Promise.all([
-      this.send(raw.balance(tx.params.from)),
-      this.send(raw.gasPrice),
-      this.send(raw.gasEstimate(tx.params))
-    ]);
+    return account.address().then(([address]) => {
+      return Promise.all([
+        this.send(raw.balance(address)),
+        this.send(raw.gasPrice),
+        this.send(raw.gasEstimate(tx.params))
+      ])
+    });
   },
 
   getLatestNonce () {
