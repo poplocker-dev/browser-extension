@@ -1,6 +1,6 @@
-import React       from 'react'
-import Preloader   from 'ui/preloader'
-import parseDomain from 'parse-domain'
+import React         from 'react'
+import { Preloader } from '@poplocker/react-ui'
+import parseDomain   from 'parse-domain'
 
 const Domain = ({ tx, advancedMode }) => (
   <div className="row domain">
