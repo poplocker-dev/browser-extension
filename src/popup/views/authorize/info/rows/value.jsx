@@ -1,7 +1,7 @@
-import React        from 'react'
-import toBN         from 'number-to-bn'
-import { fixedEth } from 'lib/helpers'
-import Preloader    from 'ui/preloader'
+import React         from 'react'
+import toBN          from 'number-to-bn'
+import { fixedEth }  from 'lib/helpers'
+import { Preloader } from '@poplocker/react-ui'
 
 const TransactionValue = ({ tx }) => (
   <div className="row transaction-value">

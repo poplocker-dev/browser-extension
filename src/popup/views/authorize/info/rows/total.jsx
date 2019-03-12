@@ -1,9 +1,9 @@
-import React        from 'react'
-import Preloader    from 'ui/preloader'
-import toBN         from 'number-to-bn'
-import { connect }  from 'react-redux'
-import { fixedEth } from 'lib/helpers'
-import { noFunds }  from 'lib/store/actions'
+import React         from 'react'
+import { Preloader } from '@poplocker/react-ui'
+import toBN          from 'number-to-bn'
+import { connect }   from 'react-redux'
+import { fixedEth }  from 'lib/helpers'
+import { noFunds }   from 'lib/store/actions'
 
 class TransactionTotal extends React.Component {
   componentDidUpdate () {
