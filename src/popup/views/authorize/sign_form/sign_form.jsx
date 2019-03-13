@@ -89,9 +89,7 @@ const mapDispatch = (dispatch) => ({
 
   handleCancel: function (e) {
     e.preventDefault();
-
-    const { txId } = this.props.tx.current;
-    cancelTx(txId);
+    cancelTx(this.props.tx.current.txId).then(window.close);
   },
 
   handleAdvanced: function () { dispatch(toggleAdvanced()) }
