@@ -1,15 +1,4 @@
 .authorize-view {
-  .header .caption {
-    font-size: 12px;
-    text-transform: uppercase;
-    margin-bottom: 3px;
-    line-height: 17px;
-    letter-spacing: 0.25px;
-  }
-
-  .account-balance {
-    text-align: center;
-  }
 }
 
 

@@ -1,6 +1,6 @@
-import React        from 'react'
-import Preloader    from 'ui/preloader'
-import { fixedEth } from 'lib/helpers'
+import React         from 'react'
+import { Preloader } from '@poplocker/react-ui'
+import { fixedEth }  from 'lib/helpers'
 
 const TransactionFee = ({ tx }) => (
   <div className="row transaction-fee">
