@@ -10,7 +10,7 @@ export function getTxPricing (tx) {
 }
 
 export function getLatestNonce () {
-  return account.address.current().then(([a]) => this.send(raw.nonce(a)));
+  return account.address.current().then(([a]) => send(raw.nonce(a)));
 }
 
 export function rawSendTx (tx) {
