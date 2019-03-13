@@ -8,6 +8,7 @@ else {
   window.web3 = { currentProvider: new ProxyProvider() };
 }
 
+// TODO: DRY it
 window.popLockerProxy = new RpcProxy('POPLOCKER_API', 'POPLOCKER_TX', 'POPLOCKER_RX');
 window.popLockerMessageId = 1;
 window.popLocker = {

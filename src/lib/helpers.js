@@ -4,7 +4,7 @@ import { enqueuePending }       from 'lib/store/actions'
 import { account, transaction } from 'lib/storage'
 
 export async function initOrRedirect (render) {
-  const deviceAddress = await account.deviceAddress();
+  const deviceAddress = await account.address.device();
   const pending       = await transaction.pending();
 
   if (deviceAddress && pending.length == 0)
