@@ -3,6 +3,8 @@ import { connect }    from 'react-redux'
 import Header         from 'ui/header'
 import SignForm       from './sign_form'
 import TxInfo         from './info'
+import AccountBalance from './balance'
+import Locker         from './locker'
 
 import { getTxPricing, getLatestNonce } from 'lib/rpc/eth_node'
 import { updatePricing, updateBlockNonce, txInfoFailed } from 'lib/store/actions'
@@ -32,6 +34,8 @@ class AuthorizeView extends React.Component {
     return (
       <div className="view authorize-view">
         <Header caption="Your total balance"/>
+        <AccountBalance/>
+        <Locker/>
         <TxInfo/>
         <SignForm/>
       </div>

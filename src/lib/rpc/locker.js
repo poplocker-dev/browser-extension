@@ -12,4 +12,5 @@ export function getSmartLockerState () {
 // SmartLocker contract
 function send (payload) {
   return background.send({ type: 'POPLOCKER_API', ...payload })
+                   .then(response => response.result);
 }
