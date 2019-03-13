@@ -33,8 +33,9 @@ class AuthorizeView extends React.Component {
   render () {
     return (
       <div className="view authorize-view">
-        <Header caption="Your total balance"/>
-        <AccountBalance/>
+        <Header small={true}>
+          <AccountBalance/>
+        </Header>
         <Locker/>
         <TxInfo/>
         <SignForm/>

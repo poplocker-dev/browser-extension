@@ -12,9 +12,27 @@
     font-weight: 600;
     font-family: Orkney;
     text-align: center;
-    line-height: 39px;
-    letter-spacing: 0.29px;
     margin-top: -2px;
     margin-bottom: 30px;
+  }
+}
+
+.header--small {
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 7px;
+  margin-bottom: 7px;
+
+  .logo {
+    width: 20px;
+  }
+
+  .caption {
+    display: none;
+  }
+
+  .content {
+    flex-grow: 1;
+    text-align: center;
   }
 }
