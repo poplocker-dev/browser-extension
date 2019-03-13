@@ -1,5 +1,6 @@
-import React from 'react'
-import logo  from 'assets/logo.svg'
+import React  from 'react'
+import logo   from 'assets/logo.svg'
+import Locker from './locker'
 
 import './header.css'
 
@@ -9,6 +10,7 @@ const Header = ({ caption }) => (
     <div className="caption">
       { caption }
     </div>
+    <Locker/>
   </div>
 )
 
