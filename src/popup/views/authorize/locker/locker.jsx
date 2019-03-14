@@ -5,18 +5,27 @@ import { getSmartLockerState } from 'lib/rpc/locker'
 class Locker extends React.Component {
   constructor (props) {
     super(props);
-    this.state = { status: 'Simple Locker' };
+    this.state = { status: null };
   }
 
   componentDidMount () {
-    getSmartLockerState()
-      .then(status => this.setState({ status }));
+    getSmartLockerState().then(({ result }) => this.setState({
+        status: result.status,
+        name: result.name,
+        onlyKey: result.onlyKey
+      }));
+  }
+
+  label () {
+    if (!this.state.status) return '...'
+
+    return this.state.status == 'smart' ? this.state.name : 'Simple Locker';
   }
 
   render () {
     return (
       <div className="locker-button">
-        <Button>{ this.state.status }</Button>
+      <Button>{ this.label() }</Button>
       </div>
     )
   }

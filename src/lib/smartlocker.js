@@ -9,7 +9,7 @@ const smartLockerABI = [{"constant":true,"inputs":[{"name":"key","type":"address
 const mockSmartLockerABI = [{"constant":true,"inputs":[{"name":"key","type":"address"}],"name":"isKey","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getKeyCount","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"_isKey","type":"bool"},{"name":"_keyCount","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"}];
 
 // TODO: currently using mockSmartLockerRegistrar address and ABI and contract for testing
-const mockSmartLockerRegistrarAddress = '0xad50194DbAC5B25707d62A1eA42060BC0Fb1c141';
+const mockSmartLockerRegistrarAddress = process.env.REGISTRAR_ADDRESS;
 const mockSmartLockerRegistrarABI = [{"constant":true,"inputs":[{"name":"_address","type":"address"}],"name":"getName","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"name","type":"string"},{"indexed":false,"name":"_address","type":"address"}],"name":"MockSmartLockerCreated","type":"event"}];
 const mockSmartLockerRegistrarContract = new Contract(mockSmartLockerRegistrarAddress, mockSmartLockerRegistrarABI, provider);
 
@@ -57,28 +57,38 @@ const smartLocker = {
     //smartLockerAddress = '0x1207c7f2575d5413e6d9f6c53a15f2d5a2761c1d'; // TEST 3
     //smartLockerAddress = '0x2210616d67a8be68a72325ad93e9d4dbe7fc6f42'; // TEST 4
 
-    // TODO: decide on data structure for returned state
+    // TODO: clear up nested catches
     return new Promise(resolve => {
       if (!smartLockerAddress) {
-        resolve('SIMPLE');
+        resolve({ status: 'simple' });
       } else {
+
         mockSmartLockerRegistrarContract.getName(smartLockerAddress).then(name => {
           if (name) {
             const mockSmartLockerContract = new Contract(smartLockerAddress, mockSmartLockerABI, provider);
             mockSmartLockerContract.isKey(deviceAddress).then(isKey => {
               if (isKey) {
                 mockSmartLockerContract.getKeyCount().then(keyCount => {
-                  if (keyCount < 2) {
-                    resolve(name + ' (only authorised key!)');
-                  } else {
-                    resolve(name);
+
+                  const lockerState = {
+                    name,
+                    status: 'smart',
+                    deviceAddress,
+                    smartLockerAddress,
+                    registrar: mockSmartLockerRegistrarAddress
                   }
-                }).catch(() => resolve('PENDING'))
-              } else resolve('PENDING');
-            }).catch(() => resolve('PENDING'))
-          } else resolve('PENDING');
-        }).catch(() => resolve('PENDING'))
-        .catch(() => resolve('PENDING'))
+
+                  if (keyCount < 2) {
+                    resolve({...lockerState, onlyKey: true});
+                  } else {
+                    resolve(lockerState);
+                  }
+
+                }).catch(() => resolve({ status: 'pending' }))
+              } else resolve({ status: 'pending' });
+            }).catch(() => resolve({ status: 'pending' }))
+          } else resolve({ status: 'pending' });
+        }).catch(() => resolve({ status: 'pending' }))
       }
     });
   }

@@ -12,21 +12,10 @@ else {
 window.popLockerProxy = new RpcProxy('POPLOCKER_API', 'POPLOCKER_TX', 'POPLOCKER_RX');
 window.popLockerMessageId = 1;
 window.popLocker = {
-  getDeviceAddress : callback => {
+  getSmartLockerState : callback => {
     popLockerProxy.send(
       {
-        method: 'getDeviceAddress',
-        id: popLockerMessageId++
-      },
-      (proxy, response) => {
-        if (callback) callback(response.result);
-      }
-    )
-  },
-  getSmartLockerAddress : callback => {
-    popLockerProxy.send(
-      {
-        method: 'getSmartLockerAddress',
+        method: 'getSmartLockerState',
         id: popLockerMessageId++
       },
       (proxy, response) => {

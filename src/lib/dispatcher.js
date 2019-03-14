@@ -38,6 +38,11 @@ export function apiDispatch (message) {
       case 'setSmartLockerAddress':
         return account.address.setLocker(message.address);
 
+      case 'getSmartLockerState':
+        return account.address.all().then(results => {
+          return smartLocker.getState(...results);
+        });
+
       default:
         return Promise.reject(`No such method: ${message.method}`);
     }

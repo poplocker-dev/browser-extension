@@ -14,6 +14,8 @@ chrome.runtime.onInstalled.addListener(({ reason }) => {
     });
 });
 
+// TODO: all should be dispatched?
+// ETH_RPC, TX, SMARTLOCKER, POPLOCKER_API
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.port == 'background') {
 
@@ -66,15 +68,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                    .then(sendResponse);
         break;
 
-        //TODO: move to dispatcher
       case 'SMART_LOCKER':
         switch (message.method) {
-          case 'getSmartLockerState':
-            account.address.all()
-                   .then(results => smartLocker.getState(...results))
-                   .then(sendResponse)
-                   .catch(sendResponse);
-            break;
           case 'generateDeviceAddress':
             account.generate(message.secret)
                    .then(save)
