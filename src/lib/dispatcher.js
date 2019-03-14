@@ -29,9 +29,6 @@ export function apiDispatch (message) {
   const result = () => {
     switch (message.method) {
 
-      case 'generateDeviceAddress':
-        return account.generate(message.secret).then(save);
-
       case 'getDeviceAddress':
         return account.address.device();
 
@@ -40,10 +37,6 @@ export function apiDispatch (message) {
 
       case 'setSmartLockerAddress':
         return account.address.setLocker(message.address);
-
-      case 'getSmartLockerState':
-        return account.address.all()
-                      .then(results => smartLocker.getState(...results));
 
       default:
         return Promise.reject(`No such method: ${message.method}`);

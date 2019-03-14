@@ -65,6 +65,24 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         transaction.shift()
                    .then(sendResponse);
         break;
+
+        //TODO: move to dispatcher
+      case 'SMART_LOCKER':
+        switch (message.method) {
+          case 'getSmartLockerState':
+            account.address.all()
+                   .then(results => smartLocker.getState(...results))
+                   .then(sendResponse)
+                   .catch(sendResponse);
+            break;
+          case 'generateDeviceAddress':
+            account.generate(message.secret)
+                   .then(save)
+                   .then(sendResponse)
+                   .catch(sendResponse);
+            break;
+        }
+        break;
     }
     return true;
   }
