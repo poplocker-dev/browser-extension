@@ -3,7 +3,7 @@ import { connect }           from 'react-redux'
 import { Button, PassField } from '@poplocker/react-ui'
 import PassMeter             from './pass_meter'
 
-import { generateDeviceAddress } from 'lib/rpc/locker'
+import { newAccount } from 'lib/rpc/account'
 import { accountGenerated, accountReady, accountFailed } from 'lib/store/actions'
 
 import './account_form.css'
@@ -42,7 +42,7 @@ class AccountForm extends React.Component {
     e.preventDefault();
 
     this.props.dispatch(accountGenerated());
-    generateDeviceAddress(this.state.password)
+    newAccount(this.state.password)
       .then(() => this.props.dispatch(accountReady()))
       .catch(() => this.props.dispatch(accountFailed()))
   }

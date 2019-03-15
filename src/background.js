@@ -2,6 +2,7 @@ import { sign, signMetaTx, noncify }  from 'lib/tx'
 import { ethDispatch, apiDispatch }   from 'lib/dispatcher'
 import { badge }                      from 'lib/helpers'
 import { account, save, transaction } from 'lib/storage'
+import smartLocker                    from 'lib/smartlocker'
 
 chrome.runtime.onInstalled.addListener(({ reason }) => {
   if (reason == 'install')
@@ -30,6 +31,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                             .catch(sendResponse);
         break;
 
+      case 'NEW_ACCOUNT':
+        account.generate(message.secret)
+               .then(save)
+               .then(sendResponse)
+               .catch(sendResponse);
+        break;
+
+        // TODO: dispatcher for transactions
       case 'TX_SIGN':
         // TODO: remove deviceAddress() when gas relayers
         account.address.all().then(([deviceAddress, smartLockerAddress]) => {
@@ -52,7 +61,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           }
         })
         break;
-      }
 
         // tx.js/auth listens to it too
       case 'TX_SIGNED':
@@ -64,17 +72,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       case 'TX_CANCEL':
         transaction.shift()
                    .then(sendResponse);
-        break;
-
-      case 'SMART_LOCKER':
-        switch (message.method) {
-          case 'generateDeviceAddress':
-            account.generate(message.secret)
-                   .then(save)
-                   .then(sendResponse)
-                   .catch(sendResponse);
-            break;
-        }
         break;
     }
     return true;
