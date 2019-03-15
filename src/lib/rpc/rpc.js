@@ -12,10 +12,6 @@ export const background = {
         else resolve(response);
       });
     });
-  },
-
-  background: function(message) {
-    return this.send(message, 'background');
   }
 }
 

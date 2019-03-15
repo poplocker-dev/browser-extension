@@ -14,8 +14,6 @@ chrome.runtime.onInstalled.addListener(({ reason }) => {
     });
 });
 
-// TODO: all should be dispatched?
-// ETH_RPC, TX, SMARTLOCKER, POPLOCKER_API
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.port == 'background') {
 
@@ -55,6 +53,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           }
         })
         break;
+      }
 
         // tx.js/auth listens to it too
       case 'TX_SIGNED':

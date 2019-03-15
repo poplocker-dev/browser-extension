@@ -2,11 +2,13 @@ import { background } from 'lib/rpc'
 import { account }    from 'lib/storage'
 
 export function getTxPricing (tx) {
-  return Promise.all([
-    send(raw.balance(tx.params.from)),
-    send(raw.gasPrice),
-    send(raw.gasEstimate(tx.params))
-  ]);
+  return account.address.current().then(([address]) => {
+    return Promise.all([
+      send(raw.balance(address)),
+      send(raw.gasPrice),
+      send(raw.gasEstimate(tx.params))
+    ])
+  });
 }
 
 export function getLatestNonce () {
