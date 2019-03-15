@@ -637,7 +637,7 @@
 
 "@poplocker/react-ui@https://github.com/poplocker-dev/react-ui":
   version "1.0.0"
-  resolved "https://github.com/poplocker-dev/react-ui#3c6d4ed6ee57a1aa33db4bb3e50263a073ddbfa9"
+  resolved "https://github.com/poplocker-dev/react-ui#71eef38fc524e8862df246a09a52a106febb44fd"
   dependencies:
     classnames "^2.2.6"
     react "^16.7.0"
