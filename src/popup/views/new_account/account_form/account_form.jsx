@@ -1,9 +1,9 @@
 import React                 from 'react'
 import { connect }           from 'react-redux'
 import { Button, PassField } from '@poplocker/react-ui'
+import { newAccount }        from 'lib/rpc/account'
 import PassMeter             from './pass_meter'
 
-import { account, save } from 'lib/storage'
 import { accountGenerated, accountReady, accountFailed } from 'lib/store/actions'
 
 import './account_form.css'
@@ -42,7 +42,7 @@ class AccountForm extends React.Component {
     e.preventDefault();
 
     this.props.dispatch(accountGenerated());
-    account.generate(this.state.password).then(save)
+    newAccount(this.state.password)
       .then(() => this.props.dispatch(accountReady()))
       .catch(() => this.props.dispatch(accountFailed()))
   }
