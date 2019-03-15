@@ -24,6 +24,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                          .catch(sendResponse);
         break;
 
+      case 'NEW_ACCOUNT':
+        account.generate(message.secret)
+               .then(save)
+               .then(sendResponse)
+               .catch(sendResponse)
+        break;
+
       case 'TX_SIGN': {
         noncify(message.tx, message.blockNonce).then(tx => {
           account.decrypt(message.secret)
@@ -33,7 +40,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         break;
       }
 
-      // tx.js/auth listens to it too
+        // tx.js/auth listens to it too
       case 'TX_SIGNED':
         transaction.nonce.up()
                    .then(() => transaction.shift())
