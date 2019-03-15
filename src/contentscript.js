@@ -1,4 +1,4 @@
-import { delegateTo, RpcProxy } from 'lib/rpc'
+import { background, RpcProxy } from 'lib/rpc'
 
 dirtyInjectProvider();
 
@@ -19,6 +19,6 @@ function dirtyInjectProvider () {
 }
 
 function handleBackground (payload) {
-  return delegateTo.background(payload)
+  return background.send(payload)
     .then(response => proxy.send(response))
 }

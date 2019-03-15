@@ -19,12 +19,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     switch (message.type) {
 
-      case 'ACCOUNT_GEN':
-        account.generate(message.secret)
-               .then(save)
-               .then(sendResponse);
-        break;
-
       case 'ETH_RPC':
         dispatch(message).then(sendResponse)
                          .catch(sendResponse);

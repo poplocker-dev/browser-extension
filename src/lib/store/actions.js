@@ -1,19 +1,10 @@
-import { delegateTo }  from 'lib/rpc'
-
-export function newAccount (secret) {
-  return function (dispatch) {
-    dispatch({ type: 'ACCOUNT_GEN' });
-    delegateTo
-      .background({ type: 'ACCOUNT_GEN', secret })
-      .then(account => dispatch(accountReady(account.address)))
-      .catch(() => dispatch(accountFailed()));
-  }
+export function accountGenerated () {
+  return { type: 'ACCOUNT_GEN' };
 }
 
-export function accountReady (address) {
+export function accountReady () {
   return {
-    type: 'ACCOUNT_READY',
-    address
+    type: 'ACCOUNT_READY'
   }
 }
 
@@ -23,32 +14,12 @@ export function accountFailed () {
   }
 }
 
-export function signTransaction (tx, txId, blockNonce, secret) {
-  return function (dispatch) {
-    delegateTo.background({ type: 'TX_SIGN', tx, secret, blockNonce })
-      .then(signed => {
-        delegateTo
-          .background({ type: 'TX_SIGNED', tx: signed, txId })
-          .then(window.close)})
-      .catch(() => dispatch(txSignFailed('Authentication Failed.')))
-  }
-}
-
-export function cancelTransaction (txId) {
-  return function () {
-    delegateTo
-      .background({ type: 'TX_CANCEL', txId })
-      .then(window.close);
-  }
-}
-
 export function txInfoFailed (message) {
   return {
     type: 'TX_INFO_FAILED',
     message
   }
 }
-
 
 export function updatePricing (pricing) {
   return {

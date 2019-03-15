@@ -1,9 +1,10 @@
 import React                 from 'react'
 import { connect }           from 'react-redux'
 import { toHex }             from 'lib/helpers'
+import { signTx, cancelTx }  from 'lib/rpc/transaction'
 import { Button, PassField } from '@poplocker/react-ui'
 
-import { signTransaction, cancelTransaction, toggleAdvanced } from 'lib/store/actions'
+import { toggleAdvanced, txSignFailed } from 'lib/store/actions'
 
 import './sign_form.css'
 
@@ -81,14 +82,14 @@ const mapDispatch = (dispatch) => ({
     const params      = {...this.props.tx.current.params, gasPrice, gasLimit: gasEstimate};
     const { txId, blockNonce } = this.props.tx.current;
 
-    dispatch(signTransaction(params, txId, blockNonce, this.state.password));
+    signTx(params, txId, blockNonce, this.state.password)
+      .then(window.close)
+      .catch(e => dispatch(txSignFailed(e)));
   },
 
   handleCancel: function (e) {
     e.preventDefault();
-
-    const { txId } = this.props.tx.current;
-    dispatch(cancelTransaction(txId));
+    cancelTx(this.props.tx.current.txId).then(window.close);
   },
 
   handleAdvanced: function () { dispatch(toggleAdvanced()) }

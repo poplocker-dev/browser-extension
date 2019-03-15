@@ -1,10 +1,11 @@
-import React       from 'react'
-import { connect } from 'react-redux'
-import { ethRpc }  from 'lib/rpc'
-import SignForm    from './sign_form'
-import TxInfo      from './info'
-import Header      from './header'
+import React          from 'react'
+import { connect }    from 'react-redux'
+import Header         from 'ui/header'
+import SignForm       from './sign_form'
+import TxInfo         from './info'
+import AccountBalance from './balance'
 
+import { getTxPricing, getLatestNonce } from 'lib/rpc/eth_node'
 import { updatePricing, updateBlockNonce, txInfoFailed } from 'lib/store/actions'
 import './authorize.css'
 
@@ -16,8 +17,8 @@ class AuthorizeView extends React.Component {
 
   async componentDidMount () {
     try {
-      const pricing    = await ethRpc.getTxPricing(this.props.current);
-      const blockNonce = await ethRpc.getLatestNonce();
+      const pricing    = await getTxPricing(this.props.current);
+      const blockNonce = await getLatestNonce();
 
       this.props.dispatch(updatePricing(pricing.map(i => i.result)));
       this.props.dispatch(updateBlockNonce(blockNonce.result));
@@ -31,7 +32,9 @@ class AuthorizeView extends React.Component {
   render () {
     return (
       <div className="view authorize-view">
-        <Header/>
+        <Header small={true}>
+          <AccountBalance/>
+        </Header>
         <TxInfo/>
         <SignForm/>
       </div>

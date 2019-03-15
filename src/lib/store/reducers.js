@@ -2,13 +2,6 @@ import { combineReducers } from 'redux'
 import reduceReducers      from 'reduce-reducers';
 import toBN                from 'number-to-bn'
 
-function address (state = null, action) {
-  if (action.type == 'ACCOUNT_READY') {
-    return action.address
-  }
-  else return state;
-}
-
 function pending (state = [], action) {
   if (action.type == 'ENQUEUE_TXS') {
     return action.pending.map(({params, origin, txId}) => {
@@ -85,6 +78,6 @@ function noFundsError (state = null, action) {
 const current  = reduceReducers(pending, firstPending);
 const tx       = combineReducers({ pricing, pending, current, blockNonce });
 const errors   = combineReducers({ txInfo: txInfoError, txSign: txSignError, noFunds: noFundsError });
-const reducers = combineReducers({ address, page, tx, errors, advancedMode });
+const reducers = combineReducers({ page, tx, errors, advancedMode });
 
 export { reducers };
