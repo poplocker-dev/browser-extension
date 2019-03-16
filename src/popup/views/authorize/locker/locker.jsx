@@ -19,7 +19,7 @@ class Locker extends React.Component {
   label () {
     if (!this.state.status) return '...'
 
-    return this.state.status == 'smart' ? this.state.name : 'Simple Locker';
+    return this.state.status == 'smart' ? this.state.name : this.state.status;
   }
 
   render () {

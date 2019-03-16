@@ -44,7 +44,7 @@
     "bignumber.js": "^8.0.2",
     "classnames": "^2.2.6",
     "ethereumjs-wallet": "^0.6.3",
-    "ethers": "^3.0.25",
+    "ethers": "^3.0.29",
     "ethjs-provider-http": "^0.1.6",
     "ethjs-rpc": "^0.2.0",
     "ethjs-signer": "^0.1.1",
