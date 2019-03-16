@@ -85,14 +85,13 @@ export const account = {
     },
 
     current () {
-      return Promise.all([this.device(), this.locker()])
-                    .then(([deviceAddress, smartLockerAddress]) => {
-                      if (deviceAddress) {
-                        return smartLockerAddress ? [smartLockerAddress] : [deviceAddress];
-                      } else {
-                        return null;
-                      }
-                    });
+      return this.all().then(([deviceAddress, smartLockerAddress]) => {
+        if (deviceAddress) {
+          return smartLockerAddress ? [smartLockerAddress] : [deviceAddress];
+        } else {
+          return null;
+        }
+      });
     },
 
     all () {
@@ -100,12 +99,9 @@ export const account = {
     },
 
     setLocker (addr) {
+
       return save({ smartLockerAddress: addr });
     }
-  },
-
-  setSmartLockerAddress (addr) {
-    return save({ smartLockerAddress: addr });
   },
 
   generate (secret) {
