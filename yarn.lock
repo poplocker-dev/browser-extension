@@ -637,7 +637,7 @@
 
 "@poplocker/react-ui@https://github.com/poplocker-dev/react-ui":
   version "1.0.0"
-  resolved "https://github.com/poplocker-dev/react-ui#71eef38fc524e8862df246a09a52a106febb44fd"
+  resolved "https://github.com/poplocker-dev/react-ui#6aff327799ff771c538288a64ac22d003ff690c2"
   dependencies:
     classnames "^2.2.6"
     react "^16.7.0"
@@ -2463,7 +2463,7 @@ ethereumjs-wallet@^0.6.3:
     utf8 "^3.0.0"
     uuid "^3.3.2"
 
-ethers@^3.0.25:
+ethers@^3.0.29:
   version "3.0.29"
   resolved "https://registry.yarnpkg.com/ethers/-/ethers-3.0.29.tgz#ce8139955b4ed44456eb6764b089bb117c86775d"
   integrity sha512-OGyA5pW5xFC5o/ZV5MfIoVp/EdA1QMg2bMJFf7Kznsz8m7IzzbgsPHTCjzSfKQDs/XDphGyRcA7A6bkIeJL4gw==

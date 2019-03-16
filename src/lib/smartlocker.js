@@ -62,7 +62,6 @@ const smartLocker = {
       if (!smartLockerAddress) {
         resolve({ status: 'simple' });
       } else {
-
         mockSmartLockerRegistrarContract.getName(smartLockerAddress).then(name => {
           if (name) {
             const mockSmartLockerContract = new Contract(smartLockerAddress, mockSmartLockerABI, provider);
@@ -83,12 +82,13 @@ const smartLocker = {
                   } else {
                     resolve(lockerState);
                   }
-
-                }).catch(() => resolve({ status: 'pending' }))
-              } else resolve({ status: 'pending' });
-            }).catch(() => resolve({ status: 'pending' }))
-          } else resolve({ status: 'pending' });
-        }).catch(() => resolve({ status: 'pending' }))
+                })
+              }
+              else resolve({ status: 'pending', name });
+            })
+          }
+          else resolve({ status: 'pending' });
+        }).catch(() => resolve({ status: 'error' }))
       }
     });
   }

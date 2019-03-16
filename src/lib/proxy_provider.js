@@ -30,7 +30,7 @@ export class PopLockerProvider {
   }
 
   getSmartLockerState () {
-    return this.sendAsync({ method: 'getSmartLockerState' })
+    return this.sendAsync({ method: 'getSmartLockerState' });
   }
 
   setSmartLockerAddress (address) {
