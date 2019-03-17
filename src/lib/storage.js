@@ -76,7 +76,7 @@ export const transaction = {
 
 export const account = {
   address () {
-    return load('address').then(a => a ? [a] : []);
+    return load('deviceAddress').then(a => a ? [a] : []);
   },
 
   generate (secret) {

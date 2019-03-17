@@ -6,7 +6,7 @@ import { account, save, transaction } from 'lib/storage'
 chrome.runtime.onInstalled.addListener(({ reason }) => {
   if (reason == 'install')
     save({
-      address: null,
+      deviceAddress: null,
       pending: [],
       nonce: "0x0"
     });
@@ -65,7 +65,7 @@ chrome.storage.onChanged.addListener(changes => {
   if (changes.pending && changes.pending.newValue)
     badge.info = changes.pending.newValue.length || '';
 
-  if (changes.address)
-    changes.address.newValue ? badge.reset() : badge.warning();
+  if (changes.deviceAddress)
+    changes.deviceAddress.newValue ? badge.reset() : badge.warning();
 });
 
