@@ -47,6 +47,8 @@ function page (state = 'new_account', action) {
       return 'loading';
     case 'ACCOUNT_READY':
       return 'success';
+    case 'ACCOUNT_FAILED':
+      return 'failure';
     case 'ENQUEUE_TXS':
       return 'authorize';
     default:

@@ -26,7 +26,7 @@ class AuthorizeView extends React.Component {
     }
     catch(e) {
       console.error(e.message);
-      this.props.dispatch(txInfoFailed('Transaction will fail.'));
+      this.props.dispatch(txInfoFailed('Transaction will fail'));
     }
   }
 
