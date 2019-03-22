@@ -8,7 +8,7 @@ import { noFunds }   from 'lib/store/actions'
 class TransactionTotal extends React.Component {
   componentDidUpdate () {
     if (this.noFunds(this.props.tx))
-      this.props.dispatch(noFunds('Not enough funds.'));
+      this.props.dispatch(noFunds('Insufficient funds'));
   }
 
   render () {
