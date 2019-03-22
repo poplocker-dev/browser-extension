@@ -89,7 +89,7 @@ export const account = {
         if (deviceAddress) {
           return smartLockerAddress ? [smartLockerAddress] : [deviceAddress];
         } else {
-          return null;
+          return [];
         }
       });
     },
