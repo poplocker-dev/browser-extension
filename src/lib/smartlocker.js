@@ -59,8 +59,14 @@ const smartLocker = {
 
     // TODO: clear up nested catches
     return new Promise(resolve => {
+      let lockerState = {
+        registrar: {
+          address: mockSmartLockerRegistrarAddress
+        }
+      }
+
       if (!smartLockerAddress) {
-        resolve({ status: 'simple' });
+        resolve({...lockerState, status: 'simple' });
       } else {
         mockSmartLockerRegistrarContract.getName(smartLockerAddress).then(name => {
           if (name) {
@@ -69,12 +75,12 @@ const smartLocker = {
               if (isKey) {
                 mockSmartLockerContract.getKeyCount().then(keyCount => {
 
-                  const lockerState = {
+                  lockerState = {
+                    ...lockerState,
                     name,
                     status: 'smart',
                     deviceAddress,
-                    smartLockerAddress,
-                    registrar: mockSmartLockerRegistrarAddress
+                    smartLockerAddress
                   }
 
                   if (keyCount < 2) {
@@ -84,10 +90,10 @@ const smartLocker = {
                   }
                 })
               }
-              else resolve({ status: 'pending', name });
+              else resolve({...lockerState, status: 'pending', name });
             })
           }
-          else resolve({ status: 'pending' });
+          else resolve({...lockerState, status: 'pending' });
         }).catch(() => resolve({ status: 'error' }))
       }
     });
