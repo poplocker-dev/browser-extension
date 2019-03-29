@@ -31,5 +31,9 @@
   "permissions": ["activeTab", "storage", "https://*.infura.io/"],
   "web_accessible_resources": [
     "injected.js"
-  ]
+  ],
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": false
+  }
 }
