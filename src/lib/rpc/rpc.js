@@ -5,13 +5,17 @@ export const background = {
     let message = { ...msg, port: 'background' };
 
     return new Promise((resolve, reject) => {
-      chrome.runtime.sendMessage(message, (response) => {
-        if (chrome.runtime.lastError || !response) {
-          reject(chrome.runtime.lastError);
-        }
-        else resolve(response);
-      });
-    });
+      try{
+        chrome.runtime.sendMessage(message, (response) => {
+          if (chrome.runtime.lastError || !response) {
+            reject(chrome.runtime.lastError || "No response defined");
+          }
+          else resolve(response);
+        })
+      } catch(error) {
+        reject(error.toString())
+      }
+    })
   }
 }
 
