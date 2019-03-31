@@ -23,7 +23,8 @@ body {
   margin: 0;
   min-width: 375px;
   min-height: 388px;
-	color: var(--foreground-color);
+  overflow: hidden;
+  color: var(--foreground-color);
   font-size: 13px;
   font-family: Orkney, Helvetica, sans-serif;
 	line-height: 19px;

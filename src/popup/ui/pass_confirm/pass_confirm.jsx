@@ -19,7 +19,8 @@ class PassConfirm extends React.Component {
               this.setState({ confirmationError: 'password and confirmation do not match' });
           } else {
             this.props.onUpdatePassword(this.state.password);
-            this.setState(this.pristine);
+            if (name == 'confirmation')
+              this.setState(this.pristine);
           }
         });
       },
@@ -44,13 +45,13 @@ class PassConfirm extends React.Component {
     return (
       <>
         <PassField name="password"
-                   label="Password"
-                   autoFocus={true}
+                   label={this.props.passwordLabel || "Password"}
+                   autoFocus={this.props.autoFocus}
                    value={this.state.password}
                    error={this.state.passwordError}
                    {...this.handlers} />
         <PassField name="confirmation"
-                   label="Confirm Password"
+                   label={this.props.confirmationLabel || "Confirm Password"}
                    value={this.state.confirmation}
                    error={this.state.confirmationError}
                    {...this.handlers} />

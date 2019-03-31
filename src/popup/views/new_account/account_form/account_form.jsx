@@ -35,7 +35,8 @@ class AccountForm extends React.Component {
   render () {
     return (
       <form className="account-form" onSubmit={ this.handleSubmit.bind(this) }>
-        <PassConfirm onUpdatePassword={ this.onUpdatePassword.bind(this) } />
+        <PassConfirm autoFocus={true}
+                     onUpdatePassword={ this.onUpdatePassword.bind(this) } />
         <Button icon="human" disabled={ this.shouldBeDisabled() }>Create Account</Button>
       </form>
     )
