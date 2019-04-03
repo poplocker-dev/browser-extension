@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -101,7 +102,15 @@ let config = {
       title: 'PopLocker',
       chunks: ['popup']
     }),
-    new Dotenv()
+    new Dotenv(),
+    new webpack.DefinePlugin({
+      config: {
+        contracts: {
+          registrar: JSON.stringify(require(__dirname + '/config/registrar.contract.json')),
+          smartLocker: JSON.stringify(require(__dirname + '/config/smartlocker.contract.json'))
+        }
+      }
+    })
   ]
 };
 

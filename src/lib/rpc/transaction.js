@@ -6,7 +6,7 @@ export async function signTx (tx, txId, blockNonce, secret) {
     return background.send({ type: 'TX_SIGNED', tx: signed, txId });
   }
   catch (e) {
-    return Promise.reject('Authentication Failed.');
+    return Promise.reject('Wrong password');
   }
 }
 

@@ -1,4 +1,4 @@
-import { account, save } from 'lib/storage'
+import { account }       from 'lib/storage'
 import { auth }          from 'lib/tx'
 import smartLocker       from 'lib/smartlocker'
 import * as HttpProvider from 'ethjs-provider-http'
