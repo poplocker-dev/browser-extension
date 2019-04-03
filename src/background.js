@@ -31,6 +31,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                .catch(sendResponse)
         break;
 
+      case 'CHANGE_PASSWORD':
+        account.decrypt(message.oldSecret)
+               .then(sk => account.encrypt(sk, message.newSecret))
+               .then(save)
+               .then(sendResponse)
+               .catch(sendResponse)
+        break;
+
       case 'TX_SIGN': {
         noncify(message.tx, message.blockNonce).then(tx => {
           account.decrypt(message.secret)
