@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
-import reduceReducers      from 'reduce-reducers';
+import reduceReducers      from 'reduce-reducers'
 import toBN                from 'number-to-bn'
+import { toHex }           from 'lib/helpers'
 
 function pending (state = [], action) {
   if (action.type == 'ENQUEUE_TXS') {
@@ -15,6 +16,11 @@ function pending (state = [], action) {
 function firstPending (state = null, action) {
   if (action.type == 'ENQUEUE_TXS')
     return (state.length > 0) ? state[0] : null;
+  if (action.type == 'REVALUE_TX' && state) {
+    const value = toHex(action.value.sub(action.fee).toString(16));
+    const params = { ...state.params, value };
+    return { ...state, params };
+  }
   else
     return state;
 }

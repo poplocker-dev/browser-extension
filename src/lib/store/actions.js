@@ -28,6 +28,14 @@ export function updatePricing (pricing) {
   }
 }
 
+export function revalueTx (fee, value) {
+  return {
+    type: 'REVALUE_TX',
+    fee,
+    value
+  }
+}
+
 export function updateBlockNonce (nonce) {
   return {
     type: 'UPDATE_NONCE',

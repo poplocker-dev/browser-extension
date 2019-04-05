@@ -7,7 +7,7 @@ import AccountBalance from './balance'
 import Locker         from './locker'
 
 import { getTxPricing, getLatestNonce } from 'lib/rpc/eth_node'
-import { updatePricing, updateBlockNonce, txInfoFailed } from 'lib/store/actions'
+import { updatePricing, updateBlockNonce, txInfoFailed, revalueTx } from 'lib/store/actions'
 import './authorize.css'
 
 class AuthorizeView extends React.Component {
@@ -23,6 +23,9 @@ class AuthorizeView extends React.Component {
 
       this.props.dispatch(updatePricing(pricing.map(i => i.result)));
       this.props.dispatch(updateBlockNonce(blockNonce.result));
+
+      if (this.props.isLockerTransfer)
+        this.props.dispatch(revalueTx(this.props.pricing.fee, this.props.pricing.balance));
     }
     catch(e) {
       console.error(e.message);
@@ -44,4 +47,10 @@ class AuthorizeView extends React.Component {
   }
 }
 
-export default connect(({ tx }) =>  ({ current: tx.current }))(AuthorizeView);
+const mapStore = ({ tx }) => ({
+  current: tx.current,
+  pricing: tx.pricing,
+  isLockerTransfer: tx.current.params.to == process.env.REGISTRAR_ADDRESS
+});
+
+export default connect(mapStore)(AuthorizeView);
