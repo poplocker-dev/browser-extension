@@ -21,7 +21,7 @@ class SignForm extends React.Component {
         <div className="row show-advanced">
           <Button type="button" kind="light" icon="settings"
                   tabIndex={-1}
-                  disabled={this.props.errors.txInfo}
+                  disabled={this.props.errors.txInfo || this.props.lockerCreation}
                   onClick={this.props.handleAdvanced.bind(this)}>
             { this.props.advancedMode? 'Hide Advanced' : 'Show Advanced' }
           </Button>
@@ -69,6 +69,7 @@ const mapStore = ({ tx, errors, advancedMode }) => {
     tx,
     advancedMode,
     errors,
+    lockerCreation: tx.current.params.to == process.env.REGISTRAR_ADDRESS,
     passError: errors.txSign || errors.txInfo || errors.noFunds || null
   }
 }
