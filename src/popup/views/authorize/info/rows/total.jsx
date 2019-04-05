@@ -9,6 +9,8 @@ class TransactionTotal extends React.Component {
   componentDidUpdate () {
     if (this.noFunds(this.props.tx))
       this.props.dispatch(noFunds('Insufficient funds'));
+    else
+      this.props.dispatch(noFunds(''));
   }
 
   render () {
