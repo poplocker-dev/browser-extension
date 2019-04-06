@@ -31,7 +31,7 @@ class SignForm extends React.Component {
           <PassField label="Password"
                      onChange={this.handleChange.bind(this)}
                      tabIndex={1}
-                     autoFocus
+                     autoFocus={true}
                      disabled={this.props.errors.noFunds || this.props.errors.txInfo}
                      value={this.state.password}
                      error={this.props.passError}/>
@@ -60,7 +60,7 @@ class SignForm extends React.Component {
   }
 
   shouldBeDisabled () {
-    return this.state.password.length == 0 || this.props.errors.noFunds
+    return !this.props.tx.pricing || this.state.password.length == 0 || this.props.errors.noFunds
   }
 }
 

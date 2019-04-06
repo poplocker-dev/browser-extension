@@ -7,14 +7,14 @@
     opacity: 0.05;
     border-radius: 200px;
   }
-  
+
   .circ-0 {
-    left: -80px;
-    top: -80px;
+    left: -70px;
+    top: -70px;
     width: 130px;
     height: 130px;
   }
-  
+
   .circ-1 {
     left: 270px;
     top: 3px;
@@ -46,7 +46,7 @@
   }
 
   .circ-5 {
-    right: 19px;
+    right: 1px;
     bottom: 51px;
     width: 20px;
     height: 20px;
@@ -62,9 +62,8 @@
   }  
 
   .circ-7 {
-    right: 19px;
-    left: 15px;
-    top: 78px;
+    left: 25px;
+    top: 70px;
     width: 14px;
     height: 14px;
     opacity: 0.09;

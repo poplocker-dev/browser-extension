@@ -1,0 +1,18 @@
+.failure-view {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-content: center;
+
+  h2 {
+    text-transform: uppercase;
+    font-weight: 500;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .btn {
+    width: 40%;
+    margin: 40px auto;
+  }
+}

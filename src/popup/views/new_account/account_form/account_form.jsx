@@ -1,8 +1,8 @@
-import React                 from 'react'
-import { connect }           from 'react-redux'
-import { Button, PassField } from '@poplocker/react-ui'
-import { newAccount }        from 'lib/rpc/account'
-import PassMeter             from './pass_meter'
+import React          from 'react'
+import { connect }    from 'react-redux'
+import { Button }     from '@poplocker/react-ui'
+import { newAccount } from 'lib/rpc/account'
+import PassConfirm    from 'ui/pass_confirm'
 
 import { accountGenerated, accountReady, accountFailed } from 'lib/store/actions'
 
@@ -12,30 +12,11 @@ class AccountForm extends React.Component {
   constructor (props) {
     super(props);
 
-    this.state    = { password: '', confirmation: '', passwordError: '', confirmationError: '' }
-    this.pristine = { passwordError: '', confirmationError: '' }
-    this.handlers = {
-      onChange: (e) => {
-        const { name, value } = e.target;
+    this.state = { password: '' }
+  }
 
-        this.setState({ [name]: value }, () => {
-          if (name == 'confirmation' && !this.passMatch())
-            this.setState({ confirmationError: 'password and confirmation do not match' });
-          else
-            this.setState(this.pristine);
-        });
-      },
-
-      onBlur: (e) => {
-        const name = e.target.name;
-
-        if (!this.state[name]) {
-          this.setState({ [`${name}Error`]: `${name} cannot be empty` });
-          return;
-        }
-        this.setState(this.pristine);
-      }
-    }
+  onUpdatePassword (password) {
+    this.setState({ password });
   }
 
   handleSubmit (e) {
@@ -47,32 +28,15 @@ class AccountForm extends React.Component {
       .catch(() => this.props.dispatch(accountFailed()))
   }
 
-  passMatch () {
-    return this.state.confirmation == this.state.password;
-  }
-
   shouldBeDisabled () {
-    return (this.state.password == '' || !this.passMatch());
+    return this.state.password == '';
   }
 
   render () {
     return (
       <form className="account-form" onSubmit={ this.handleSubmit.bind(this) }>
-
-        <PassField name="password"
-                   label="Password"
-                   autoFocus={true}
-                   value={this.state.password}
-                   error={this.state.passwordError}
-                   {...this.handlers} />
-
-        <PassField name="confirmation"
-                   label="Confirm Password"
-                   value={this.state.confirmation}
-                   error={this.state.confirmationError}
-                   {...this.handlers} />
-
-        <PassMeter measure={this.state.password} />
+        <PassConfirm autoFocus={true}
+                     onUpdatePassword={ this.onUpdatePassword.bind(this) } />
         <Button icon="human" disabled={ this.shouldBeDisabled() }>Create Account</Button>
       </form>
     )
