@@ -8,7 +8,7 @@ chrome.runtime.onInstalled.addListener(({ reason }) => {
     save({
       deviceAddress: null,
       pending: [],
-      nonce: "0x0"
+      deviceNonce: "0x0"
     });
 });
 
