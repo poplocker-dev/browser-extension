@@ -23,7 +23,7 @@ To build and install clone the repo and within root directory issue:
 $ yarn
 ```
 
-next copy `.env.sample` to `.env` and update placeholder values. `RPC_URL` can be set to any Ethereum node - here are Ropsten and Mainnet nodes for convenience (however also see **Ropsten vs Mainnet**):
+next copy `.env.sample` to `.env` and update placeholder values. `RPC_URL` can be set to any Ethereum node - here are Ropsten and Mainnet nodes for convenience (however also see **Mainnet Disclaimer**):
 
 https://mainnet.infura.io/v3/da2b4575adf34626a444ed36c11c1939
 https://ropsten.infura.io/v3/da2b4575adf34626a444ed36c11c1939
@@ -33,9 +33,7 @@ finally:
 ```
 $ npm run build
 ```
-### Ropsten vs Mainnet
-
-PopLocker is still under heavy development for now we recommend to use testing networks like Ropsten. If you want to use Mainnet though, just update `RPC_URL` in `.env` file accordingly.
+### Mainnet Disclaimer
 
 The current version of PopLocker has no way to backup or recover keys (this will be possible soon in a future release with Universal Login functionality) therefore if using mainnet and PopLocker is uninstalled (or your device is lost) **you will lose access to your funds**. 
 
