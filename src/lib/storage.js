@@ -34,12 +34,12 @@ export const transaction = {
   },
 
   nonce: {
-    current () { return load('nonce'); },
+    current () { return load('deviceNonce'); },
 
     up (number=1) {
       return this.current().then(current => {
-        const nonce = toHex(parseInt(current) + number);
-        return save({ nonce });
+        const deviceNonce = toHex(parseInt(current) + number);
+        return save({ deviceNonce });
       })
     },
 
@@ -47,7 +47,7 @@ export const transaction = {
       const local  = await this.current();
 
       if (parseInt(remote) > parseInt(local)) {
-        save({ nonce: remote });
+        save({ deviceNonce: remote });
         return remote;
       }
       else return local;
