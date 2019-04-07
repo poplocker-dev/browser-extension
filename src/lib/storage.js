@@ -33,27 +33,6 @@ export const transaction = {
     return load('pending');
   },
 
-  nonce: {
-    current () { return load('deviceNonce'); },
-
-    up (number=1) {
-      return this.current().then(current => {
-        const deviceNonce = toHex(parseInt(current) + number);
-        return save({ deviceNonce });
-      })
-    },
-
-    async track (remote) {
-      const local  = await this.current();
-
-      if (parseInt(remote) > parseInt(local)) {
-        save({ deviceNonce: remote });
-        return remote;
-      }
-      else return local;
-    }
-  },
-
   shift () {
     return this.pending().then(txs => {
       save({ pending: txs.slice(1) });
@@ -78,6 +57,27 @@ export const transaction = {
 export const account = {
   address () {
     return load('deviceAddress').then(a => a ? [a] : []);
+  },
+
+  nonce: {
+    current () { return load('deviceNonce'); },
+
+    up (number=1) {
+      return this.current().then(current => {
+        const deviceNonce = toHex(parseInt(current) + number);
+        return save({ deviceNonce });
+      })
+    },
+
+    async track (remote) {
+      const local  = await this.current();
+
+      if (parseInt(remote) > parseInt(local)) {
+        save({ deviceNonce: remote });
+        return remote;
+      }
+      else return local;
+    }
   },
 
   generate (secret) {

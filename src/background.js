@@ -48,13 +48,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         break;
       }
 
-        // tx.js/auth listens to it too
+      // tx.js/auth listens to it too
       case 'TX_SIGNED':
-        transaction.nonce.up()
-                   .then(() => transaction.shift())
-                   .then(sendResponse);
-        break;
-
       case 'TX_CANCEL':
         transaction.shift()
                    .then(sendResponse);

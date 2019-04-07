@@ -4,6 +4,7 @@ import { toHex }             from 'lib/helpers'
 import { signTx, cancelTx }  from 'lib/rpc/transaction'
 import { Button, PassField } from '@poplocker/react-ui'
 
+import { getLatestNonce } from 'lib/rpc/eth_node'
 import { toggleAdvanced, txSignFailed } from 'lib/store/actions'
 
 import './sign_form.css'
@@ -80,9 +81,9 @@ const mapDispatch = (dispatch) => ({
     const gasPrice    = toHex(this.props.tx.pricing.gasPrice);
     const gasEstimate = toHex(this.props.tx.pricing.gasEstimate);
     const params      = {...this.props.tx.current.params, gasPrice, gasLimit: gasEstimate};
-    const { txId, blockNonce } = this.props.tx.current;
 
-    signTx(params, txId, blockNonce, this.state.password)
+    getLatestNonce()
+      .then(blockNonce => signTx(params, this.props.tx.current.txId, blockNonce.result, this.state.password))
       .then(window.close)
       .catch(e => dispatch(txSignFailed(e)));
   },
