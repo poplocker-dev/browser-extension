@@ -16,8 +16,13 @@ function pending (state = [], action) {
 function firstPending (state = null, action) {
   if (action.type == 'ENQUEUE_TXS')
     return (state.length > 0) ? state[0] : null;
+
   if (action.type == 'REVALUE_TX' && state) {
-    const value = toHex(action.value.sub(action.fee).toString(16));
+    // without gas relayer some coins
+    // need to be left on device address
+    // substract fees and leave remaining
+    // 20%
+    const value = toHex(action.value.sub(action.fee).muln(0.8).toString(16));
     const params = { ...state.params, value };
     return { ...state, params };
   }

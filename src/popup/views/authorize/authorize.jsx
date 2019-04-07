@@ -21,7 +21,7 @@ class AuthorizeView extends React.Component {
       const pricing    = await getTxPricing(this.props.current);
       const blockNonce = await getLatestNonce();
 
-      this.props.dispatch(updatePricing(pricing.map(i => i.result)));
+      this.props.dispatch(updatePricing(pricing.map(i => i.result || 0)));
       this.props.dispatch(updateBlockNonce(blockNonce.result));
 
       if (this.props.isLockerTransfer)
