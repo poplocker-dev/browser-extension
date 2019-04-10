@@ -15,11 +15,7 @@ export function dispatch (message) {
         return account.address();
 
       case 'eth_sendTransaction':
-        return auth(message)
-          .then(sendToNode)
-          .then((r) => {
-            return account.nonce.up().then(() => {return r});
-          });
+        return auth(message).then(sendToNode).then(upNonce);
 
       default:
         return sendToNode(message);
@@ -35,6 +31,10 @@ function decorate ({ method, id, jsonrpc }, result) {
 function strip({ id, method, jsonrpc, params }) {
   // parity strict nodes don't like extra props
   return { id, method, jsonrpc, params };
+}
+
+function upNonce (response) {
+  return account.nonce.up().then(() => response);
 }
 
 function sendToNode (message) {
