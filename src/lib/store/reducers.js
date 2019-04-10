@@ -27,13 +27,6 @@ function pricing (state = null, action) {
   else return state;
 }
 
-function blockNonce (state = null, action) {
-  if (action.type == 'UPDATE_NONCE') {
-    return action.nonce;
-  }
-  else return state;
-}
-
 function advancedMode (state = false, action) {
   if (action.type == 'TOGGLE_ADVANCED')
     return !state;
@@ -78,7 +71,7 @@ function noFundsError (state = null, action) {
 }
 
 const current  = reduceReducers(pending, firstPending);
-const tx       = combineReducers({ pricing, pending, current, blockNonce });
+const tx       = combineReducers({ pricing, pending, current });
 const errors   = combineReducers({ txInfo: txInfoError, txSign: txSignError, noFunds: noFundsError });
 const reducers = combineReducers({ page, tx, errors, advancedMode });
 

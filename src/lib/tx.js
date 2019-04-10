@@ -1,6 +1,6 @@
-import { transaction }    from 'lib/storage'
-import { rawSendTx }      from 'lib/rpc/eth_node'
-import { sign as signer } from 'ethjs-signer'
+import { account, transaction } from 'lib/storage'
+import { rawSendTx }            from 'lib/rpc/eth_node'
+import { sign as signer }       from 'ethjs-signer'
 
 export function auth (tx) {
   return new Promise(resolve => {
@@ -23,7 +23,7 @@ export function sign (rawTx, sk) {
 }
 
 export function noncify (tx, nonce) {
-  return transaction.nonce.track(nonce).then(updated => {
+  return account.nonce.track(nonce).then(updated => {
     return {...tx, nonce: updated};
   });
 }

@@ -15,7 +15,7 @@ export function dispatch (message) {
         return account.address();
 
       case 'eth_sendTransaction':
-        return auth(message).then(sendToNode);
+        return auth(message).then(sendToNode).then(upNonce);
 
       default:
         return sendToNode(message);
@@ -33,7 +33,10 @@ function strip({ id, method, jsonrpc, params }) {
   return { id, method, jsonrpc, params };
 }
 
+function upNonce (response) {
+  return account.nonce.up().then(() => response);
+}
+
 function sendToNode (message) {
   return eth.sendAsync(strip(message));
 }
-
