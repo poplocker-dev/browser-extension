@@ -1,7 +1,7 @@
-Pop Locker Browser Extension
+PopLocker Browser Extension
 ============================
 
-A Google Chrome/Chromium browser extension for [Pop Locker project](https://github.com/poplocker-dev/poplocker-dev.github.io/blob/master/README.md).
+A Google Chrome/Chromium browser extension for the [PopLocker project](https://github.com/poplocker-dev/poplocker-dev.github.io/blob/master/README.md).
 
 # Running and building instructions
 
