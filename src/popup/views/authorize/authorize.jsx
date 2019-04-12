@@ -20,6 +20,7 @@ class AuthorizeView extends React.Component {
   async componentDidMount () {
     try {
       const pricing = await getTxPricing(this.props.current);
+
       this.props.dispatch(updatePricing(pricing.map(i => i.result)));
 
       if (this.props.isLockerTransfer)
