@@ -11,7 +11,8 @@ let config = {
     background: './src/background.js',
     popup: './src/popup/popup.jsx',
     contentscript: './src/contentscript.js',
-    injected: './src/injected.js'
+    injected: './src/injected.js',
+    options: './src/popup/options.jsx'
   },
   output: {
     path: __dirname + '/dist',
@@ -101,6 +102,10 @@ let config = {
       filename: __dirname + '/dist/popup.html',
       title: 'PopLocker',
       chunks: ['popup']
+    }),
+    new HtmlWebpackPlugin({
+      filename: __dirname + '/dist/options.html',
+      chunks: ['options']
     }),
     new Dotenv(),
     new webpack.DefinePlugin({

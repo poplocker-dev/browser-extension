@@ -14,8 +14,9 @@ class Sliders extends React.Component {
       this.base     = this.props.tx.pricing;
       this.dispatch = this.props.dispatch;
 
-      this.setState({ initialGasPrice: this.base.gasPrice, currentGasPrice: this.base.gasPrice });
-
+      const currentGasPrice = this.base.gasPrice*2;
+      this.setState({ minimumGasPrice: this.base.gasPrice, currentGasPrice });
+      this.dispatch(updatePricing([this.base.balance, currentGasPrice, this.base.gasEstimate]));
     }
   }
 
@@ -27,8 +28,8 @@ class Sliders extends React.Component {
           <Range label="transfer"
                  from="slower"
                  to="quicker"
-                 min="1"
-                 max={this.state.initialGasPrice*10}
+                 min={this.state.minimumGasPrice}
+                 max={this.state.minimumGasPrice*10}
                  value={this.state.currentGasPrice}
                  onChange={this.handleChange.bind(this)}
           />
@@ -54,4 +55,3 @@ class Sliders extends React.Component {
 }
 
 export default connect(({ advancedMode }) => ({ advancedMode }))(Sliders);
-

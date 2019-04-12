@@ -1,6 +1,7 @@
-import Encryptor from './workers/encryptor.worker.js'
-import Decryptor from './workers/decryptor.worker.js'
-import { toHex } from 'lib/helpers'
+import * as wallet from 'ethereumjs-wallet'
+import Encryptor   from './workers/encryptor.worker.js'
+import Decryptor   from './workers/decryptor.worker.js'
+import { toHex }   from 'lib/helpers'
 
 export function save (payload) {
   return new Promise((resolve, reject) => {
@@ -30,27 +31,6 @@ export function load (id) {
 export const transaction = {
   pending () {
     return load('pending');
-  },
-
-  nonce: {
-    current () { return load('nonce'); },
-
-    up (number=1) {
-      return this.current().then(current => {
-        const nonce = toHex(parseInt(current) + number);
-        return save({ nonce });
-      })
-    },
-
-    async track (remote) {
-      const local  = await this.current();
-
-      if (parseInt(remote) > parseInt(local)) {
-        save({ nonce: remote });
-        return remote;
-      }
-      else return local;
-    }
   },
 
   shift () {
@@ -104,11 +84,40 @@ export const account = {
     }
   },
 
+  nonce: {
+    current () { return load('deviceNonce'); },
+
+    up (number=1) {
+      return this.current().then(current => {
+        const deviceNonce = toHex(parseInt(current) + number);
+        return save({ deviceNonce });
+      })
+    },
+
+    async track (remote) {
+      const local  = await this.current();
+
+      if (parseInt(remote) > parseInt(local)) {
+        save({ deviceNonce: remote });
+        return remote;
+      }
+      else return local;
+    }
+  },
+
   generate (secret) {
+    const keys = wallet.generate();
+    const sk = keys.getPrivateKeyString();
+    const deviceAddress = keys.getChecksumAddressString();
+    return this.encrypt(sk, secret)
+               .then(data => {return {deviceAddress, ...data}})
+  },
+
+  encrypt (sk, secret) {
     return new Promise((resolve, reject) => {
       const w = new Encryptor();
 
-      w.postMessage({ secret });
+      w.postMessage({ sk, secret });
       w.onmessage = ({ data }) => {
         resolve(data);
         w.terminate();
