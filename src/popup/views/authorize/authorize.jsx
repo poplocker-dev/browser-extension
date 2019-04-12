@@ -6,8 +6,9 @@ import TxInfo         from './info'
 import AccountBalance from './balance'
 import Locker         from './locker'
 
-import { getTxPricing, getLatestNonce } from 'lib/rpc/eth_node'
-import { updatePricing, updateBlockNonce, txInfoFailed, revalueTx } from 'lib/store/actions'
+import { getTxPricing }                           from 'lib/rpc/eth_node'
+import { updatePricing, txInfoFailed, revalueTx } from 'lib/store/actions'
+
 import './authorize.css'
 
 class AuthorizeView extends React.Component {
@@ -18,11 +19,9 @@ class AuthorizeView extends React.Component {
 
   async componentDidMount () {
     try {
-      const pricing    = await getTxPricing(this.props.current);
-      const blockNonce = await getLatestNonce();
+      const pricing = await getTxPricing(this.props.current);
 
-      this.props.dispatch(updatePricing(pricing.map(i => i.result || 0)));
-      this.props.dispatch(updateBlockNonce(blockNonce.result));
+      this.props.dispatch(updatePricing(pricing.map(i => i.result)));
 
       if (this.props.isLockerTransfer)
         this.props.dispatch(revalueTx(this.props.pricing.fee, this.props.pricing.balance));

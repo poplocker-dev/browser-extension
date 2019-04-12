@@ -1,7 +1,7 @@
-import { transaction }    from 'lib/storage'
-import { rawSendTx }      from 'lib/rpc/eth_node'
-import smartLocker        from 'lib/smartlocker'
-import { sign as signer } from 'ethjs-signer'
+import { transaction, account } from 'lib/storage'
+import { rawSendTx }            from 'lib/rpc/eth_node'
+import smartLocker              from 'lib/smartlocker'
+import { sign as signer }       from 'ethjs-signer'
 
 export function auth (tx) {
   return new Promise(resolve => {
@@ -38,7 +38,7 @@ export function signMetaTx (rawTx, sk, deviceAddress, smartLockerAddress, smartL
 }
 
 export function noncify (tx, nonce) {
-  return transaction.nonce.track(nonce).then(updated => {
+  return account.nonce.track(nonce).then(updated => {
     return {...tx, nonce: updated};
   });
 }

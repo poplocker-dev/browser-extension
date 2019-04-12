@@ -4,6 +4,7 @@ import { toHex }             from 'lib/helpers'
 import { signTx, cancelTx }  from 'lib/rpc/transaction'
 import { Button, PassField } from '@poplocker/react-ui'
 
+import { getLatestNonce } from 'lib/rpc/eth_node'
 import { toggleAdvanced, txSignFailed } from 'lib/store/actions'
 
 import './sign_form.css'
@@ -31,7 +32,7 @@ class SignForm extends React.Component {
           <PassField label="Password"
                      onChange={this.handleChange.bind(this)}
                      tabIndex={1}
-                     autoFocus
+                     autoFocus={true}
                      disabled={this.props.errors.noFunds || this.props.errors.txInfo}
                      value={this.state.password}
                      error={this.props.passError}/>
@@ -60,7 +61,7 @@ class SignForm extends React.Component {
   }
 
   shouldBeDisabled () {
-    return this.state.password.length == 0 || this.props.errors.noFunds
+    return !this.props.tx.pricing || this.state.password.length == 0 || this.props.errors.noFunds
   }
 }
 
@@ -81,9 +82,9 @@ const mapDispatch = (dispatch) => ({
     const gasPrice    = toHex(this.props.tx.pricing.gasPrice);
     const gasEstimate = toHex(this.props.tx.pricing.gasEstimate);
     const params      = {...this.props.tx.current.params, gasPrice, gasLimit: gasEstimate};
-    const { txId, blockNonce } = this.props.tx.current;
 
-    signTx(params, txId, blockNonce, this.state.password)
+    getLatestNonce()
+      .then(blockNonce => signTx(params, this.props.tx.current.txId, blockNonce.result, this.state.password))
       .then(window.close)
       .catch(e => dispatch(txSignFailed(e)));
   },

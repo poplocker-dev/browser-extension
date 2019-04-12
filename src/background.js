@@ -10,7 +10,7 @@ chrome.runtime.onInstalled.addListener(({ reason }) => {
       deviceAddress: null,
       smartLockerAddress: null,
       pending: [],
-      nonce: "0x0"
+      deviceNonce: "0x0"
     });
 });
 
@@ -38,6 +38,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                .catch(sendResponse);
         break;
 
+      case 'CHANGE_PASSWORD':
+        account.decrypt(message.oldSecret)
+               .then(sk => account.encrypt(sk, message.newSecret))
+               .then(save)
+               .then(sendResponse)
+               .catch(sendResponse)
+        break;
+
         // TODO: dispatcher for transactions
       case 'TX_SIGN':
         // TODO: remove deviceAddress() when gas relayers
@@ -62,13 +70,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         })
         break;
 
-      // tx.js/auth listens to it too
       case 'TX_SIGNED':
-        transaction.nonce.up()
-                   .then(() => transaction.shift())
-                   .then(sendResponse);
-        break;
-
       case 'TX_CANCEL':
         transaction.shift()
                    .then(sendResponse);

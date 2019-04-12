@@ -21,8 +21,8 @@ function firstPending (state = null, action) {
     // without gas relayer some coins
     // need to be left on device address
     // substract fees and leave remaining
-    // 20%
-    const value = toHex(action.value.sub(action.fee).muln(0.8).toString(16));
+    // 5%
+    const value = toHex(action.value.sub(action.fee).muln(0.95).toString(16));
     const params = { ...state.params, value };
     return { ...state, params };
   }
@@ -34,13 +34,6 @@ function pricing (state = null, action) {
   if (action.type == 'UPDATE_PRICING') {
     const [balance, gasPrice, gasEstimate] = action.pricing.map(toBN);
     return { balance, gasPrice, gasEstimate, fee: gasPrice.mul(gasEstimate) }
-  }
-  else return state;
-}
-
-function blockNonce (state = null, action) {
-  if (action.type == 'UPDATE_NONCE') {
-    return action.nonce;
   }
   else return state;
 }
@@ -89,7 +82,7 @@ function noFundsError (state = null, action) {
 }
 
 const current  = reduceReducers(pending, firstPending);
-const tx       = combineReducers({ pricing, pending, current, blockNonce });
+const tx       = combineReducers({ pricing, pending, current });
 const errors   = combineReducers({ txInfo: txInfoError, txSign: txSignError, noFunds: noFundsError });
 const reducers = combineReducers({ page, tx, errors, advancedMode });
 

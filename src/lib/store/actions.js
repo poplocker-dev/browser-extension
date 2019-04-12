@@ -36,13 +36,6 @@ export function revalueTx (fee, value) {
   }
 }
 
-export function updateBlockNonce (nonce) {
-  return {
-    type: 'UPDATE_NONCE',
-    nonce
-  }
-}
-
 export function enqueuePending (pending) {
   return { type: 'ENQUEUE_TXS', pending };
 }
@@ -67,7 +60,6 @@ export function loader (entity) {
     entity
   }
 }
-
 
 export function toggleAdvanced () {
   return {

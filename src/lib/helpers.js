@@ -1,5 +1,7 @@
 import BigNumber                from 'bignumber.js'
+import { createStore }          from 'redux'
 import { store }                from 'lib/store'
+import { reducers }             from 'lib/store/reducers'
 import { enqueuePending }       from 'lib/store/actions'
 import { account, transaction } from 'lib/storage'
 
@@ -13,6 +15,10 @@ export async function initOrRedirect (render) {
     store.dispatch(enqueuePending(pending));
 
   return render(store);
+}
+
+export function initOptions (render) {
+  return render(createStore(reducers, {page: 'change_password'}));
 }
 
 export const badge = {
