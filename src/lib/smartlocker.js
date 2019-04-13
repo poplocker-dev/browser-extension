@@ -1,5 +1,4 @@
 import { providers, utils, Contract, Interface, Wallet } from 'ethers'
-import { toHex }                                         from 'lib/helpers'
 
 const provider = new providers.JsonRpcProvider(process.env.RPC_URL);
 
@@ -12,7 +11,7 @@ const smartLocker = {
 
   getNextNonce (smartLockerAddress) {
     const smartLockerContract = new Contract(smartLockerAddress, smartLockerABI, provider);
-    return smartLockerContract.getNextNonce();
+    return smartLockerContract.getNextNonce().then((r) => r.toHexString());
   },
 
   createMetaTx (rawTx, sk, smartLockerAddress, smartLockerNonce) {
@@ -21,7 +20,7 @@ const smartLocker = {
       to: rawTx.to || '0x0',
       value: rawTx.value || '0x0',
       data: rawTx.data || '0x0',
-      nonce: smartLockerNonce ? toHex(smartLockerNonce) : '0x0',
+      nonce: smartLockerNonce || '0x0',
       gasPrice: rawTx.gasPrice || '0x0',
       gasLimit: rawTx.gasLimit || '0x0'
     };

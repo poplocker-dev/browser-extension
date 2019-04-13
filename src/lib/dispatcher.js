@@ -56,7 +56,7 @@ function strip({ id, method, jsonrpc, params }) {
 }
 
 function upNonce (response) {
-  return account.nonce.up().then(() => response);
+  return account.nonce.up().then(account.nonce.up(1, true)).then(() => response);
 }
 
 function sendToNode (message) {

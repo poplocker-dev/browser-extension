@@ -28,7 +28,18 @@ export function load (id) {
   })
 }
 
+export function initialise () {
+  save({
+    deviceAddress: null,
+    smartLockerAddress: null,
+    pending: [],
+    deviceNonce: "0x0",
+    smartLockerNonce: "0x0"
+  });
+}
+
 export const transaction = {
+
   pending () {
     return load('pending');
   },
@@ -79,26 +90,30 @@ export const account = {
     },
 
     setLocker (addr) {
-
-      return save({ smartLockerAddress: addr });
+      return save({
+        smartLockerAddress: addr,
+        smartLockerNonce: "0x0"
+      });
     }
   },
 
   nonce: {
-    current () { return load('deviceNonce'); },
+    current (smartLocker=false) {
+      return smartLocker? load('smartLockerNonce') : load('deviceNonce');
+    },
 
-    up (number=1) {
-      return this.current().then(current => {
-        const deviceNonce = toHex(parseInt(current) + number);
-        return save({ deviceNonce });
+    up (number=1, smartLocker=false) {
+      return this.current(smartLocker).then(current => {
+        const nonce = toHex(parseInt(current) + number);
+        return smartLocker? save({ smartLockerNonce: nonce }) : save({ deviceNonce: nonce });
       })
     },
 
-    async track (remote) {
-      const local  = await this.current();
+    async track (remote, smartLocker=false) {
+      const local  = await this.current(smartLocker);
 
       if (parseInt(remote) > parseInt(local)) {
-        save({ deviceNonce: remote });
+        smartLocker? save({ smartLockerNonce: remote }) : save({ deviceNonce: remote });
         return remote;
       }
       else return local;
