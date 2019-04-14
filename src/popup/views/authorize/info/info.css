@@ -1,13 +1,15 @@
 .transaction-info {
   display: flex;
   padding: 12px;
+  background: white;
+  margin-top: 12px;
   margin-bottom: 12px;
   flex-direction: column;
   border: 1px solid var(--border-color);
   border-radius: 2px;
-	font-size: 16px;
-	font-weight: 600;
-	line-height: 23px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 23px;
 
   .title {
     font-size: 18px;
