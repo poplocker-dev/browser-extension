@@ -1,6 +1,7 @@
 import React                   from 'react'
 import { LockerButton }        from '@poplocker/react-ui'
 import { getSmartLockerState } from 'lib/rpc/locker'
+import { lockerRedirect }      from 'lib/helpers'
 
 class Locker extends React.Component {
   componentDidMount () {
@@ -11,8 +12,13 @@ class Locker extends React.Component {
 
   render () {
     return (
-      <LockerButton locker={this.state}/>
+      <LockerButton locker={this.state}
+                    onClick={this.handleClick.bind(this)}/>
     )
+  }
+
+  handleClick () {
+    lockerRedirect();
   }
 }
 
