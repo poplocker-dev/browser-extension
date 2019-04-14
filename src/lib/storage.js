@@ -28,7 +28,7 @@ export function load (id) {
   })
 }
 
-export function initialise () {
+export function initialize () {
   save({
     deviceAddress: null,
     smartLockerAddress: null,

@@ -1,11 +1,11 @@
 import { sign, signMetaTx, noncify }              from 'lib/tx'
 import { ethDispatch, apiDispatch }               from 'lib/dispatcher'
 import { badge }                                  from 'lib/helpers'
-import { initialise, save, account, transaction } from 'lib/storage'
+import { initialize, save, account, transaction } from 'lib/storage'
 import smartLocker                                from 'lib/smartlocker'
 
 chrome.runtime.onInstalled.addListener(({ reason }) => {
-  if (reason == 'install') initialise();
+  if (reason == 'install') initialize();
 });
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
