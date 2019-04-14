@@ -37,8 +37,8 @@ export function signMetaTx (rawTx, sk, deviceAddress, smartLockerAddress, smartL
   return Promise.resolve(signer(rawTx, sk));
 }
 
-export function noncify (tx, nonce) {
-  return account.nonce.track(nonce).then(updated => {
+export function noncify (tx, nonce, smartLocker=false) {
+  return account.nonce.track(nonce, smartLocker).then(updated => {
     return {...tx, nonce: updated};
   });
 }

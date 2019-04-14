@@ -45,6 +45,10 @@ export const badge = {
   }
 }
 
+export function lockerRedirect () {
+  chrome.tabs.create({ 'url': process.env.POPLOCKER_WALLET_URL + process.env.SMARTLOCKER_PATH});
+}
+
 export function fixedEth (bn) {
   return BigNumber(bn.toString(10)).dividedBy('1e13')
            .integerValue(BigNumber.ROUND_CEIL)

@@ -1,17 +1,11 @@
-import { sign, signMetaTx, noncify }  from 'lib/tx'
-import { ethDispatch, apiDispatch }   from 'lib/dispatcher'
-import { badge }                      from 'lib/helpers'
-import { account, save, transaction } from 'lib/storage'
-import smartLocker                    from 'lib/smartlocker'
+import { sign, signMetaTx, noncify }              from 'lib/tx'
+import { ethDispatch, apiDispatch }               from 'lib/dispatcher'
+import { badge }                                  from 'lib/helpers'
+import { initialize, save, account, transaction } from 'lib/storage'
+import smartLocker                                from 'lib/smartlocker'
 
 chrome.runtime.onInstalled.addListener(({ reason }) => {
-  if (reason == 'install')
-    save({
-      deviceAddress: null,
-      smartLockerAddress: null,
-      pending: [],
-      deviceNonce: "0x0"
-    });
+  if (reason == 'install') initialize();
 });
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
@@ -52,12 +46,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         account.address.all().then(([deviceAddress, smartLockerAddress]) => {
           if (smartLockerAddress) {
             // TODO: ultimately the tx will be sent to gas relayers, however for now send through web3
-            // TODO: remove noncify() when gas relayers
+            // TODO: remove this device noncify() when gas relayers
             noncify(message.tx, message.blockNonce).then(tx => {
-              Promise.all([account.decrypt(message.secret), smartLocker.getNextNonce(smartLockerAddress)])
-                     .then(([sk, smartLockerNonce]) => signMetaTx(tx, sk, deviceAddress, smartLockerAddress, smartLockerNonce))
-                     .then(sendResponse)
-                     .catch(sendResponse)
+              smartLocker.getNextNonce(smartLockerAddress).then((smartLockerNonce) => {
+                Promise.all([account.decrypt(message.secret), account.nonce.track(smartLockerNonce, true)])
+                       .then(([sk, smartLockerNonce]) => signMetaTx(tx, sk, deviceAddress, smartLockerAddress, smartLockerNonce))
+                       .then(sendResponse)
+                       .catch(sendResponse)
+              });
             });
           } else {
             noncify(message.tx, message.blockNonce).then(tx => {
