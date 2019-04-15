@@ -4,6 +4,11 @@ import { getSmartLockerState } from 'lib/rpc/locker'
 import { lockerRedirect }      from 'lib/helpers'
 
 class Locker extends React.Component {
+  constructor (props) {
+    super(props);
+    this.state = { status: null };
+  }
+
   componentDidMount () {
     getSmartLockerState().then(({ result }) => {
       this.setState({ ...result });
