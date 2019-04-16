@@ -61,16 +61,17 @@ class SignForm extends React.Component {
   }
 
   shouldBeDisabled () {
-    return !this.props.tx.pricing || this.state.password.length == 0 || this.props.errors.noFunds
+    return !this.props.tx.pricing || this.state.password.length == 0 || this.props.errors.noFunds || !this.props.lockerValid
   }
 }
 
-const mapStore = ({ tx, errors, advancedMode }) => {
+const mapStore = ({ tx, errors, advancedMode, locker }) => {
   return {
     tx,
     advancedMode,
     errors,
     lockerCreation: tx.current.params.to == process.env.REGISTRAR_ADDRESS,
+    lockerValid: locker.status == 'simple' || locker.status == 'smart',
     passError: errors.txSign || errors.txInfo || errors.noFunds || null
   }
 }
