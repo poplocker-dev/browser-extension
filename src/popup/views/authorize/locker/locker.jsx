@@ -12,8 +12,10 @@ class Locker extends React.Component {
 
   render () {
     return (
-      <LockerButton locker={this.state}
-                    onClick={this.handleClick.bind(this)}/>
+      <div className="locker-wrapper">
+        <LockerButton locker={this.state}
+                      onClick={this.handleClick.bind(this)}/>
+      </div>
     )
   }
 
