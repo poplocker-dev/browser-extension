@@ -6,8 +6,10 @@ import { lockerRedirect } from 'lib/helpers'
 class Locker extends React.Component {
   render () {
     return (
-      <LockerButton locker={this.props.locker}
-                    onClick={this.handleClick.bind(this)}/>
+      <div className="locker-wrapper">
+        <LockerButton locker={this.state}
+                      onClick={this.handleClick.bind(this)}/>
+      </div>
     )
   }
 
