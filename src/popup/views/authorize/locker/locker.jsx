@@ -1,19 +1,21 @@
-import React                   from 'react'
-import { LockerButton }        from '@poplocker/react-ui'
+import React              from 'react'
+import { connect }        from 'react-redux'
+import { LockerButton }   from '@poplocker/react-ui'
+import { lockerRedirect } from 'lib/helpers'
+
 import { getSmartLockerState } from 'lib/rpc/locker'
-import { lockerRedirect }      from 'lib/helpers'
+import { updateSmartLocker }   from 'lib/store/actions'
 
 class Locker extends React.Component {
-  componentDidMount () {
-    getSmartLockerState().then(({ result }) => {
-      this.setState({ ...result });
-    });
+  async componentDidMount () {
+    const smartLockerState = await getSmartLockerState();
+    this.props.dispatch(updateSmartLocker(smartLockerState.result));
   }
 
   render () {
     return (
       <div className="locker-wrapper">
-        <LockerButton locker={this.state}
+        <LockerButton locker={this.props.locker}
                       onClick={this.handleClick.bind(this)}/>
       </div>
     )
@@ -24,4 +26,4 @@ class Locker extends React.Component {
   }
 }
 
-export default Locker;
+export default connect(({ locker }) => ({ locker }))(Locker);
