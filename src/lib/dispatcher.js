@@ -1,10 +1,13 @@
 import { account }       from 'lib/storage'
 import { auth }          from 'lib/tx'
 import smartLocker       from 'lib/smartlocker'
-import * as HttpProvider from 'ethjs-provider-http'
-import * as EthRPC       from 'ethjs-rpc'
+import Web3              from 'web3'
+import ShhRpc from 'lib/whisper'
+import HttpProvider from 'ethjs-provider-http'
+import EthRpc       from 'ethjs-rpc'
 
-const eth = new EthRPC(new HttpProvider(process.env.RPC_URL));
+const eth = new EthRpc(new HttpProvider(process.env.RPC_URL));
+const shh = new ShhRpc(process.env.SHH_URL);
 
 export function ethDispatch (message) {
   const result = () => {
@@ -16,7 +19,7 @@ export function ethDispatch (message) {
         return account.address.current();
 
       case 'eth_sendTransaction':
-        return auth(message).then(sendToNode).then(upNonce);
+        return auth(message).then(tapToGasRelay).then(sendToNode).then(upNonce);
 
       default:
         return sendToNode(message);
@@ -61,4 +64,9 @@ function upNonce (response) {
 
 function sendToNode (message) {
   return eth.sendAsync(strip(message));
+}
+
+function tapToGasRelay (message) {
+  shh.post(message).then(console.log);
+  return Promise.resolve(message);
 }

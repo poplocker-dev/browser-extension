@@ -59,6 +59,7 @@
     "redux-thunk": "^2.3.0",
     "safe-event-emitter": "^1.0.1",
     "simple-crypto-js": "^2.0.2",
+    "web3": "^1.0.0-beta.52",
     "yarn": "^1.13.0",
     "zxcvbn": "^4.4.2"
   }
