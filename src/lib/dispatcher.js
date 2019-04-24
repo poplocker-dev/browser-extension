@@ -1,13 +1,13 @@
-import { account }       from 'lib/storage'
-import { auth }          from 'lib/tx'
-import smartLocker       from 'lib/smartlocker'
-import Web3              from 'web3'
-import ShhRpc from 'lib/whisper'
+import { account }  from 'lib/storage'
+import { auth }     from 'lib/tx'
+import smartLocker  from 'lib/smartlocker'
+import ShhRpc       from 'lib/rpc/whisper'
 import HttpProvider from 'ethjs-provider-http'
 import EthRpc       from 'ethjs-rpc'
 
+console.log('creation');
 const eth = new EthRpc(new HttpProvider(process.env.RPC_URL));
-const shh = new ShhRpc(process.env.SHH_URL);
+const shh = new ShhRpc(process.env.SHH_URL, process.env.SYM_KEY);
 
 export function ethDispatch (message) {
   const result = () => {
@@ -19,13 +19,9 @@ export function ethDispatch (message) {
         return account.address.current();
 
       case 'eth_sendTransaction':
-        return account.address.locker().then((smartLockerAddress) => {
-          if (smartLockerAddress) {
-            return sendToWhisper;
-          } else {
-            return sendToNode;
-          }
-        }).then((f) => auth(message).then(f).then(upNonce));
+        return tapToNodeOrWhisper().then(f => {
+          return auth(message).then(f).then(upNonce);
+        });
 
       default:
         return sendToNode(message);
@@ -39,14 +35,14 @@ export function apiDispatch (message) {
     switch (message.method) {
 
       case 'setSmartLockerAddress':
-        return account.address.setLocker(message.address)
-          .catch(() => {return `Failed: ${message.method}`});
+        return account.address
+                      .setLocker(message.address)
+                      .catch(() => {return `Failed: ${message.method}`});
 
       case 'getSmartLockerState':
         return account.address.all().then(results => {
           return smartLocker.getState(...results);
-        })
-        .catch(() => {return `Failed: ${message.method}`});
+        }).catch(() => { return `Failed: ${message.method}` });
 
       default:
         return Promise.reject(`No such method: ${message.method}`);
@@ -57,6 +53,15 @@ export function apiDispatch (message) {
 
 function decorate ({ method, id, jsonrpc }, result) {
   return {...{ method, id, jsonrpc, result }};
+}
+
+async function tapToNodeOrWhisper () {
+  const addr = await account.address.locker();
+  if (addr) {
+    return Promise.resolve(sendToWhisper);
+  } else {
+    return Promise.resolve(sendToNode);
+  }
 }
 
 function strip({ id, method, jsonrpc, params }) {
@@ -73,6 +78,5 @@ function sendToNode (message) {
 }
 
 function sendToWhisper (message) {
-  // TODO
-  alert(JSON.stringify(message, null, 4));
+  return shh.post(message.params[0]);
 }
