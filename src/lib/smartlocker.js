@@ -34,14 +34,6 @@ const smartLocker = {
     return metaTx;
   },
 
-  // TODO: remove this when gas relayers
-  encodeExecuteSigned (metaTx) {
-    const executeSigned = new Interface(smartLockerABI).functions.executeSigned(
-      metaTx.to, metaTx.value, metaTx.data, metaTx.gasPrice, metaTx.gasLimit, metaTx.signature
-    );
-    return executeSigned.data;
-  },
-
   getState (deviceAddress, smartLockerAddress) {
 
     // TODO: clear up nested catches

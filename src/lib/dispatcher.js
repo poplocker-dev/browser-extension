@@ -19,7 +19,13 @@ export function ethDispatch (message) {
         return account.address.current();
 
       case 'eth_sendTransaction':
-        return auth(message).then(tapToGasRelay).then(sendToNode).then(upNonce);
+        return account.address.locker().then((smartLockerAddress) => {
+          if (smartLockerAddress) {
+            return sendToWhisper;
+          } else {
+            return sendToNode;
+          }
+        }).then((f) => auth(message).then(f).then(upNonce));
 
       default:
         return sendToNode(message);
@@ -66,7 +72,7 @@ function sendToNode (message) {
   return eth.sendAsync(strip(message));
 }
 
-function tapToGasRelay (message) {
-  shh.post(message).then(console.log);
-  return Promise.resolve(message);
+function sendToWhisper (message) {
+  // TODO
+  alert(JSON.stringify(message, null, 4));
 }

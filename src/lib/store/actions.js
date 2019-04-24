@@ -66,3 +66,10 @@ export function toggleAdvanced () {
     type: 'TOGGLE_ADVANCED'
   }
 }
+
+export function updateSmartLocker (state) {
+  return {
+    type: 'SMARTLOCKER_UPDATE',
+    state
+  }
+}
