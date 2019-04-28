@@ -54,10 +54,13 @@ function decorate ({ method, id, jsonrpc }, result) {
 
 async function sendToNodeOrWhisper (message) {
   const addr = await account.address.locker();
-  if (addr)
-    return sendToWhisper(message);
-  else
-    return sendToNode(message).then(upNonce);
+  if (addr) {
+    const response = await sendToWhisper(message);
+    return upSmartLockerNonce().then(() => response);
+  } else {
+    const response = await sendToNode(message);
+    return upDeviceNonce().then(() => response);
+  }
 }
 
 function strip({ id, method, jsonrpc, params }) {
@@ -65,8 +68,12 @@ function strip({ id, method, jsonrpc, params }) {
   return { id, method, jsonrpc, params };
 }
 
-function upNonce (response) {
-  return account.nonce.up().then(account.nonce.up(1, true)).then(() => response);
+function upDeviceNonce () {
+  return account.nonce.up()
+}
+
+function upSmartLockerNonce () {
+  return account.nonce.up(1, true);
 }
 
 function sendToNode (message) {
