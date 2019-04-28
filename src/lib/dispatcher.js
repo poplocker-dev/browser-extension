@@ -5,7 +5,6 @@ import ShhRpc       from 'lib/rpc/whisper'
 import HttpProvider from 'ethjs-provider-http'
 import EthRpc       from 'ethjs-rpc'
 
-console.log('creation');
 const eth = new EthRpc(new HttpProvider(process.env.RPC_URL));
 const shh = new ShhRpc(process.env.SHH_URL, process.env.SYM_KEY);
 
@@ -19,9 +18,7 @@ export function ethDispatch (message) {
         return account.address.current();
 
       case 'eth_sendTransaction':
-        return tapToNodeOrWhisper().then(f => {
-          return auth(message).then(f).then(upNonce);
-        });
+        return auth(message).then(sendToNodeOrWhisper);
 
       default:
         return sendToNode(message);
@@ -55,13 +52,12 @@ function decorate ({ method, id, jsonrpc }, result) {
   return {...{ method, id, jsonrpc, result }};
 }
 
-async function tapToNodeOrWhisper () {
+async function sendToNodeOrWhisper (message) {
   const addr = await account.address.locker();
-  if (addr) {
-    return Promise.resolve(sendToWhisper);
-  } else {
-    return Promise.resolve(sendToNode);
-  }
+  if (addr)
+    return sendToWhisper(message);
+  else
+    return sendToNode(message).then(upNonce);
 }
 
 function strip({ id, method, jsonrpc, params }) {
