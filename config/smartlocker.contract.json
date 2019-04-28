@@ -8,11 +8,25 @@
           "type": "address"
         }
       ],
-      "name": "isKey",
+      "name": "isAuthorisedKey",
       "outputs": [
         {
           "name": "",
           "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getAuthorisedKeyCount",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
         }
       ],
       "payable": false,
@@ -25,9 +39,13 @@
         {
           "name": "key",
           "type": "address"
+        },
+        {
+          "name": "keyname",
+          "type": "string"
         }
       ],
-      "name": "addKey",
+      "name": "updateKey",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -45,6 +63,43 @@
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "key",
+          "type": "address"
+        },
+        {
+          "name": "keyname",
+          "type": "string"
+        }
+      ],
+      "name": "addKey",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "key",
+          "type": "address"
+        }
+      ],
+      "name": "getKey",
+      "outputs": [
+        {
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -103,11 +158,11 @@
     {
       "constant": true,
       "inputs": [],
-      "name": "getKeyCount",
+      "name": "getKeyList",
       "outputs": [
         {
           "name": "",
-          "type": "uint256"
+          "type": "address[]"
         }
       ],
       "payable": false,
@@ -119,6 +174,10 @@
         {
           "name": "key",
           "type": "address"
+        },
+        {
+          "name": "keyname",
+          "type": "string"
         }
       ],
       "payable": true,
@@ -129,6 +188,99 @@
       "payable": true,
       "stateMutability": "payable",
       "type": "fallback"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "key",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "keyname",
+          "type": "string"
+        }
+      ],
+      "name": "KeyAdded",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "key",
+          "type": "address"
+        }
+      ],
+      "name": "KeyRemoved",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "key",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "keyname",
+          "type": "string"
+        }
+      ],
+      "name": "KeyUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "value",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "data",
+          "type": "bytes"
+        },
+        {
+          "indexed": false,
+          "name": "nonce",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "gasPrice",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "gasLimit",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "result",
+          "type": "bytes"
+        }
+      ],
+      "name": "SignedExecuted",
+      "type": "event"
     }
   ]
 }
