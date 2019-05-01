@@ -50,9 +50,9 @@ const smartLocker = {
         smartLockerRegistrarContract.getName(smartLockerAddress).then(name => {
           if (name) {
             const smartLockerContract = new Contract(smartLockerAddress, smartLockerABI, provider);
-            smartLockerContract.isKey(deviceAddress).then(isKey => {
+            smartLockerContract.isAuthorisedKey(deviceAddress).then(isKey => {
               if (isKey) {
-                smartLockerContract.getKeyCount().then(keyCount => {
+                smartLockerContract.getAuthorisedKeyCount().then(keyCount => {
 
                   lockerState = {
                     ...lockerState,
