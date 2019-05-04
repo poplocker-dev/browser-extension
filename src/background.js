@@ -1,15 +1,10 @@
-import { sign, noncify }              from 'lib/tx'
-import { dispatch }                   from 'lib/dispatcher'
-import { badge }                      from 'lib/helpers'
-import { account, save, transaction } from 'lib/storage'
+import { sign, noncify }                          from 'lib/tx'
+import { dispatch }                               from 'lib/dispatcher'
+import { badge }                                  from 'lib/helpers'
+import { initialize, save, account, transaction } from 'lib/storage'
 
 chrome.runtime.onInstalled.addListener(({ reason }) => {
-  if (reason == 'install')
-    save({
-      deviceAddress: null,
-      pending: [],
-      deviceNonce: "0x0"
-    });
+  if (reason == 'install') initialize();
 });
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
