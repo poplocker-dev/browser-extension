@@ -34,6 +34,7 @@ export function initialize () {
     smartLockerAddress: null,
     pending: [],
     deviceNonce: "0x0",
+    deviceNonceTimeStamp: 0,
     smartLockerNonce: "0x0"
   });
 }
@@ -105,15 +106,16 @@ export const account = {
     up (number=1, smartLocker=false) {
       return this.current(smartLocker).then(current => {
         const nonce = toHex(parseInt(current) + number);
-        return smartLocker? save({ smartLockerNonce: nonce }) : save({ deviceNonce: nonce });
+        return smartLocker? save({ smartLockerNonce: nonce }) : save({ deviceNonce: nonce, deviceNonceTimeStamp: Date.now() });
       })
     },
 
     async track (remote, smartLocker=false) {
       const local  = await this.current(smartLocker);
+      const timeStamp = await load('deviceNonceTimeStamp');
 
-      if (parseInt(remote) > parseInt(local)) {
-        smartLocker? save({ smartLockerNonce: remote }) : save({ deviceNonce: remote });
+      if (parseInt(remote) > parseInt(local) || Date.now() - timeStamp > 300000) {
+        smartLocker? save({ smartLockerNonce: remote }) : save({ deviceNonce: remote, deviceNonceTimeStamp: Date.now() });
         return remote;
       }
       else return local;
