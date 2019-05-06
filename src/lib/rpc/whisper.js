@@ -1,7 +1,7 @@
-import Web3        from 'web3'
+import Web3 from 'web3'
 
 class ShhRpc {
-  constructor (url, symKey) {
+  constructor (url, topic) {
     // TODO: no magic numbers!
     this.params = {
       ttl: 300,
@@ -9,23 +9,23 @@ class ShhRpc {
       powTarget: 2.01,
       powTime: 100
     }
-    this.symKey   = symKey;
-    this.symKeyID = null;
     this.web3     = new Web3(url, null);
+    this.topic    = topic;
+    this.symKeyID = null;
   }
 
   async post (message) {
-    const data     = JSON.stringify(message);
     const symKeyID = this.symKeyID;
+    const topic    = this.web3.utils.toHex(this.topic);
+    const data     = JSON.stringify(message);
     const payload  = this.web3.utils.asciiToHex(data);
-    const topic    = this.web3.utils.toHex('SLGR');
 
-    if (this.symKeyID) {
+    if (symKeyID) {
       return this.web3.shh.post({ ...this.params, symKeyID, topic, payload });
     }
     else {
       try {
-        this.symKeyID = await this.web3.shh.addSymKey(this.symKey);
+        this.symKeyID = await this.web3.shh.generateSymKeyFromPassword(this.topic);
         this.post(message);
       } catch(e) {
         return Promise.reject(e)
@@ -35,4 +35,3 @@ class ShhRpc {
 }
 
 export default ShhRpc;
-
