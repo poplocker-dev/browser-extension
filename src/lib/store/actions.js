@@ -21,10 +21,11 @@ export function txInfoFailed (message) {
   }
 }
 
-export function updatePricing (pricing) {
+export function updatePricing (pricing, isSmartLocker) {
   return {
     type: 'UPDATE_PRICING',
-    pricing
+    pricing,
+    isSmartLocker
   }
 }
 

@@ -1,6 +1,7 @@
 import React             from 'react'
 import Range             from './range'
 import { connect }       from 'react-redux'
+import { account }       from 'lib/storage'
 import { updatePricing } from 'lib/store/actions'
 
 class Sliders extends React.Component {
@@ -8,15 +9,16 @@ class Sliders extends React.Component {
     super(props);
   }
 
-  componentDidUpdate() {
+  async componentDidUpdate() {
 
     if (!this.base) {
       this.base     = this.props.tx.pricing;
       this.dispatch = this.props.dispatch;
 
       const currentGasPrice = this.base.gasPrice*2;
-      this.setState({ minimumGasPrice: this.base.gasPrice, currentGasPrice });
-      this.dispatch(updatePricing([this.base.balance, currentGasPrice, this.base.gasEstimate]));
+      const isSmartLocker = await account.address.locker();
+      this.setState({ minimumGasPrice: this.base.gasPrice, currentGasPrice, isSmartLocker });
+      this.dispatch(updatePricing([this.base.balance, currentGasPrice, this.base.gasEstimate], isSmartLocker));
     }
   }
 
@@ -48,7 +50,7 @@ class Sliders extends React.Component {
 
         currentGasPrice: value
       }, () => {
-        this.dispatch(updatePricing([this.base.balance, this.state.currentGasPrice, this.base.gasEstimate]));
+        this.dispatch(updatePricing([this.base.balance, this.state.currentGasPrice, this.base.gasEstimate], this.state.isSmartLocker));
       });
     }
   }

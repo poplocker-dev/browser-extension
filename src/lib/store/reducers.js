@@ -29,7 +29,8 @@ function firstPending (state = null, action) {
 function pricing (state = null, action) {
   if (action.type == 'UPDATE_PRICING') {
     const [balance, gasPrice, gasEstimate] = action.pricing.map(toBN);
-    return { balance, gasPrice, gasEstimate, fee: gasPrice.mul(gasEstimate) }
+    const overhead = action.isSmartLocker ? 53000 : 0;
+    return { balance, gasPrice, gasEstimate, fee: gasPrice.mul(gasEstimate.add(toBN(overhead))) }
   }
   else return state;
 }
