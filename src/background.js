@@ -42,18 +42,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
         // TODO: dispatcher for transactions
       case 'TX_SIGN':
-        // TODO: remove deviceAddress() when gas relayers
-        account.address.all().then(([deviceAddress, smartLockerAddress]) => {
+        account.address.locker().then((smartLockerAddress) => {
           if (smartLockerAddress) {
-            // TODO: ultimately the tx will be sent to gas relayers, however for now send through web3
-            // TODO: remove this device noncify() when gas relayers
-            noncify(message.tx, message.blockNonce).then(tx => {
-              smartLocker.getNextNonce(smartLockerAddress).then((smartLockerNonce) => {
-                Promise.all([account.decrypt(message.secret), account.nonce.track(smartLockerNonce, true)])
-                       .then(([sk, smartLockerNonce]) => signMetaTx(tx, sk, deviceAddress, smartLockerAddress, smartLockerNonce))
-                       .then(sendResponse)
-                       .catch(sendResponse)
-              });
+            smartLocker.getNextNonce(smartLockerAddress).then((smartLockerNonce) => {
+              Promise.all([account.decrypt(message.secret), account.nonce.track(smartLockerNonce, true)])
+                     .then(([sk, smartLockerNonce]) => signMetaTx(message.tx, sk, smartLockerAddress, smartLockerNonce))
+                     .then(sendResponse)
+                     .catch(sendResponse)
             });
           } else {
             noncify(message.tx, message.blockNonce).then(tx => {

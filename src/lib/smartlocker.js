@@ -34,14 +34,6 @@ const smartLocker = {
     return metaTx;
   },
 
-  // TODO: remove this when gas relayers
-  encodeExecuteSigned (metaTx) {
-    const executeSigned = new Interface(smartLockerABI).functions.executeSigned(
-      metaTx.to, metaTx.value, metaTx.data, metaTx.gasPrice, metaTx.gasLimit, metaTx.signature
-    );
-    return executeSigned.data;
-  },
-
   getState (deviceAddress, smartLockerAddress) {
 
     // TODO: clear up nested catches
@@ -58,9 +50,9 @@ const smartLocker = {
         smartLockerRegistrarContract.getName(smartLockerAddress).then(name => {
           if (name) {
             const smartLockerContract = new Contract(smartLockerAddress, smartLockerABI, provider);
-            smartLockerContract.isKey(deviceAddress).then(isKey => {
+            smartLockerContract.isAuthorisedKey(deviceAddress).then(isKey => {
               if (isKey) {
-                smartLockerContract.getKeyCount().then(keyCount => {
+                smartLockerContract.getAuthorisedKeyCount().then(keyCount => {
 
                   lockerState = {
                     ...lockerState,
