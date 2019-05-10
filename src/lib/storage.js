@@ -3,6 +3,37 @@ import Encryptor   from './workers/encryptor.worker.js'
 import Decryptor   from './workers/decryptor.worker.js'
 import { toHex }   from 'lib/helpers'
 
+const collection = function (name) {
+  return {
+    [name] () {
+      return load(name);
+    },
+
+    shift () {
+      return this[name].then(items => {
+        save({ [name]: items.slice(1) });
+        return items[0];
+      })
+    },
+
+    add (item, adder) {
+      return this[name]().then(items => {
+        if (adder)
+          save({ [name]: [...(items || []), adder.call(item)] });
+        else {
+          save({ [name]: [...(items || []), item] });
+        }
+      })
+    },
+
+    size() {
+      return this[name].then(items => {
+        return items.length;
+      })
+    }
+  }
+}
+
 export function save (payload) {
   return new Promise((resolve, reject) => {
     try {
@@ -85,7 +116,7 @@ export const account = {
     const sk = keys.getPrivateKeyString();
     const deviceAddress = keys.getChecksumAddressString();
     return this.encrypt(sk, secret)
-               .then(data => {return {deviceAddress, ...data}})
+      .then(data => {return {deviceAddress, ...data}})
   },
 
   encrypt (sk, secret) {
@@ -122,4 +153,9 @@ export const account = {
       });
     });
   }
+}
+
+export const connection = {
+  ...collection('connections'),
+  authorized: collection('authorizations')
 }

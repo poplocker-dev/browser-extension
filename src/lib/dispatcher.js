@@ -1,5 +1,6 @@
 import { account }       from 'lib/storage'
 import { auth }          from 'lib/tx'
+import { connect }       from 'lib/policy'
 import * as HttpProvider from 'ethjs-provider-http'
 import * as EthRPC       from 'ethjs-rpc'
 
@@ -10,15 +11,15 @@ export function dispatch (message) {
     switch (message.method) {
 
       // non-private by default for now
-      case 'eth_requestAccounts':
-      case 'eth_accounts':
-        return account.address();
+    case 'eth_requestAccounts':
+    case 'eth_accounts':
+      return connect();
 
-      case 'eth_sendTransaction':
-        return auth(message).then(sendToNode).then(upNonce);
+    case 'eth_sendTransaction':
+      return auth(message).then(sendToNode).then(upNonce);
 
-      default:
-        return sendToNode(message);
+    default:
+      return sendToNode(message);
     }
   }
   return result().then(r => decorate(message, r));
