@@ -6,7 +6,7 @@ import HttpProvider from 'ethjs-provider-http'
 import EthRpc       from 'ethjs-rpc'
 
 const eth = new EthRpc(new HttpProvider(process.env.RPC_URL));
-const shh = new ShhRpc(process.env.SHH_URL, process.env.SYM_KEY);
+const shh = new ShhRpc(process.env.SHH_URL, process.env.GAS_RELAY_TOPIC);
 
 export function ethDispatch (message) {
   const result = () => {
