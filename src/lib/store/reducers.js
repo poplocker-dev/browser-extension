@@ -19,6 +19,14 @@ function firstPending (state = null, action) {
     return state;
 }
 
+function connections (state = [], action) {
+  if (action.type == 'ENQUEUE_CONNS') {
+    return action.connections;
+  }
+  else
+    return state;
+}
+
 function pricing (state = null, action) {
   if (action.type == 'UPDATE_PRICING') {
     const [balance, gasPrice, gasEstimate] = action.pricing.map(toBN);
@@ -36,16 +44,18 @@ function advancedMode (state = false, action) {
 
 function page (state = 'new_account', action) {
   switch (action.type) {
-    case 'ACCOUNT_GEN':
-      return 'loading';
-    case 'ACCOUNT_READY':
-      return 'success';
-    case 'ACCOUNT_FAILED':
-      return 'failure';
-    case 'ENQUEUE_TXS':
-      return 'authorize';
-    default:
-      return state;
+  case 'ACCOUNT_GEN':
+    return 'loading';
+  case 'ACCOUNT_READY':
+    return 'success';
+  case 'ACCOUNT_FAILED':
+    return 'failure';
+  case 'ENQUEUE_TXS':
+    return 'authorize';
+  case 'ENQUEUE_CONNS':
+    return 'connect';
+  default:
+    return state;
   }
 }
 

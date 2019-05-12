@@ -156,6 +156,6 @@ export const account = {
 }
 
 export const connection = {
-  ...collection('connections'),
-  authorized: collection('authorizations')
+  requests: collection('list'),
+  authorized: collection('list')
 }

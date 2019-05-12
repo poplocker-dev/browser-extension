@@ -1,18 +1,26 @@
-import BigNumber                from 'bignumber.js'
-import { createStore }          from 'redux'
-import { store }                from 'lib/store'
-import { reducers }             from 'lib/store/reducers'
-import { enqueuePending }       from 'lib/store/actions'
-import { account, transaction } from 'lib/storage'
+import BigNumber              from 'bignumber.js'
+import { createStore }        from 'redux'
+import { store }              from 'lib/store'
+import { reducers }           from 'lib/store/reducers'
+
+import { enqueuePending,
+         enqueueConnections } from 'lib/store/actions'
+
+import { account,
+         transaction,
+         connection }         from 'lib/storage'
 
 export async function initOrRedirect (render) {
-  const [address] = await account.address();
-  const pending   = await transaction.pending();
+  const [address]  = await account.address();
+  const pending    = await transaction.pending();
+  const connectRqs = await connection.requests.list();
 
   if (address && pending.length == 0)
     chrome.tabs.create({ 'url': process.env.POPLOCKER_WALLET_URL });
   else if (address && pending.length > 0)
     store.dispatch(enqueuePending(pending));
+  else if (address && connectRqs.length > 0)
+    store.dispatch(enqueueConnections(connectRqs));
 
   return render(store);
 }
