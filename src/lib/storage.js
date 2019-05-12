@@ -5,19 +5,19 @@ import { toHex }   from 'lib/helpers'
 
 const collection = function (name) {
   return {
-    [name] () {
+    get () {
       return load(name);
     },
 
     shift () {
-      return this[name].then(items => {
+      return this.get().then(items => {
         save({ [name]: items.slice(1) });
         return items[0];
       })
     },
 
     add (item, adder) {
-      return this[name]().then(items => {
+      return this.get().then(items => {
         if (adder)
           save({ [name]: [...(items || []), adder.call(item)] });
         else {
@@ -27,7 +27,7 @@ const collection = function (name) {
     },
 
     size() {
-      return this[name].then(items => {
+      return this.get().then(items => {
         return items.length;
       })
     }
@@ -156,6 +156,6 @@ export const account = {
 }
 
 export const connection = {
-  requests: collection('list'),
-  authorized: collection('list')
+  requests: collection('requests'),
+  authorized: collection('authorized')
 }
