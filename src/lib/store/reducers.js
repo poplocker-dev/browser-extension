@@ -83,6 +83,6 @@ function noFundsError (state = null, action) {
 const current  = reduceReducers(pending, firstPending);
 const tx       = combineReducers({ pricing, pending, current });
 const errors   = combineReducers({ txInfo: txInfoError, txSign: txSignError, noFunds: noFundsError });
-const reducers = combineReducers({ page, tx, errors, advancedMode });
+const reducers = combineReducers({ page, tx, errors, advancedMode, connections });
 
 export { reducers };

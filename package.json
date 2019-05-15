@@ -48,6 +48,7 @@
     "ethjs-rpc": "^0.2.0",
     "ethjs-signer": "^0.1.1",
     "history": "^4.7.2",
+    "jazzicon": "^1.5.0",
     "number-to-bn": "^1.7.0",
     "parse-domain": "^2.1.7",
     "postcss-nested": "^4.1.1",

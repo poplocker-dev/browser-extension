@@ -17,6 +17,9 @@ let config = {
     path: __dirname + '/dist',
     filename: '[name].js'
   },
+  node: {
+    fs: 'empty'
+  },
   module: {
     rules: [
       {
@@ -107,7 +110,10 @@ let config = {
       chunks: ['options']
     }),
     new Dotenv()
-  ]
+  ],
+  externals: {
+    canvas: "canvas"
+  }
 };
 
 module.exports = (env, argv) => {
@@ -116,4 +122,3 @@ module.exports = (env, argv) => {
   }
   return config;
 };
-

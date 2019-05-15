@@ -39,4 +39,4 @@ class AuthorizeView extends React.Component {
   }
 }
 
-export default connect(({ tx }) =>  ({ current: tx.current }))(AuthorizeView);
+export default connect(({ tx }) => ({ current: tx.current }))(AuthorizeView);

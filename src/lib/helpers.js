@@ -11,16 +11,18 @@ import { account,
          connection }         from 'lib/storage'
 
 export async function initOrRedirect (render) {
-  const [address]  = await account.address();
-  const pending    = await transaction.pending();
-  const connectRqs = await connection.requests.list();
+  const [address] = await account.address();
+  const pending   = await transaction.pending();
+  const connRqs   = await connection.requests.get();
 
-  if (address && pending.length == 0)
-    chrome.tabs.create({ 'url': process.env.POPLOCKER_WALLET_URL });
-  else if (address && pending.length > 0)
+  // if (address && pending.length == 0)
+  //   chrome.tabs.create({ 'url': process.env.POPLOCKER_WALLET_URL });
+
+  if (address && pending.length > 0)
     store.dispatch(enqueuePending(pending));
-  else if (address && connectRqs.length > 0)
-    store.dispatch(enqueueConnections(connectRqs));
+
+  else if (address && connRqs.length > 0)
+    store.dispatch(enqueueConnections(connRqs));
 
   return render(store);
 }
