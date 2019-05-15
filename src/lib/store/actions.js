@@ -73,3 +73,10 @@ export function updateSmartLocker (state) {
     state
   }
 }
+
+export function setToLocker (toLocker) {
+  return {
+    type: 'SET_TO_LOCKER',
+    toLocker
+  }
+}

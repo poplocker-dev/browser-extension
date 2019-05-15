@@ -63,7 +63,7 @@ const smartLocker = {
                   }
 
                   if (keyCount < 2) {
-                    resolve({...lockerState, onlyKey: true});
+                    resolve({...lockerState, onlyKey: true})
                   } else {
                     resolve(lockerState);
                   }
@@ -76,6 +76,10 @@ const smartLocker = {
         }).catch(() => resolve({ status: 'error' }))
       }
     })
+  },
+
+  getName (address) {
+    return smartLockerRegistrarContract.getName(address)
   }
 }
 

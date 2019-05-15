@@ -66,6 +66,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         transaction.shift()
                    .then(sendResponse);
         break;
+
+      case 'SMARTLOCKER_NAME':
+        smartLocker.getName(message.address)
+          .then(sendResponse)
+          .catch(sendResponse)
+        break;
     }
     return true;
   }

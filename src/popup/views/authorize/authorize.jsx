@@ -6,8 +6,12 @@ import TxInfo         from './info'
 import AccountBalance from './balance'
 import Locker         from './locker'
 
-import { getTxPricing }                           from 'lib/rpc/eth_node'
-import { updatePricing, txInfoFailed, revalueTx } from 'lib/store/actions'
+import { getTxPricing }       from 'lib/rpc/eth_node'
+import { getSmartLockerName } from 'lib/rpc/locker'
+import { updatePricing,
+         txInfoFailed,
+         revalueTx,
+         setToLocker }        from 'lib/store/actions'
 
 import './authorize.css'
 
@@ -24,6 +28,15 @@ class AuthorizeView extends React.Component {
 
       if (this.props.isLockerTransfer)
         this.props.dispatch(revalueTx(this.props.pricing.fee, this.props.pricing.balance));
+
+      if (this.props.current.params.to) {
+        try {
+          const toLocker = await getSmartLockerName(this.props.current.params.to);
+          if (toLocker)
+            setTimeout(() => this.props.dispatch(setToLocker(toLocker)), 2000);
+        } catch {
+        }
+      }
     }
     catch(e) {
       console.error(e.message);
