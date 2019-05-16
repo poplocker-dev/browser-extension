@@ -28,6 +28,14 @@ export function updatePricing (pricing) {
   }
 }
 
+export function revalueTx (fee, value) {
+  return {
+    type: 'REVALUE_TX',
+    fee,
+    value
+  }
+}
+
 export function enqueuePending (pending) {
   return { type: 'ENQUEUE_TXS', pending };
 }

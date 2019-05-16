@@ -21,7 +21,6 @@ class AuthorizeView extends React.Component {
       this.props.dispatch(updatePricing(pricing.map(i => i.result)));
     }
     catch(e) {
-      console.error(e.message);
       this.props.dispatch(txInfoFailed('Transaction will fail'));
     }
   }
