@@ -7,6 +7,7 @@ import AccountBalance from './balance'
 import Locker         from './locker'
 
 import { getTxPricing }                           from 'lib/rpc/eth_node'
+import { account }                                from 'lib/storage'
 import { updatePricing, txInfoFailed, revalueTx } from 'lib/store/actions'
 
 import './authorize.css'
@@ -19,8 +20,10 @@ class AuthorizeView extends React.Component {
 
   async componentDidMount () {
     try {
-      const pricing = await getTxPricing(this.props.current);
-      this.props.dispatch(updatePricing(pricing.map(i => i.result)));
+      const pricing = (await getTxPricing(this.props.current)).map(i => i.result);
+      const overhead = await account.address.locker() ? 53000 : 0;
+      pricing.push(overhead);
+      this.props.dispatch(updatePricing(pricing));
 
       if (this.props.isLockerTransfer)
         this.props.dispatch(revalueTx(this.props.pricing.fee, this.props.pricing.balance));
