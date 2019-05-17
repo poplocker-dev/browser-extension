@@ -16,7 +16,7 @@ class Sliders extends React.Component {
 
       const currentGasPrice = this.base.gasPrice*2;
       this.setState({ minimumGasPrice: this.base.gasPrice, currentGasPrice });
-      this.dispatch(updatePricing([this.base.balance, currentGasPrice, this.base.gasEstimate]));
+      this.dispatch(updatePricing([this.base.balance, currentGasPrice, this.base.gasEstimate, this.base.overhead]));
     }
   }
 
@@ -48,7 +48,7 @@ class Sliders extends React.Component {
 
         currentGasPrice: value
       }, () => {
-        this.dispatch(updatePricing([this.base.balance, this.state.currentGasPrice, this.base.gasEstimate]));
+        this.dispatch(updatePricing([this.base.balance, this.state.currentGasPrice, this.base.gasEstimate, this.base.overhead]));
       });
     }
   }

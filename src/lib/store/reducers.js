@@ -31,8 +31,8 @@ function firstPending (state = null, action) {
 
 function pricing (state = null, action) {
   if (action.type == 'UPDATE_PRICING') {
-    const [balance, gasPrice, gasEstimate] = action.pricing.map(toBN);
-    return { balance, gasPrice, gasEstimate, fee: gasPrice.mul(gasEstimate) }
+    const [balance, gasPrice, gasEstimate, overhead] = action.pricing.map(toBN);
+    return { balance, gasPrice, gasEstimate, overhead, fee: gasPrice.mul(gasEstimate.add(overhead)) }
   }
   else
     return state;
