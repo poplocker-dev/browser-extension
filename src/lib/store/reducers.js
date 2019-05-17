@@ -14,13 +14,16 @@ function pending (state = [], action) {
 }
 
 function firstPending (state = null, action) {
-  if (action.type == 'ENQUEUE_TXS')
+  if (action.type == 'ENQUEUE_TXS') {
     return (state.length > 0) ? state[0] : null;
 
-  if (action.type == 'REVALUE_TX' && state) {
+  } else if (action.type == 'REVALUE_TX' && state) {
     const value = toBN(action.value).sub(toBN(action.fee));
     const params = { ...state.params, value: toHex(value.lt('0') ? '0' : value) };
     return { ...state, params };
+
+  } else if (action.type == 'SET_TO_LOCKER' && state) {
+    return { ...state, toLocker: action.toLocker };
   }
   else
     return state;
@@ -31,7 +34,8 @@ function pricing (state = null, action) {
     const [balance, gasPrice, gasEstimate, overhead] = action.pricing.map(toBN);
     return { balance, gasPrice, gasEstimate, overhead, fee: gasPrice.mul(gasEstimate.add(overhead)) }
   }
-  else return state;
+  else
+    return state;
 }
 
 function advancedMode (state = false, action) {
