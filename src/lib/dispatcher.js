@@ -10,11 +10,10 @@ export function dispatch (message) {
   const result = () => {
     switch (message.method) {
 
-      // non-private by default for now
     case 'eth_requestAccounts':
-    case 'eth_accounts':
       return connect(message.origin);
-
+    case 'eth_accounts':
+      return account.authorizedAddress(message.origin);
     case 'eth_sendTransaction':
       return auth(message).then(sendToNode).then(upNonce);
 

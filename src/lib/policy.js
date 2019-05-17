@@ -7,28 +7,30 @@ export async function connect (request) {
   const rqsList  = await requests.get();
   const address  = await account.address();
 
+  if ( (authList.indexOf(request) != -1)) {
+    return Promise.resolve(address)
+  }
+
   return new Promise((resolve, reject) => {
-    if (authList.indexOf(request) != -1) {
-      resolve(address);
-    }
-    if (address.length == 0) {
-      resolve(address);
-    }
-    else if (rqsList.indexOf(request) == -1) {
-      chrome.runtime.onMessage.addListener(function handleConnect(message) {
-        if ( message.type == 'CONNECT_DAPP' && message.origin == request.origin) {
+    chrome.runtime.onMessage.addListener(function handleConnect(message) {
+      if ( message.type == 'CONNECT_DAPP' && message.request == request) {
 
-          chrome.runtime.onMessage.removeListener(handleConnect);
-          authorized.add(requests.shift());
-          resolve(address);
+        requests.shift().then(rq => {
+          authorized.add(rq).then(() => {
+            chrome.runtime.onMessage.removeListener(handleConnect);
+            resolve(address);
+          });
+        });
 
-        } else if ( message.type == 'REJECT_DAPP' && message.origin == request.origin) {
+      }
+      else if ( message.type == 'REJECT_DAPP' && message.request == request) {
+        requests.shift();
+        chrome.runtime.onMessage.removeListener(handleConnect);
+        reject(new Error('Account connection rejected'));
+      }
+    });
 
-          chrome.runtime.onMessage.removeListener(handleConnect);
-          reject(new Error('Account connection rejected'));
-        }
-      });
+    if (rqsList.indexOf(request) == -1)
       requests.add(request);
-    }
-  })
+  });
 }
