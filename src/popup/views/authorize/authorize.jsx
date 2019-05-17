@@ -24,9 +24,6 @@ class AuthorizeView extends React.Component {
       const overhead = await account.address.locker() ? 53000 : 0;
       pricing.push(overhead);
       this.props.dispatch(updatePricing(pricing));
-
-      if (this.props.isLockerTransfer)
-        this.props.dispatch(revalueTx(this.props.pricing.fee, this.props.pricing.balance));
     }
     catch(e) {
       this.props.dispatch(txInfoFailed('Transaction will fail'));
@@ -49,8 +46,7 @@ class AuthorizeView extends React.Component {
 
 const mapStore = ({ tx }) => ({
   current: tx.current,
-  pricing: tx.pricing,
-  isLockerTransfer: tx.current.params.to == process.env.REGISTRAR_ADDRESS
+  pricing: tx.pricing
 });
 
 export default connect(mapStore)(AuthorizeView);
