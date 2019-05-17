@@ -18,11 +18,12 @@ export async function initOrRedirect (render) {
   // if (address && pending.length == 0)
   //   chrome.tabs.create({ 'url': process.env.POPLOCKER_WALLET_URL });
 
-  if (address && pending.length > 0)
-    store.dispatch(enqueuePending(pending));
-
-  else if (address && connRqs.length > 0)
+  if (address && connRqs.length > 0) {
     store.dispatch(enqueueConnections(connRqs));
+  }
+
+  else if (address && pending.length > 0)
+    store.dispatch(enqueuePending(pending));
 
   return render(store);
 }
@@ -34,6 +35,11 @@ export function initOptions (render) {
 export const badge = {
   set info (value) {
     this.color = '#386BE1';
+    this.text = `${value}`;
+  },
+
+  set rqs (value) {
+    this.color = '#f48f42';
     this.text = `${value}`;
   },
 

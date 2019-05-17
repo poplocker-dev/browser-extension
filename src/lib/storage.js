@@ -6,7 +6,7 @@ import { toHex }   from 'lib/helpers'
 const collection = function (name) {
   return {
     get () {
-      return load(name);
+      return load(name).then(items => items || []);
     },
 
     shift () {

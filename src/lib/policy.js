@@ -2,14 +2,19 @@ import { account, connection } from 'lib/storage'
 
 export async function connect (request) {
   const { authorized, requests } = connection;
+
   const authList = await authorized.get();
+  const rqsList  = await requests.get();
   const address  = await account.address();
 
   return new Promise((resolve, reject) => {
     if (authList.indexOf(request) != -1) {
       resolve(address);
     }
-    else {
+    if (address.length == 0) {
+      resolve(address);
+    }
+    else if (rqsList.indexOf(request) == -1) {
       chrome.runtime.onMessage.addListener(function handleConnect(message) {
         if ( message.type == 'CONNECT_DAPP' && message.origin == request.origin) {
 
