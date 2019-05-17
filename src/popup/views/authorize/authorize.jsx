@@ -29,7 +29,6 @@ class AuthorizeView extends React.Component {
         this.props.dispatch(revalueTx(this.props.pricing.fee, this.props.pricing.balance));
     }
     catch(e) {
-      console.error(e.message);
       this.props.dispatch(txInfoFailed('Transaction will fail'));
     }
   }
