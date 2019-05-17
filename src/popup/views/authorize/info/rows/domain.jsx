@@ -4,10 +4,10 @@ import parseDomain   from 'parse-domain'
 
 const Domain = ({ tx, advancedMode }) => (
   <div className="row domain">
-    <span className="row-label">{advancedMode? 'To:' : 'From:'}</span>
+    <span className="row-label">{tx.current.toLocker || advancedMode? 'To:' : 'From:'}</span>
     <Preloader value={tx.current}>
       <div className="amount ellipsis" alt={`from ${domain(tx)}`}>
-        { advancedMode? recipient(tx) : domain(tx) }
+        { advancedMode? recipient(tx) : tx.current.toLocker || domain(tx) }
       </div>
     </Preloader>
   </div>
@@ -19,9 +19,8 @@ const recipient = (tx) => (
   </span>
 )
 
-
-const domain = (transaction) => {
-  const origin = transaction.current.origin;
+const domain = (tx) => {
+  const origin = tx.current.origin;
   const parts  = parseDomain(origin, { customTlds: /localhost/ });
   const parsed = Object.values(parts)
                        .filter(i => i != "")
