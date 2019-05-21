@@ -16,8 +16,8 @@ const smartLocker = {
 
   createMetaTx (rawTx, sk, smartLockerAddress, smartLockerNonce) {
     const metaTx = {
-      from: smartLockerAddress || '0x0',
-      to: rawTx.to || '0x0',
+      from: smartLockerAddress || '0x0000000000000000000000000000000000000000',
+      to: rawTx.to || '0x0000000000000000000000000000000000000000',
       value: rawTx.value || '0x0',
       data: rawTx.data || '0x0',
       nonce: smartLockerNonce || '0x0',
