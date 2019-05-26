@@ -29,10 +29,17 @@ function firstPending (state = null, action) {
     return state;
 }
 
+function balance (state = null, action) {
+  if (action.type == 'UPDATE_BALANCE')
+    return toBN(action.balance);
+  else
+    return state;
+}
+
 function pricing (state = null, action) {
   if (action.type == 'UPDATE_PRICING') {
-    const [balance, gasPrice, gasEstimate, overhead] = action.pricing.map(toBN);
-    return { balance, gasPrice, gasEstimate, overhead, fee: gasPrice.mul(gasEstimate.add(overhead)) }
+    const [gasPrice, gasEstimate, overhead] = action.pricing.map(toBN);
+    return { gasPrice, gasEstimate, overhead, fee: gasPrice.mul(gasEstimate.add(overhead)) }
   }
   else
     return state;
@@ -90,7 +97,7 @@ function locker(state = { status: null }, action) {
 }
 
 const current  = reduceReducers(pending, firstPending);
-const tx       = combineReducers({ pricing, pending, current });
+const tx       = combineReducers({ balance, pricing, current });
 const errors   = combineReducers({ txInfo: txInfoError, txSign: txSignError, noFunds: noFundsError });
 const reducers = combineReducers({ page, tx, errors, advancedMode, locker });
 

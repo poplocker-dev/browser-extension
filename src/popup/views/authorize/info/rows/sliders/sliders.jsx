@@ -4,8 +4,9 @@ import { updatePricing, revalueTx } from 'lib/store/actions'
 
 class Sliders extends React.Component {
   componentDidUpdate() {
-    if (!this.base) {
+    if (!this.base && this.props.tx.pricing && this.props.tx.balance) {
       this.base     = this.props.tx.pricing;
+      this.balance  = this.props.tx.balance;
       this.dispatch = this.props.dispatch;
 
       this.setState({ minimumGasPrice: this.base.gasPrice }, () => {
@@ -42,9 +43,9 @@ class Sliders extends React.Component {
 
   updateGasPrice (gasPrice) {
     this.setState({ gasPrice }, () => {
-      this.dispatch(updatePricing([this.base.balance, this.state.gasPrice, this.base.gasEstimate, this.base.overhead]));
+      this.dispatch(updatePricing([this.state.gasPrice, this.base.gasEstimate, this.base.overhead]));
       if (this.props.tx.current.params.sendAll)
-        this.dispatch(revalueTx(this.state.gasPrice*(+this.base.gasEstimate + +this.base.overhead), this.base.balance));
+        this.dispatch(revalueTx(this.state.gasPrice*(+this.base.gasEstimate + +this.base.overhead), this.balance));
     });
   }
 }

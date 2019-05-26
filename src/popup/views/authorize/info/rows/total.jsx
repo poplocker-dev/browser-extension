@@ -32,11 +32,9 @@ class TransactionTotal extends React.Component {
   }
 
   noFunds (tx) {
-    if (tx.pricing) {
-      const { balance, fee } = tx.pricing;
+    if (tx.balance && tx.pricing) {
       const value = toBN(tx.current.params.value || 0);
-
-      return balance.lt(value.add(fee));
+      return tx.balance.lt(value.add(tx.pricing.fee));
     }
     else return false;
   }

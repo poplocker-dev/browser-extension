@@ -4,7 +4,7 @@ import { toHex }             from 'lib/helpers'
 import { signTx, cancelTx }  from 'lib/rpc/transaction'
 import { Button, PassField } from '@poplocker/react-ui'
 
-import { getLatestNonce } from 'lib/rpc/eth_node'
+import { getLatestNonce }               from 'lib/rpc/eth_node'
 import { toggleAdvanced, txSignFailed } from 'lib/store/actions'
 
 import './sign_form.css'
