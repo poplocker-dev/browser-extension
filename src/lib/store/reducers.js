@@ -26,12 +26,20 @@ function firstPending (state = null, action) {
     return state;
 }
 
+function balance (state = null, action) {
+  if (action.type == 'UPDATE_BALANCE')
+    return toBN(action.balance);
+  else
+    return state;
+}
+
 function pricing (state = null, action) {
   if (action.type == 'UPDATE_PRICING') {
-    const [balance, gasPrice, gasEstimate] = action.pricing.map(toBN);
-    return { balance, gasPrice, gasEstimate, fee: gasPrice.mul(gasEstimate) }
+    const [gasPrice, gasEstimate] = action.pricing.map(toBN);
+    return { gasPrice, gasEstimate, fee: gasPrice.mul(gasEstimate) }
   }
-  else return state;
+  else
+    return state;
 }
 
 function advancedMode (state = false, action) {
@@ -78,7 +86,7 @@ function noFundsError (state = null, action) {
 }
 
 const current  = reduceReducers(pending, firstPending);
-const tx       = combineReducers({ pricing, pending, current });
+const tx       = combineReducers({ balance, pricing, current });
 const errors   = combineReducers({ txInfo: txInfoError, txSign: txSignError, noFunds: noFundsError });
 const reducers = combineReducers({ page, tx, errors, advancedMode });
 

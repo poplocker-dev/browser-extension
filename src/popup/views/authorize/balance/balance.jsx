@@ -14,7 +14,7 @@ const Balance = ({ balance }) => (
 );
 
 const mapStore = ({ tx }) => ({
-  balance: tx.pricing && fixedEth(tx.pricing.balance)
+  balance: tx.balance && fixedEth(tx.balance)
 });
 
 export default connect(mapStore)(Balance);
