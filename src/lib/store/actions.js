@@ -21,10 +21,25 @@ export function txInfoFailed (message) {
   }
 }
 
+export function updateBalance (balance) {
+  return {
+    type: 'UPDATE_BALANCE',
+    balance
+  }
+}
+
 export function updatePricing (pricing) {
   return {
     type: 'UPDATE_PRICING',
     pricing
+  }
+}
+
+export function revalueTx (fee, value) {
+  return {
+    type: 'REVALUE_TX',
+    fee,
+    value
   }
 }
 
