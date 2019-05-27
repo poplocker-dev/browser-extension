@@ -6,7 +6,6 @@ const rpcProxy = new RpcProxy('ETH_RPC', 'ETH_RX', 'ETH_TX');
 rpcProxy.handle((payload) => {
   return background.send(payload)
                    .then(response => rpcProxy.send(response))
-                   .catch(console.error)
   }
 );
 
@@ -14,7 +13,6 @@ const popLockerProxy = new RpcProxy('POPLOCKER_API', 'POPLOCKER_RX', 'POPLOCKER_
 popLockerProxy.handle((payload) => {
   return background.send(payload)
                    .then(response => popLockerProxy.send(response))
-                   .catch(console.error)
   }
 );
 

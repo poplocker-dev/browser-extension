@@ -1,14 +1,15 @@
 import { background } from 'lib/rpc'
 import { account }    from 'lib/storage'
 
+export function getBalance () {
+  return account.address.current().then(([a]) => send(raw.balance(a)));
+}
+
 export function getTxPricing (tx) {
-  return account.address.current().then(([address]) => {
-    return Promise.all([
-      send(raw.balance(address)),
-      send(raw.gasPrice),
-      send(raw.gasEstimate(tx.params))
-    ])
-  });
+  return Promise.all([
+    send(raw.gasPrice),
+    send(raw.gasEstimate(tx.params))
+  ]);
 }
 
 export function getLatestNonce () {
@@ -21,7 +22,7 @@ export function rawSendTx (tx) {
 
 // dispatches to Ethereum node
 function send (payload) {
-  return background.send({ type: 'ETH_RPC', ...payload })
+  return background.send({ type: 'ETH_RPC', ...payload });
 }
 
 // format raw JSON

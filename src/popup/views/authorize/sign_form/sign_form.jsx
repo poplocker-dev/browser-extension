@@ -4,7 +4,7 @@ import { toHex }             from 'lib/helpers'
 import { signTx, cancelTx }  from 'lib/rpc/transaction'
 import { Button, PassField } from '@poplocker/react-ui'
 
-import { getLatestNonce } from 'lib/rpc/eth_node'
+import { getLatestNonce }               from 'lib/rpc/eth_node'
 import { toggleAdvanced, txSignFailed } from 'lib/store/actions'
 
 import './sign_form.css'
@@ -22,7 +22,7 @@ class SignForm extends React.Component {
         <div className="row show-advanced">
           <Button type="button" kind="light" icon="settings"
                   tabIndex={-1}
-                  disabled={this.props.errors.txInfo || this.props.lockerCreation}
+                  disabled={!this.props.tx.pricing || this.props.errors.txInfo}
                   onClick={this.props.handleAdvanced.bind(this)}>
             { this.props.advancedMode? 'Hide Advanced' : 'Show Advanced' }
           </Button>
@@ -70,7 +70,6 @@ const mapStore = ({ tx, errors, advancedMode, locker }) => {
     tx,
     advancedMode,
     errors,
-    lockerCreation: tx.current.params.to == process.env.REGISTRAR_ADDRESS,
     lockerValid: locker.status == 'simple' || locker.status == 'smart',
     passError: errors.txSign || errors.txInfo || errors.noFunds || null
   }

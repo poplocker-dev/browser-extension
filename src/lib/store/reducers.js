@@ -18,8 +18,8 @@ function firstPending (state = null, action) {
     return (state.length > 0) ? state[0] : null;
 
   } else if (action.type == 'REVALUE_TX' && state) {
-    const value = toHex(action.value.sub(action.fee).toString(16));
-    const params = { ...state.params, value };
+    const value = toBN(action.value).sub(toBN(action.fee));
+    const params = { ...state.params, value: toHex(value.lt('0') ? '0' : value) };
     return { ...state, params };
 
   } else if (action.type == 'SET_TO_LOCKER' && state) {
@@ -29,10 +29,17 @@ function firstPending (state = null, action) {
     return state;
 }
 
+function balance (state = null, action) {
+  if (action.type == 'UPDATE_BALANCE')
+    return toBN(action.balance);
+  else
+    return state;
+}
+
 function pricing (state = null, action) {
   if (action.type == 'UPDATE_PRICING') {
-    const [balance, gasPrice, gasEstimate, overhead] = action.pricing.map(toBN);
-    return { balance, gasPrice, gasEstimate, overhead, fee: gasPrice.mul(gasEstimate.add(overhead)) }
+    const [gasPrice, gasEstimate, overhead] = action.pricing.map(toBN);
+    return { gasPrice, gasEstimate, overhead, fee: gasPrice.mul(gasEstimate.add(overhead)) }
   }
   else
     return state;
@@ -90,7 +97,7 @@ function locker(state = { status: null }, action) {
 }
 
 const current  = reduceReducers(pending, firstPending);
-const tx       = combineReducers({ pricing, pending, current });
+const tx       = combineReducers({ balance, pricing, current });
 const errors   = combineReducers({ txInfo: txInfoError, txSign: txSignError, noFunds: noFundsError });
 const reducers = combineReducers({ page, tx, errors, advancedMode, locker });
 
