@@ -90,15 +90,6 @@ export const account = {
     return load('deviceAddress').then(a => a ? [a] : []);
   },
 
-  authorizedAddress (origin) {
-    return load('authorized').then(auths => {
-      if(auths.indexOf(origin) != -1)
-        return this.address();
-      else
-        return Promise.resolve(undefined);
-    });
-  },
-
   nonce: {
     current () { return load('deviceNonce'); },
 

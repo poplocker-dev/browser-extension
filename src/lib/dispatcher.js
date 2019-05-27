@@ -10,15 +10,15 @@ export function dispatch (message) {
   const result = () => {
     switch (message.method) {
 
-    case 'eth_requestAccounts':
-      return connect(message.origin);
-    case 'eth_accounts':
-      return account.authorizedAddress(message.origin);
-    case 'eth_sendTransaction':
-      return auth(message).then(sendToNode).then(upNonce);
+      case 'eth_requestAccounts':
+      case 'eth_accounts':
+        return connect(message.origin);
 
-    default:
-      return sendToNode(message);
+      case 'eth_sendTransaction':
+        return auth(message).then(sendToNode).then(upNonce);
+
+      default:
+        return sendToNode(message);
     }
   }
   return result().then(r => decorate(message, r));
