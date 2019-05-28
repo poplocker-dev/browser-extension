@@ -59,6 +59,8 @@
     "redux-thunk": "^2.3.0",
     "safe-event-emitter": "^1.0.1",
     "simple-crypto-js": "^2.0.2",
+    "stylelint": "^10.0.1",
+    "stylelint-config-standard": "^18.3.0",
     "yarn": "^1.13.0",
     "zxcvbn": "^4.4.2"
   }
