@@ -1,0 +1,19 @@
+.view.connect {
+  padding: 20px;
+
+  .connect_hostname {
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 1.8em;
+    text-align: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 375px;
+    line-height: 1.8em;
+  }
+
+  .connect_caption {
+    text-align: center;
+    font-size: 1.3em;
+  }
+}
