@@ -7,6 +7,14 @@ import { Button }          from '@poplocker/react-ui'
 import './connect.css'
 
 class ConnectView extends React.Component  {
+  handleReject () {
+    reject(this.props.request).then(window.close)
+  }
+
+  handleApprove () {
+    approve(this.props.request)
+  }
+
   render () {
     return (
       <div className="view connect">
@@ -21,12 +29,12 @@ class ConnectView extends React.Component  {
         </p>
         <div className="buttons buttons--2row">
           <Button icon="tick"
-                  onClick={() => approve(this.props.request)}>
+                  onClick={this.handleApprove.bind(this)}>
             Connect
           </Button>
           <Button kind="reject"
                   icon="close"
-                  onClick={() => reject(this.props.request)}>
+                  onClick={this.handleReject.bind(this)}>
             Reject
           </Button>
         </div>
