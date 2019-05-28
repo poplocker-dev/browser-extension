@@ -8,7 +8,8 @@ import './connect.css'
 
 class ConnectView extends React.Component  {
   handleReject () {
-    reject(this.props.request).then(window.close)
+    console.log('reject', this.props.request);
+    reject(this.props.request).catch(window.close)
   }
 
   handleApprove () {
