@@ -96,11 +96,11 @@ export const account = {
   },
 
   withAuth (origin) {
-    connection.authorized.get(list => {
+    return connection.authorized.get().then(list => {
       if (list.indexOf(origin) != -1)
         return this.address();
-      else
-        return undefined;
+      els
+        return Promise.resolve([]);
     })
   },
 
