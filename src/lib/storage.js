@@ -59,6 +59,11 @@ export function load (id) {
   })
 }
 
+export const connection = {
+  requests: collection('requests'),
+  authorized: collection('authorized')
+}
+
 export const transaction = {
   pending () {
     return load('pending');
@@ -88,6 +93,15 @@ export const transaction = {
 export const account = {
   address () {
     return load('deviceAddress').then(a => a ? [a] : []);
+  },
+
+  withAuth (origin) {
+    connection.authorized.get(list => {
+      if (list.indexOf(origin) != -1)
+        return this.address();
+      else
+        return undefined;
+    })
   },
 
   nonce: {
@@ -153,9 +167,4 @@ export const account = {
       });
     });
   }
-}
-
-export const connection = {
-  requests: collection('requests'),
-  authorized: collection('authorized')
 }

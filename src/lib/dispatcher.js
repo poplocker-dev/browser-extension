@@ -11,8 +11,10 @@ export function dispatch (message) {
     switch (message.method) {
 
       case 'eth_requestAccounts':
-      case 'eth_accounts':
         return connect(message.origin);
+
+      case 'eth_accounts':
+        return account.withAuth(message.origin);
 
       case 'eth_sendTransaction':
         return auth(message).then(sendToNode).then(upNonce);

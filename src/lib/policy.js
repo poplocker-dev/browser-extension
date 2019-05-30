@@ -1,40 +1,59 @@
 import { account, connection } from 'lib/storage'
 
-export async function connect (origin) {
-  const { authorized, requests } = connection;
+const promiseQ = function () {
+  let queue = [];
 
-  const request  = new URL(origin).hostname;
-  const authList = await authorized.get();
-  const rqsList  = await requests.get();
-  const address  = await account.address();
-
-  if (authList.indexOf(request) != -1)
-    return Promise.resolve(address);
-
-  //TODO: this doesn't work after reload
-  // figure out how to remove pending request on reload
-  // for each install listener?
-  if (rqsList.indexOf(request) != -1)
-    return Promise.resolve(undefined);
-
-  requests.add(request).then(() => {
-    return new Promise((resolve, reject) => {
-      chrome.runtime.onMessage.addListener(function handleConnect(message) {
-        if (message.type == 'CONNECT_DAPP' && message.request == request) {
-          requests.shift().then(rq => {
-            authorized.add(rq).then(() => {
-              chrome.runtime.onMessage.removeListener(handleConnect);
-              resolve(address);
-            });
-          });
-        }
-
-        else if (message.type == 'REJECT_DAPP' && message.request == request) {
-          requests.shift();
-          chrome.runtime.onMessage.removeListener(handleConnect);
-          reject(new Error('Account connection rejected'));
+  return {
+    addOnce (request) {
+      const promise = new Promise((resolve, reject) => {
+        if (!queue.find(i => i.request == request)) {
+          queue.add({ request, resolve, reject });
         }
       });
-    });
+      return promise;
+    },
+
+    reject (msg) {
+      return queue.shift().reject(msg);
+    },
+
+    resolve (address) {
+      return queue.shift().resolve(address);
+    }
+  }
+}
+
+async function authorizeRequest (request) {
+  const address = await account.address();
+  connection.authorized.add(request).then(() => {
+    return address;
   });
+}
+
+chrome.runtime.onMessage.addListener(function handleRequest(message) {
+  if (message.type == 'CONNECT_DAPP') {
+    authorizeRequest(message.request).then(promiseQ.resolve);
+    chrome.runtime.onMessage.removeListener(handleRequest);
+  }
+  else if (message.type == 'REJECT_DAPP') {
+    promiseQ.reject('User rejected connection request');
+    chrome.runtime.onMessage.removeListener(handleRequest);
+  }
+});
+
+export async function connect (request) {
+  const authList = await connection.authorized.get();
+  const rqsList  = await connection.requests.get();
+
+  if (authList.indexOf(request) != -1) {
+    const address = await account.address();
+    return Promise.resolve(address);
+  }
+
+  if (rqsList.indexOf(request) != -1) {
+    const address = await account.address();
+    return Promise.resolve(address);
+  }
+
+  return promiseQ.addOnce(request);
 }
