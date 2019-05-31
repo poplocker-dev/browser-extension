@@ -8,11 +8,13 @@ import './connect.css'
 
 class ConnectView extends React.Component  {
   handleReject () {
-    reject(this.props.request).catch(window.close)
+    reject(this.props.request);
+    window.close();
   }
 
   handleApprove () {
-    approve(this.props.request)
+    approve(this.props.request);
+    window.close();
   }
 
   render () {
