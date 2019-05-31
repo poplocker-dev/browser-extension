@@ -99,7 +99,7 @@ export const account = {
     return connection.authorized.get().then(list => {
       if (list.indexOf(origin) != -1)
         return this.address();
-      els
+      else
         return Promise.resolve([]);
     })
   },

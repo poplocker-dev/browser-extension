@@ -10,11 +10,12 @@ const promiseQ = function () {
           queue.push({ request, resolve, reject });
         }
       });
+      // NOTE: should we maintain singleton promise?
       return promise;
     },
 
-    reject (msg) {
-      return queue.shift().reject(msg);
+    reject (error) {
+      return queue.shift().reject(error);
     },
 
     resolve (address) {
@@ -23,22 +24,18 @@ const promiseQ = function () {
   }
 }();
 
-async function authorizeRequest (request) {
-  const address = await account.address();
-  connection.authorized.add(request).then(() => {
-    return address;
-  });
-}
-
 chrome.runtime.onMessage.addListener(function handleRequest(message) {
   if (message.type == 'CONNECT_DAPP') {
-    authorizeRequest(message.request).then(promiseQ.resolve);
+    connection.authorized
+              .add(message.request)
+              .then(account.address)
+              .then(promiseQ.resolve);
     connection.requests.shift();
     chrome.runtime.onMessage.removeListener(handleRequest);
   }
   else if (message.type == 'REJECT_DAPP') {
-    promiseQ.reject('User rejected connection request');
     connection.requests.shift();
+    promiseQ.reject(new Error('User rejected connection request'));
     chrome.runtime.onMessage.removeListener(handleRequest);
   }
 });
