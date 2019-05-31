@@ -20,14 +20,19 @@ export function dispatch (message) {
         return auth(message).then(sendToNode).then(upNonce);
 
       default:
-        return sendToNode(message);
+        return sendToNode(message)
     }
   }
-  return result().then(r => decorate(message, r));
+  return result().then(r => decorate(message, r))
+                 .catch(e => decorateError(message, e));
 }
 
 function decorate ({ method, id, jsonrpc }, result) {
   return {...{ method, id, jsonrpc, result }};
+}
+
+function decorateError ({method, id, jsonrpc }, error) {
+  return {...{method, id, jsonrpc, error: error.message }};
 }
 
 function strip({ id, method, jsonrpc, params }) {

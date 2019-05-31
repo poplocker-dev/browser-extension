@@ -3,7 +3,7 @@ import { RpcProxy }     from 'lib/rpc'
 
 export class Web3Provider extends SafeEventEmitter {
   constructor (host, timeout) {
-    super();
+    super(host, timeout);
 
     this.host    = 'poplocker';
     this.timeout = timeout || 0;
@@ -15,7 +15,7 @@ export class Web3Provider extends SafeEventEmitter {
 
 export class EthereumProvider extends Web3Provider {
   constructor (host, timeout) {
-    super();
+    super(host, timeout);
 
     this.host    = 'poplocker';
     this.timeout = timeout || 0;
@@ -33,9 +33,15 @@ export class EthereumProvider extends Web3Provider {
 
     return new Promise((resolve, reject) => {
       this.id = this.id + 1;
-      this.proxy.send({ method, params, id: this.id, jsonrpc: this.jsonrpc }, (err, data, resp) => {
-        err ? reject(err) : resolve(data && data.result);
-      })
+      this.proxy.send({ method, params, id: this.id, jsonrpc: this.jsonrpc }, (err, data) => {
+        if (data && data.error) {
+          reject(data.error);
+        }
+        else if (err)
+          reject(err)
+        else
+          resolve(data && data.result);
+      });
     });
   }
 }

@@ -20,5 +20,6 @@ function dirtyInjectProvider () {
 
 function handleBackground (payload) {
   return background.send(payload)
-    .then(response => proxy.send(response))
+                   .then(response => proxy.send(response))
+                   .catch(error => proxy.send(error))
 }

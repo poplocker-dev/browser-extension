@@ -24,8 +24,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     switch (message.type) {
 
     case 'ETH_RPC':
-      dispatch(message).then(sendResponse)
-        .catch(sendResponse);
+      dispatch(message).then(sendResponse);
       break;
 
     case 'NEW_ACCOUNT':
