@@ -63,16 +63,16 @@ const smartLocker = {
                   }
 
                   if (keyCount < 2) {
-                    resolve({...lockerState, onlyKey: true})
+                    resolve({ ...lockerState, onlyKey: true })
                   } else {
                     resolve(lockerState);
                   }
                 }).catch(() => resolve({ status: 'error' }))
               }
-              else resolve({...lockerState, status: 'pending', name })
+              else resolve({ ...lockerState, status: 'pending', name, deviceAddress })
             }).catch(() => resolve({ status: 'error' }))
           }
-          else resolve({...lockerState, status: 'invalid' })
+          else resolve({ ...lockerState, status: 'invalid' })
         }).catch(() => resolve({ status: 'error' }))
       }
     })
