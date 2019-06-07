@@ -1,4 +1,5 @@
 import { providers, utils, Contract, Interface, Wallet } from 'ethers'
+import keyRequests                                       from 'lib/key_requests'
 
 const provider = new providers.JsonRpcProvider(process.env.RPC_URL);
 
@@ -36,7 +37,6 @@ const smartLocker = {
 
   getState (deviceAddress, smartLockerAddress) {
 
-    // TODO: clear up nested catches
     return new Promise(resolve => {
       let lockerState = {
         registrar: {
@@ -47,26 +47,37 @@ const smartLocker = {
       if (!smartLockerAddress) {
         resolve({...lockerState, status: 'simple' });
       } else {
-        smartLockerRegistrarContract.getName(smartLockerAddress).then(name => {
+        smartLockerRegistrarContract.getName(smartLockerAddress)
+                                    .then(name => {
+
           if (name) {
             const smartLockerContract = new Contract(smartLockerAddress, smartLockerABI, provider);
-            smartLockerContract.isAuthorisedKey(deviceAddress).then(isKey => {
+            smartLockerContract.isAuthorisedKey(deviceAddress)
+                               .then(isKey => {
+
               if (isKey) {
-                smartLockerContract.getAuthorisedKeyCount().then(keyCount => {
+                smartLockerContract.getKeyList()
+                                   .then(keyList => keyList.filter(address => address > 0))
+                                   .then(keyList => {
 
-                  lockerState = {
-                    ...lockerState,
-                    name,
-                    status: 'smart',
-                    deviceAddress,
-                    smartLockerAddress
-                  }
+                  Promise.all(keyList.map(address => smartLockerContract.getKey(address)))
+                         .then(keys => keys.map((name, index) => ({ address: keyList[index], name })))
+                         .then(keys => {
 
-                  if (keyCount < 2) {
-                    resolve({ ...lockerState, onlyKey: true })
-                  } else {
-                    resolve(lockerState);
-                  }
+                           keyRequests.fetch()
+                                      .then(requests => {
+
+                             lockerState = {
+                               ...lockerState,
+                               name,
+                               status: 'smart',
+                               deviceAddress,
+                               smartLockerAddress
+                             }
+                             resolve({ ...lockerState, keys, requests })
+
+                           }).catch(() => resolve({ status: 'error' }))
+                         }).catch(() => resolve({ status: 'error' }))
                 }).catch(() => resolve({ status: 'error' }))
               }
               else resolve({ ...lockerState, status: 'pending', name, deviceAddress })
@@ -80,6 +91,11 @@ const smartLocker = {
 
   getName (address) {
     return smartLockerRegistrarContract.getName(address)
+  },
+
+  isAuthoriszedKey (smartLockerAddress, keyAddress) {
+    const smartLockerContract = new Contract(smartLockerAddress, smartLockerABI, provider);
+    return smartLockerContract.isAuthorisedKey(keyAddress);
   }
 }
 
