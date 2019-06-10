@@ -3,6 +3,14 @@
   flex-direction: column;
   align-items: center;
 
+  .password-field {
+    margin-bottom: 10px;
+  }
+
+  .input-field--invalid {
+    margin-bottom: 2.6px;
+  }
+
   .btn {
     margin-bottom: 35px;
     width: 50%;
