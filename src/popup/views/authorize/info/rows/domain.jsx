@@ -6,7 +6,7 @@ const Domain = ({ tx, advancedMode }) => (
   <div className="row domain">
     <span className="row-label">{tx.current.toLocker || advancedMode? 'To:' : 'From:'}</span>
     <Preloader value={tx.current}>
-      <div className="amount ellipsis" alt={`from ${domain(tx)}`}>
+      <div className="amount ellipsis">
         { advancedMode? recipient(tx) : tx.current.toLocker || domain(tx) }
       </div>
     </Preloader>
@@ -14,7 +14,7 @@ const Domain = ({ tx, advancedMode }) => (
 );
 
 const recipient = (tx) => (
-  <span className="recipient">
+  <span className="small-font">
     { tx.current.params.to || 'N/A' }
   </span>
 )
