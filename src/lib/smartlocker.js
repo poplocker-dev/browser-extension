@@ -62,7 +62,7 @@ const smartLocker = {
                                    .then(keyList => {
 
                   Promise.all(keyList.map(address => smartLockerContract.getKey(address)))
-                         .then(keys => keys.map((name, index) => ({ address: keyList[index], name })))
+                         .then(keys => keys.map((bytes, index) => ({ address: keyList[index], name: this.bytes32ToUtf8(bytes) })))
                          .then(keys => {
 
                            keyRequests.fetch()
