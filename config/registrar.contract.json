@@ -5,11 +5,11 @@
       "inputs": [
         {
           "name": "name",
-          "type": "string"
+          "type": "bytes32"
         },
         {
           "name": "keyname",
-          "type": "string"
+          "type": "bytes32"
         }
       ],
       "name": "createSmartLocker",
@@ -34,7 +34,7 @@
         {
           "indexed": false,
           "name": "name",
-          "type": "string"
+          "type": "bytes32"
         },
         {
           "indexed": false,
@@ -50,7 +50,7 @@
       "inputs": [
         {
           "name": "name",
-          "type": "string"
+          "type": "bytes32"
         }
       ],
       "name": "getAddress",
@@ -76,7 +76,7 @@
       "outputs": [
         {
           "name": "",
-          "type": "string"
+          "type": "bytes32"
         }
       ],
       "payable": false,

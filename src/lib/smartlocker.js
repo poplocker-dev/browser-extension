@@ -48,8 +48,9 @@ const smartLocker = {
         resolve({...lockerState, status: 'simple' });
       } else {
         smartLockerRegistrarContract.getName(smartLockerAddress)
-                                    .then(name => {
+                                    .then(bytes => {
 
+          const name = this.bytes32ToUtf8(bytes);
           if (name) {
             const smartLockerContract = new Contract(smartLockerAddress, smartLockerABI, provider);
             smartLockerContract.isAuthorisedKey(deviceAddress)
@@ -86,16 +87,20 @@ const smartLocker = {
           else resolve({ ...lockerState, status: 'invalid' })
         }).catch(() => resolve({ status: 'error' }))
       }
-    })
+    });
   },
 
   getName (address) {
-    return smartLockerRegistrarContract.getName(address)
+    return smartLockerRegistrarContract.getName(address).then(this.bytes32ToUtf8);
   },
 
   isAuthoriszedKey (smartLockerAddress, keyAddress) {
     const smartLockerContract = new Contract(smartLockerAddress, smartLockerABI, provider);
     return smartLockerContract.isAuthorisedKey(keyAddress);
+  },
+
+  bytes32ToUtf8 (bytes) {
+    return utils.toUtf8String(bytes).replace(/[\u0000]/g, '');
   }
 }
 
