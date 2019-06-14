@@ -42,7 +42,7 @@
         },
         {
           "name": "keyname",
-          "type": "string"
+          "type": "bytes32"
         }
       ],
       "name": "updateKey",
@@ -74,7 +74,7 @@
         },
         {
           "name": "keyname",
-          "type": "string"
+          "type": "bytes32"
         }
       ],
       "name": "addKey",
@@ -95,7 +95,7 @@
       "outputs": [
         {
           "name": "",
-          "type": "string"
+          "type": "bytes32"
         }
       ],
       "payable": false,
@@ -177,7 +177,7 @@
         },
         {
           "name": "keyname",
-          "type": "string"
+          "type": "bytes32"
         }
       ],
       "payable": true,
@@ -200,7 +200,7 @@
         {
           "indexed": false,
           "name": "keyname",
-          "type": "string"
+          "type": "bytes32"
         }
       ],
       "name": "KeyAdded",
@@ -229,7 +229,7 @@
         {
           "indexed": false,
           "name": "keyname",
-          "type": "string"
+          "type": "bytes32"
         }
       ],
       "name": "KeyUpdated",
