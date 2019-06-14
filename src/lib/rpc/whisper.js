@@ -40,7 +40,7 @@ class ShhRpc {
       const symKeyID = await this.web3.shh.generateSymKeyFromPassword(this.topic);
       this.web3.shh.subscribe('messages', { symKeyID, topics }, (error, result) => {
         if (error) return Promise.reject(error);
-        callback(JSON.parse(this.web3.utils.hexToAscii(result.payload)));
+        callback(JSON.parse(this.web3.utils.hexToUtf8(result.payload)));
       })
     } catch(e) {
       return Promise.reject(e)
