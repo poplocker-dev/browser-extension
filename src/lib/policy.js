@@ -15,11 +15,12 @@ const promiseQ = function () {
     },
 
     reject (error) {
-      return queue.shift().reject(error);
+      if (queue) // when ext is reloaded during request
+        return queue.shift().reject(error);
     },
 
     resolve (address) {
-      if (queue) // when ext is reloaded during request
+      if (queue)
         return queue.shift().resolve(address);
     }
   }
