@@ -19,7 +19,8 @@ const promiseQ = function () {
     },
 
     resolve (address) {
-      return queue.shift().resolve(address);
+      if (queue) // when ext is reloaded during request
+        return queue.shift().resolve(address);
     }
   }
 }();
@@ -31,12 +32,10 @@ chrome.runtime.onMessage.addListener(function handleRequest(message) {
               .then(account.address)
               .then(promiseQ.resolve);
     connection.requests.shift();
-    chrome.runtime.onMessage.removeListener(handleRequest);
   }
   else if (message.type == 'REJECT_DAPP') {
     connection.requests.shift();
     promiseQ.reject(new Error('User rejected connection request'));
-    chrome.runtime.onMessage.removeListener(handleRequest);
   }
 });
 
