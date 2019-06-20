@@ -2,6 +2,7 @@ import { account }  from 'lib/storage'
 import { auth }     from 'lib/tx'
 import smartLocker  from 'lib/smartlocker'
 import ShhRpc       from 'lib/rpc/whisper'
+import keyRequests  from 'lib/key_requests'
 import HttpProvider from 'ethjs-provider-http'
 import EthRpc       from 'ethjs-rpc'
 
@@ -34,6 +35,7 @@ export function apiDispatch (message) {
       case 'setSmartLockerAddress':
         return account.address
                       .setLocker(message.address)
+                      .then(keyRequests.subscribe(message.address))
                       .catch(() => {return `Failed: ${message.method}`});
 
       case 'getSmartLockerState':

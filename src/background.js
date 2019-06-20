@@ -3,6 +3,7 @@ import { ethDispatch, apiDispatch }               from 'lib/dispatcher'
 import { badge }                                  from 'lib/helpers'
 import { initialize, save, account, transaction } from 'lib/storage'
 import smartLocker                                from 'lib/smartlocker'
+import keyRequests                                from 'lib/key_requests'
 
 chrome.runtime.onInstalled.addListener(({ reason }) => {
   if (reason == 'install') initialize();
@@ -76,6 +77,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     return true;
   }
 });
+
+account.address.locker().then(address => keyRequests.subscribe(address));
 
 transaction.pending().then(p => {
   if (p && p.length > 0)
