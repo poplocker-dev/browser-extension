@@ -18,7 +18,7 @@ class ShhRpc {
     const symKeyID = this.symKeyID;
     const topic    = this.web3.utils.toHex(this.topic);
     const data     = JSON.stringify(message);
-    const payload  = this.web3.utils.asciiToHex(data);
+    const payload  = this.web3.utils.utf8ToHex(data);
 
     if (symKeyID) {
       return this.web3.shh.post({ ...this.params, symKeyID, topic, payload });
