@@ -39,6 +39,14 @@ const keyRequests = {
     return key.smartLocker.toLowerCase() == this.smartLockerAddress.toLowerCase() &&
            !authorized &&
            key.timeStamp - 60000 < now && now < key.timeStamp + 300000;
+  },
+
+  remove (address) {
+    if (this.requests.find(request => request.address == address)) {
+      this.requests = [...this.requests.filter(request => request.address != address)];
+      return true;
+    }
+    return false;
   }
 }
 

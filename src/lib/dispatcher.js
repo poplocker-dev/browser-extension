@@ -43,6 +43,10 @@ export function apiDispatch (message) {
           return smartLocker.getState(...results);
         }).catch(() => { return `Failed: ${message.method}` });
 
+      case 'removeKeyRequest':
+        return Promise.resolve(keyRequests.remove(message.address))
+                      .catch(() => {return `Failed: ${message.method}`});
+
       default:
         return Promise.reject(`No such method: ${message.method}`);
     }

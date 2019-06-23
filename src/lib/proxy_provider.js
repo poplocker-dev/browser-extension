@@ -36,7 +36,14 @@ export class PopLockerProvider {
   setSmartLockerAddress (address) {
     return this.sendAsync({
       method: 'setSmartLockerAddress',
-      address: address,
+      address: address
+    });
+  }
+
+  removeKeyRequest (address) {
+    return this.sendAsync({
+      method: 'removeKeyRequest',
+      address: address
     });
   }
 }
