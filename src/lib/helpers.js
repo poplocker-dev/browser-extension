@@ -15,12 +15,12 @@ export async function initOrRedirect (render) {
   const pending   = await transaction.pending();
   const connRqs   = await connection.requests.get();
 
-  // if (address && pending.length == 0)
-  //   chrome.tabs.create({ 'url': process.env.POPLOCKER_WALLET_URL });
-
   if (address && connRqs.length > 0) {
     store.dispatch(enqueueConnections(connRqs));
   }
+
+  else if (address && pending.length == 0)
+    chrome.tabs.create({ 'url': process.env.POPLOCKER_WALLET_URL });
 
   else if (address && pending.length > 0)
     store.dispatch(enqueuePending(pending));
