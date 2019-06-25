@@ -1,19 +1,7 @@
 import SafeEventEmitter from 'safe-event-emitter'
 import { RpcProxy }     from 'lib/rpc'
 
-export class Web3Provider extends SafeEventEmitter {
-  constructor (host, timeout) {
-    super(host, timeout);
-
-    this.host    = 'poplocker';
-    this.timeout = timeout || 0;
-    this.proxy   = new RpcProxy('ETH_TX', 'ETH_RX');
-  }
-
-  sendAsync (payload, callback) { this.proxy.send(payload, callback); }
-}
-
-export class EthereumProvider extends Web3Provider {
+export class EthereumProvider extends SafeEventEmitter {
   constructor (host, timeout) {
     super(host, timeout);
 
@@ -22,6 +10,11 @@ export class EthereumProvider extends Web3Provider {
     this.proxy   = new RpcProxy('ETH_TX', 'ETH_RX');
     this.id      = 0;
     this.jsonrpc = '2.0';
+  }
+
+  // legacy MM 1102 implementation
+  enable () {
+    return this.send('eth_requestAccounts');
   }
 
   send (method, params = []) {
@@ -44,4 +37,12 @@ export class EthereumProvider extends Web3Provider {
       });
     });
   }
+}
+
+export class Web3Provider extends EthereumProvider {
+  constructor (host, timeout) {
+    super(host, timeout);
+  }
+
+  sendAsync (payload, callback) { this.proxy.send(payload, callback); }
 }
