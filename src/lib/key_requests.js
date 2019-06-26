@@ -17,7 +17,7 @@ const keyRequests = {
     this.validate([key])
         .then(keys => {
           if (keys.length)
-            this.requests = [key, ...this.requests.filter(request => request.address != key.address).slice(0, 98)];
+            this.requests = [key, ...this.requests.filter(request => !this.addressEquals(request.address, key.address)).slice(0, 98)];
         });
   },
 
@@ -36,17 +36,21 @@ const keyRequests = {
   },
 
   isValid (key, authorized, now) {
-    return key.smartLocker.toLowerCase() == this.smartLockerAddress.toLowerCase() &&
+    return this.addressEquals(key.smartLocker, this.smartLockerAddress) &&
            !authorized &&
            key.timeStamp - 60000 < now && now < key.timeStamp + 300000;
   },
 
   remove (address) {
-    if (this.requests.find(request => request.address == address)) {
-      this.requests = [...this.requests.filter(request => request.address != address)];
+    if (this.requests.find(request => this.addressEquals(request.address, address))) {
+      this.requests = [...this.requests.filter(request => !this.addressEquals(request.address, address))];
       return true;
     }
     return false;
+  },
+
+  addressEquals(address1, address2) {
+    return address1.toLowerCase() == address2.toLowerCase();
   }
 }
 
