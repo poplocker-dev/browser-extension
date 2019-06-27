@@ -163,7 +163,8 @@ export const account = {
           resolve(data);
           w.terminate();
         }
-        w.onerror = () => {
+        w.onerror = (e) => {
+          e.preventDefault();
           reject();
           w.terminate();
         }

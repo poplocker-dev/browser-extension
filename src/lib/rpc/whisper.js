@@ -2,15 +2,15 @@ import Web3 from 'web3'
 
 class ShhRpc {
   constructor (url, topic) {
-    // TODO: no magic numbers!
     this.params = {
       ttl: 300,
       priority: 1,
       powTarget: 2.01,
       powTime: 100
     }
-    this.web3     = new Web3(url, null);
+    this.url      = url;
     this.topic    = topic;
+    this.web3     = new Web3(url, null);
     this.symKeyID = null;
   }
 
@@ -20,16 +20,16 @@ class ShhRpc {
     const data     = JSON.stringify(message);
     const payload  = this.web3.utils.utf8ToHex(data);
 
-    if (symKeyID) {
-      return this.web3.shh.post({ ...this.params, symKeyID, topic, payload });
-    }
-    else {
-      try {
+    try {
+      if (symKeyID && await this.web3.shh.hasSymKey(symKeyID)) {
+        return this.web3.shh.post({ ...this.params, symKeyID, topic, payload });
+      } else {
+        this.web3 = new Web3(this.url, null);
         this.symKeyID = await this.web3.shh.generateSymKeyFromPassword(this.topic);
         this.post(message);
-      } catch(e) {
-        return Promise.reject(e)
       }
+    } catch(e) {
+      return Promise.reject(e)
     }
   }
 
