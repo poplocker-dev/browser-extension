@@ -11,6 +11,20 @@
     margin-bottom: 2.6px;
   }
 
+  .terms {
+    margin-bottom: 7px;
+
+    .terms-checkbox {
+      vertical-align: middle;
+    }
+
+    .terms-link {
+      color: var(--label-color);
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
+
   .btn {
     margin-bottom: 35px;
     width: 50%;
