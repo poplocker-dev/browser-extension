@@ -1,4 +1,4 @@
-import React          from 'react'
+import React    from 'react'
 import jazzicon from 'jazzicon'
 
 import './favicon.css'
@@ -6,12 +6,12 @@ import './favicon.css'
 class Favicon extends React.Component  {
   constructor (props) {
     super(props);
-    this.state          = { placeholder: true };
+    this.state   = { placeholder: true };
     this.iconRef = React.createRef();
-    this.imgRef = React.createRef();
+    this.imgRef  = React.createRef();
   }
 
-  generateIcon (img) {
+  generateIcon () {
     const icon = jazzicon(100, this.props.url);
     this.iconRef.current.appendChild(icon);
     this.iconRef.current.classList.remove('favicon--hidden')
@@ -23,7 +23,7 @@ class Favicon extends React.Component  {
         <img alt="dapp favicon"
              ref={this.imgRef}
              className="image--hidden"
-             src={this.props.url + 'favicon.png'}
+             src={this.props.url + 'favicon.ico'}
              onLoad={this.showIcon.bind(this)}
              onError={this.generateIcon.bind(this)}/>
       </div>

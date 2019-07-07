@@ -2,7 +2,7 @@ import React               from 'react'
 import { connect }         from 'react-redux'
 import { approve, reject } from 'lib/rpc/connection'
 import { Button }          from '@poplocker/react-ui'
-// import Favicon from './favicon'
+import Favicon             from './favicon'
 
 import './connect.css'
 
@@ -21,7 +21,7 @@ class ConnectView extends React.Component  {
     return (
       <div className="view connect">
         <div className="connect_favicon">
-          {/* <Favicon url={this.props.request}/> */}
+          <Favicon url={this.props.request}/>
         </div>
         <p className="connect_hostname">
           { this.props.request }
