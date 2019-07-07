@@ -64,6 +64,15 @@ export const connection = {
   authorized: collection('authorized')
 }
 
+export function initialize () {
+  save({
+    deviceAddress: null,
+    pending: [],
+    deviceNonce: "0x0",
+    deviceNonceTimeStamp: 0
+  });
+}
+
 export const transaction = {
   pending () {
     return load('pending');
@@ -110,15 +119,15 @@ export const account = {
     up (number=1) {
       return this.current().then(current => {
         const deviceNonce = toHex(parseInt(current) + number);
-        return save({ deviceNonce });
+        return save({ deviceNonce, deviceNonceTimeStamp: Date.now() });
       })
     },
 
     async track (remote) {
       const local  = await this.current();
 
-      if (parseInt(remote) > parseInt(local)) {
-        save({ deviceNonce: remote });
+      if (parseInt(remote) > parseInt(local) || Date.now() - timeStamp > 300000) {
+        save({ deviceNonce: remote, deviceNonceTimeStamp: Date.now() });
         return remote;
       }
       else return local;
@@ -130,7 +139,7 @@ export const account = {
     const sk = keys.getPrivateKeyString();
     const deviceAddress = keys.getChecksumAddressString();
     return this.encrypt(sk, secret)
-      .then(data => {return {deviceAddress, ...data}})
+               .then(data => {return {deviceAddress, ...data}})
   },
 
   encrypt (sk, secret) {
@@ -160,7 +169,8 @@ export const account = {
           resolve(data);
           w.terminate();
         }
-        w.onerror = () => {
+        w.onerror = (e) => {
+          e.preventDefault();
           reject();
           w.terminate();
         }

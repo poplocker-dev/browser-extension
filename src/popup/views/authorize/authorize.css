@@ -1,4 +1,5 @@
 .authorize-view {
+  .input-field--invalid {
+    margin-bottom: 2.6px;
+  }
 }
-
-

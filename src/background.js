@@ -3,17 +3,12 @@ import { dispatch }      from 'lib/dispatcher'
 import { badge }         from 'lib/helpers'
 import { account,
          save,
+	 initialize,
          transaction,
-         connection } from 'lib/storage'
+         connection, } from 'lib/storage'
 
 chrome.runtime.onInstalled.addListener(({ reason }) => {
-  if (reason == 'install')
-    save({
-      deviceAddress: null,
-      pending: [],
-      authorized: [],
-      deviceNonce: "0x0"
-    });
+  if (reason == 'install') initialize();
 });
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {

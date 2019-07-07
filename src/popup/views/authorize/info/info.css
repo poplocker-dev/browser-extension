@@ -5,9 +5,9 @@
   flex-direction: column;
   border: 1px solid var(--border-color);
   border-radius: 2px;
-	font-size: 16px;
-	font-weight: 600;
-	line-height: 23px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 23px;
 
   .title {
     font-size: 18px;
@@ -31,7 +31,7 @@
       }
     }
 
-    .recipient {
+    .small-font {
       font-size: 14px;
     }
   }
