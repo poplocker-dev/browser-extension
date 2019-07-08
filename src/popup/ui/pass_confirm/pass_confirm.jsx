@@ -7,20 +7,18 @@ class PassConfirm extends React.Component {
     super(props);
 
     this.state    = { password: '', confirmation: '', passwordError: '', confirmationError: '' }
-    this.pristine = { passwordError: '', confirmationError: '' }
     this.handlers = {
       onChange: (e) => {
         const { name, value } = e.target;
 
         this.setState({ [name]: value }, () => {
+          const passwordError = name == 'password'? '' : this.state.passwordError;
           if (!this.passMatch()) {
             this.props.onUpdatePassword('');
-            if (name == 'confirmation')
-              this.setState({ confirmationError: 'password and confirmation do not match' });
+            this.setState({ passwordError, confirmationError: this.state.confirmation? 'password and confirmation do not match' : this.state.confirmationError });
           } else {
             this.props.onUpdatePassword(this.state.password);
-            if (name == 'confirmation')
-              this.setState(this.pristine);
+            this.setState({ passwordError, confirmationError: '' });
           }
         });
       },
@@ -32,7 +30,6 @@ class PassConfirm extends React.Component {
           this.setState({ [`${name}Error`]: `${name} cannot be empty` });
           return;
         }
-        this.setState(this.pristine);
       }
     }
   }
