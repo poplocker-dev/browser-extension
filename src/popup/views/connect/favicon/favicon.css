@@ -1,0 +1,30 @@
+.favicon {
+  text-align: center;
+
+  .placeholder {
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    background-color: grey;
+  }
+
+  img,
+  .favicon {
+    height: 70px;
+    width: 70px;
+    border-radius: 50%;
+    transition: opacity 0.5s ease;
+  }
+
+  .image--hidden {
+    display: none;
+
+    img {
+      opacity: 0;
+    }
+  }
+
+  .favicon--hidden {
+    opacity: 0;
+  }
+}

@@ -18,6 +18,9 @@ let config = {
     path: __dirname + '/dist',
     filename: '[name].js'
   },
+  node: {
+    fs: 'empty'
+  },
   module: {
     rules: [
       {
@@ -116,7 +119,10 @@ let config = {
         }
       }
     })
-  ]
+  ],
+  externals: {
+    canvas: "canvas"
+  }
 };
 
 module.exports = (env, argv) => {

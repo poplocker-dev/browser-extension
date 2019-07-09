@@ -47,6 +47,10 @@ export function enqueuePending (pending) {
   return { type: 'ENQUEUE_TXS', pending };
 }
 
+export function enqueueConnections (connections) {
+  return { type: 'ENQUEUE_CONNS', connections };
+}
+
 export function txSignFailed (message) {
   return {
     type: 'TX_SIGN_FAILED',

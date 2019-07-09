@@ -1,9 +1,20 @@
-import { sign, signMetaTx, noncify }              from 'lib/tx'
-import { ethDispatch, apiDispatch }               from 'lib/dispatcher'
-import { badge }                                  from 'lib/helpers'
-import { initialize, save, account, transaction } from 'lib/storage'
-import smartLocker                                from 'lib/smartlocker'
-import keyRequests                                from 'lib/key_requests'
+import { sign,
+         signMetaTx,
+         noncify }     from 'lib/tx'
+
+import { ethDispatch,
+         apiDispatch } from 'lib/dispatcher'
+
+import { badge }       from 'lib/helpers'
+
+import { account,
+         save,
+         initialize,
+         transaction,
+         connection }  from 'lib/storage'
+
+import smartLocker     from 'lib/smartlocker'
+import keyRequests     from 'lib/key_requests'
 
 chrome.runtime.onInstalled.addListener(({ reason }) => {
   if (reason == 'install') initialize();
@@ -41,7 +52,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                .catch(sendResponse)
         break;
 
-        // TODO: dispatcher for transactions
       case 'TX_SIGN':
         account.address.locker().then((smartLockerAddress) => {
           if (smartLockerAddress) {
@@ -70,8 +80,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
       case 'SMARTLOCKER_NAME':
         smartLocker.getName(message.address)
-          .then(sendResponse)
-          .catch(sendResponse)
+                   .then(sendResponse)
+                   .catch(sendResponse)
         break;
     }
     return true;
@@ -85,10 +95,19 @@ transaction.pending().then(p => {
     badge.info = p.length;
 });
 
+connection.requests.get().then(r => {
+  if (r && r.length > 0)
+    badge.rqs = r.length;
+});
+
 chrome.storage.onChanged.addListener(changes => {
+  if (changes.requests && changes.requests.newValue)
+    badge.rqs = changes.requests.newValue.length || '';
+
   if (changes.pending && changes.pending.newValue)
     badge.info = changes.pending.newValue.length || '';
 
   if (changes.deviceAddress)
     changes.deviceAddress.newValue ? badge.reset() : badge.warning();
 });
+

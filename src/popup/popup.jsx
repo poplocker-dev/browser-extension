@@ -2,7 +2,7 @@ import React              from 'react'
 import ReactDOM           from 'react-dom'
 import { Provider }       from 'react-redux'
 import { initOrRedirect } from 'lib/helpers'
-import FancyCircles       from 'ui/circles'      
+import FancyCircles       from 'ui/circles'
 import Pager              from './pager'
 
 import './popup.css'

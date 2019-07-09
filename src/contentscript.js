@@ -28,3 +28,9 @@ function dirtyInjectProvider () {
 
   container.insertBefore(el, container.children[0]);
 }
+
+function handleBackground (payload) {
+  return background.send(payload)
+                   .then(response => proxy.send(response))
+                   .catch(error => proxy.send(error))
+}

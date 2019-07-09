@@ -36,10 +36,18 @@ function balance (state = null, action) {
     return state;
 }
 
+function connections (state = [], action) {
+  if (action.type == 'ENQUEUE_CONNS') {
+    return action.connections;
+  }
+  else
+    return state;
+}
+
 function pricing (state = null, action) {
   if (action.type == 'UPDATE_PRICING') {
-    const [gasPrice, gasEstimate, overhead] = action.pricing.map(toBN);
-    return { gasPrice, gasEstimate, overhead, fee: gasPrice.mul(gasEstimate.add(overhead)) }
+    const [gasPrice, gasEstimate] = action.pricing.map(toBN);
+    return { gasPrice, gasEstimate, fee: gasPrice.mul(gasEstimate) }
   }
   else
     return state;
@@ -54,16 +62,18 @@ function advancedMode (state = false, action) {
 
 function page (state = 'new_account', action) {
   switch (action.type) {
-    case 'ACCOUNT_GEN':
-      return 'loading';
-    case 'ACCOUNT_READY':
-      return 'success';
-    case 'ACCOUNT_FAILED':
-      return 'failure';
-    case 'ENQUEUE_TXS':
-      return 'authorize';
-    default:
-      return state;
+  case 'ACCOUNT_GEN':
+    return 'loading';
+  case 'ACCOUNT_READY':
+    return 'success';
+  case 'ACCOUNT_FAILED':
+    return 'failure';
+  case 'ENQUEUE_TXS':
+    return 'authorize';
+  case 'ENQUEUE_CONNS':
+    return 'connect';
+  default:
+    return state;
   }
 }
 
@@ -99,6 +109,6 @@ function locker(state = { status: null }, action) {
 const current  = reduceReducers(pending, firstPending);
 const tx       = combineReducers({ balance, pricing, current });
 const errors   = combineReducers({ txInfo: txInfoError, txSign: txSignError, noFunds: noFundsError });
-const reducers = combineReducers({ page, tx, errors, advancedMode, locker });
+const reducers = combineReducers({ page, tx, errors, advancedMode, locker, connections });
 
 export { reducers };

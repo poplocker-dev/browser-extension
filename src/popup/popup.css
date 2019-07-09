@@ -1,13 +1,15 @@
 :root {
-  --foreground-color: #353A41;
-  --background-color: #FFFFFF;
-  --weak-pass-color: #FD6D30;
-  --medium-pass-color: #FBC812;
-  --good-pass-color: #7C6FFC;
-  --strong-pass-color: #5AC897;
+  --foreground-color: #353a41;
+  --background-color: white;
+  --weak-pass-color: #fd6d30;
+  --medium-pass-color: #fbc812;
+  --good-pass-color: #7c6ffc;
+  --strong-pass-color: #5ac897;
 }
 
-*, *:before, *:after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -15,7 +17,8 @@
   outline: none;
 }
 
-textarea:focus, input:focus {
+textarea:focus,
+input:focus {
   outline: none;
 }
 
@@ -27,9 +30,11 @@ body {
   color: var(--foreground-color);
   font-size: 13px;
   font-family: Orkney, Helvetica, sans-serif;
-	line-height: 19px;
+  line-height: 19px;
 
+  /* TODO: use mixins and @include viewable */
   .view {
+    height: 100vh;
     position: relative;
     overflow: hidden;
     display: flex;
@@ -51,5 +56,12 @@ body {
     src: url('~assets/orkney_m.woff2') format('woff2');
     font-weight: 600;
     font-style: normal;
+  }
+
+  @font-face {
+    font-family: Orkney;
+    src: url('~assets/orkney_b.woff2') format('woff2');
+    font-weight: 800;
+    font-style: bold;
   }
 }
