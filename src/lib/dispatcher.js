@@ -1,6 +1,6 @@
 import { account } from 'lib/storage';
 import { auth } from 'lib/tx';
-import { connect } from 'lib/policy';
+import { connect, withAuth } from 'lib/policy';
 import smartLocker from 'lib/smartlocker';
 import ShhRpc from 'lib/rpc/whisper';
 import keyRequests from 'lib/key_requests';
@@ -17,7 +17,9 @@ export function ethDispatch(message) {
         return connect(message.origin);
 
       case 'eth_accounts':
-        return account.withAuth(message.origin);
+        return withAuth(message.origin, () => {
+          return account.address.current();
+        }, () => []);
 
       case 'eth_sendTransaction':
         return auth(message).then(sendToNodeOrWhisper);
@@ -29,26 +31,27 @@ export function ethDispatch(message) {
   return result().then(r => decorate(message, r));
 }
 
+//TODO: better error handling
 export function apiDispatch(message) {
   const result = () => {
     switch (message.method) {
       case 'setSmartLockerAddress':
         return account.address
-          .setLocker(message.address)
-          .then(keyRequests.subscribe(message.address))
-          .catch(() => {
-            return `Failed: ${message.method}`;
-          });
+                      .setLocker(message.address)
+                      .then(keyRequests.subscribe(message.address))
+                      .catch(() => {
+                        return `Failed: ${message.method}`;
+                      });
 
       case 'getSmartLockerState':
         return account.address
-          .all()
-          .then(results => {
-            return smartLocker.getState(...results);
-          })
-          .catch(() => {
-            return `Failed: ${message.method}`;
-          });
+                      .all()
+                      .then(results => {
+                        return smartLocker.getState(...results);
+                      })
+                      .catch(() => {
+                        return `Failed: ${message.method}`;
+                      });
 
       case 'removeKeyRequest':
         return Promise.resolve(keyRequests.remove(message.address)).catch(
@@ -61,7 +64,9 @@ export function apiDispatch(message) {
         return Promise.reject(`No such method: ${message.method}`);
     }
   };
-  return result().then(r => decorate(message, r));
+
+  return withAuth(message.origin, result, () => 'Account not connected')
+    .then(r => decorate(message, r));
 }
 
 function decorate({ method, id, jsonrpc }, result) {

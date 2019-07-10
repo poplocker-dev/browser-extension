@@ -55,3 +55,10 @@ export async function connect (request) {
 
   return promiseQ.addOnce(request);
 }
+
+export function withAuth (origin, callback, reject) {
+  return connection.authorized.get().then(list => {
+    if (list.indexOf(origin) != -1) return callback();
+    else return Promise.resolve(reject());
+  })
+}

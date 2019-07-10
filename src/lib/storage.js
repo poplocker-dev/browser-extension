@@ -139,13 +139,6 @@ export const account = {
     },
   },
 
-  withAuth(origin) {
-    return connection.authorized.get().then(list => {
-      if (list.indexOf(origin) != -1) return this.address.current()
-      else return Promise.resolve([])
-    })
-  },
-
   nonce: {
     current(smartLocker = false) {
       return smartLocker ? load('smartLockerNonce') : load('deviceNonce')
