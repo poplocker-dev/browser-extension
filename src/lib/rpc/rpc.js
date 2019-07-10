@@ -21,7 +21,6 @@ export const background = {
 // proxy. Used by injected.js
 // that lives in separate DOM
 export class RpcProxy {
-
   constructor (type, up, down) {
     this.type     = type;
     this.up       = up;

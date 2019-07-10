@@ -77,6 +77,7 @@ export function initialize() {
   })
 }
 
+//TODO: use collection here
 export const transaction = {
   pending() {
     return load('pending')

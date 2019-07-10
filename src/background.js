@@ -1,20 +1,11 @@
-import { sign,
-         signMetaTx,
-         noncify }     from 'lib/tx'
-
-import { ethDispatch,
-         apiDispatch } from 'lib/dispatcher'
-
-import { badge }       from 'lib/helpers'
-
-import { account,
-         save,
-         initialize,
+import { sign, signMetaTx, noncify } from 'lib/tx'
+import { ethDispatch, apiDispatch }  from 'lib/dispatcher'
+import { badge }                     from 'lib/helpers'
+import { account, save, initialize,
          transaction,
-         connection }  from 'lib/storage'
-
-import smartLocker     from 'lib/smartlocker'
-import keyRequests     from 'lib/key_requests'
+         connection }                from 'lib/storage'
+import smartLocker                   from 'lib/smartlocker'
+import keyRequests                   from 'lib/key_requests'
 
 chrome.runtime.onInstalled.addListener(({ reason }) => {
   if (reason == 'install') initialize();
@@ -28,13 +19,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     switch (message.type) {
 
       case 'ETH_RPC':
-        ethDispatch(message).then(sendResponse)
-                            .catch(sendResponse);
+        ethDispatch(message).then(sendResponse);
         break;
 
       case 'POPLOCKER_API':
-        apiDispatch(message).then(sendResponse)
-                            .catch(sendResponse);
+        apiDispatch(message).then(sendResponse);
         break;
 
       case 'NEW_ACCOUNT':

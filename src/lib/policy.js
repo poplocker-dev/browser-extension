@@ -30,7 +30,7 @@ chrome.runtime.onMessage.addListener(function handleRequest(message) {
   if (message.type == 'CONNECT_DAPP') {
     connection.authorized
               .add(message.request)
-              .then(account.address)
+              .then(() => account.address.current())
               .then(promiseQ.resolve);
     connection.requests.shift();
   }
@@ -45,7 +45,7 @@ export async function connect (request) {
   const rqsList  = await connection.requests.get();
 
   if (authList.indexOf(request) != -1) {
-    const address = await account.address();
+    const address = await account.address.current();
     return Promise.resolve(address);
   }
 
