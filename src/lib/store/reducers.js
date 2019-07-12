@@ -46,8 +46,8 @@ function connections (state = [], action) {
 
 function pricing (state = null, action) {
   if (action.type == 'UPDATE_PRICING') {
-    const [gasPrice, gasEstimate] = action.pricing.map(toBN);
-    return { gasPrice, gasEstimate, fee: gasPrice.mul(gasEstimate) }
+    const [gasPrice, gasEstimate, overhead] = action.pricing.map(toBN);
+    return { gasPrice, gasEstimate, overhead, fee: gasPrice.mul(gasEstimate) }
   }
   else
     return state;

@@ -30,7 +30,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         account.generate(message.secret)
                .then(save)
                .then(sendResponse)
-               .catch(sendResponse);
         break;
 
       case 'CHANGE_PASSWORD':
@@ -38,7 +37,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                .then(sk => account.encrypt(sk, message.newSecret))
                .then(save)
                .then(sendResponse)
-               .catch(sendResponse)
         break;
 
       case 'TX_SIGN':
@@ -67,10 +65,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                    .then(sendResponse);
         break;
 
+      //TODO: move that to POPLOCKER_API
       case 'SMARTLOCKER_NAME':
         smartLocker.getName(message.address)
                    .then(sendResponse)
-                   .catch(sendResponse)
         break;
     }
     return true;

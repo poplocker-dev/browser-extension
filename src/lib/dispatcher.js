@@ -39,26 +39,16 @@ export function apiDispatch(message) {
         return account.address
                       .setLocker(message.address)
                       .then(keyRequests.subscribe(message.address))
-                      .catch(() => {
-                        return `Failed: ${message.method}`;
-                      });
+                      .catch(() => `Failed: ${message.method}`);
 
       case 'getSmartLockerState':
-        return account.address
-                      .all()
-                      .then(results => {
-                        return smartLocker.getState(...results);
-                      })
-                      .catch(() => {
-                        return `Failed: ${message.method}`;
-                      });
+        return account.address.all().then(results => {
+          return smartLocker.getState(...results);
+        }).catch(() => `Failed: ${message.method}`);
 
       case 'removeKeyRequest':
-        return Promise.resolve(keyRequests.remove(message.address)).catch(
-          () => {
-            return `Failed: ${message.method}`;
-          }
-        );
+        return Promise.resolve(keyRequests.remove(message.address))
+                      .catch(() => `Failed: ${message.method}`);
 
       default:
         return Promise.reject(`No such method: ${message.method}`);

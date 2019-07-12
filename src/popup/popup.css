@@ -34,7 +34,6 @@ body {
 
   /* TODO: use mixins and @include viewable */
   .view {
-    height: 100vh;
     position: relative;
     overflow: hidden;
     display: flex;

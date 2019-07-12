@@ -1,4 +1,5 @@
 .view.connect {
+  height: 100vh;
   padding: 20px;
 
   .connect_hostname {

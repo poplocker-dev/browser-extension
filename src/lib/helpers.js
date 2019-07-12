@@ -1,9 +1,10 @@
-import BigNumber from 'bignumber.js';
-import { createStore } from 'redux';
-import { store } from 'lib/store';
-import { reducers } from 'lib/store/reducers';
-import { enqueuePending, enqueueConnections } from 'lib/store/actions';
-import { account, transaction, connection } from 'lib/storage';
+import BigNumber                              from 'bignumber.js'
+import parseDomain                            from 'parse-domain'
+import { createStore }                        from 'redux'
+import { store }                              from 'lib/store'
+import { reducers }                           from 'lib/store/reducers'
+import { enqueuePending, enqueueConnections } from 'lib/store/actions'
+import { account, transaction, connection }   from 'lib/storage'
 
 export async function initOrRedirect(render) {
   const deviceAddress = await account.address.device();
@@ -69,4 +70,9 @@ export function fixedEth(bn) {
 
 export function toHex(bignumber) {
   return '0x' + bignumber.toString(16);
+}
+
+export function getDomain(origin) {
+  const parts  = parseDomain(origin, { customTlds: /localhost/ });
+  return Object.values(parts).filter(i => i != "").reverse().join('.');
 }

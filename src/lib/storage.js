@@ -93,8 +93,8 @@ export const transaction = {
   add(tx) {
     return this.pending().then(txs => {
       tx.txId = Math.random()
-        .toString(36)
-        .substr(2, 5)
+                    .toString(36)
+                    .substr(2, 5)
       save({ pending: [...(txs || []), tx] })
     })
   },
@@ -149,9 +149,9 @@ export const account = {
         const nonce = toHex(parseInt(current) + number)
         return smartLocker
           ? save({
-              smartLockerNonce: nonce,
-              smartLockerNonceTimeStamp: Date.now(),
-            })
+            smartLockerNonce: nonce,
+            smartLockerNonceTimeStamp: Date.now(),
+          })
           : save({ deviceNonce: nonce, deviceNonceTimeStamp: Date.now() })
       })
     },
@@ -159,18 +159,18 @@ export const account = {
     async track(remote, smartLocker = false) {
       const local = await this.current(smartLocker)
       const timeStamp = smartLocker
-        ? await load('smartLockerNonceTimeStamp')
-        : await load('deviceNonceTimeStamp')
+            ? await load('smartLockerNonceTimeStamp')
+            : await load('deviceNonceTimeStamp')
 
       if (
         parseInt(remote) > parseInt(local) ||
-        Date.now() - timeStamp > 300000
+          Date.now() - timeStamp > 300000
       ) {
         smartLocker
           ? save({
-              smartLockerNonce: remote,
-              smartLockerNonceTimeStamp: Date.now(),
-            })
+            smartLockerNonce: remote,
+            smartLockerNonceTimeStamp: Date.now(),
+          })
           : save({ deviceNonce: remote, deviceNonceTimeStamp: Date.now() })
         return remote
       } else return local
