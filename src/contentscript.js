@@ -6,6 +6,7 @@ const rpcProxy = new RpcProxy('ETH_RPC', 'ETH_RX', 'ETH_TX');
 rpcProxy.handle((payload) => {
   return background.send(payload)
                    .then(response => rpcProxy.send(response))
+                   .catch(error => rpcProxy.send(error))
   }
 );
 
@@ -13,6 +14,7 @@ const popLockerProxy = new RpcProxy('POPLOCKER_API', 'POPLOCKER_RX', 'POPLOCKER_
 popLockerProxy.handle((payload) => {
   return background.send(payload)
                    .then(response => popLockerProxy.send(response))
+                   .catch(error => popLockerProxy.send(error))
   }
 );
 
@@ -27,10 +29,4 @@ function dirtyInjectProvider () {
   };
 
   container.insertBefore(el, container.children[0]);
-}
-
-function handleBackground (payload) {
-  return background.send(payload)
-                   .then(response => proxy.send(response))
-                   .catch(error => proxy.send(error))
 }

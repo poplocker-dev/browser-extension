@@ -28,7 +28,8 @@ export function ethDispatch(message) {
         return sendToNode(message);
     }
   };
-  return result().then(r => decorate(message, r));
+  return result().then(r => decorate(message, r))
+                 .catch(e => decorateError(message, e));
 }
 
 //TODO: better error handling
@@ -56,11 +57,16 @@ export function apiDispatch(message) {
   };
 
   return withAuth(message.origin, result, () => 'Account not connected')
-    .then(r => decorate(message, r));
+    .then(r => decorate(message, r))
+    .catch(e => decorateError(message, e));
 }
 
 function decorate({ method, id, jsonrpc }, result) {
   return { ...{ method, id, jsonrpc, result } };
+}
+
+function decorateError ({method, id, jsonrpc }, error) {
+  return {...{method, id, jsonrpc, error: error.message }};
 }
 
 async function sendToNodeOrWhisper(message) {

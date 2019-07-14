@@ -7,7 +7,7 @@ export const background = {
     return new Promise((resolve, reject) => {
       chrome.runtime.sendMessage(message, (response) => {
         if (chrome.runtime.lastError)
-          reject(new Error(chrome.runtime.lastError));
+          reject(chrome.runtime.lastError.message);
         else if (response && response.error)
           reject(response);
         else

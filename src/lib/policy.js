@@ -60,7 +60,11 @@ export async function connect (origin) {
 }
 
 export function withAuth (origin, callback, reject) {
-  const request  = getDomain(origin) || origin;
+  if (origin.indexOf('chrome-extension://' + chrome.runtime.id) != -1)
+    return callback();
+
+  const request = getDomain(origin) || origin;
+
   return connection.authorized.get().then(list => {
     if (list.indexOf(request) != -1) return callback();
     else return Promise.resolve(reject());
