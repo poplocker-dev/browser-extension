@@ -6,7 +6,6 @@ const promiseQ = function () {
 
   return {
     addOnce (request) {
-      console.log('add once', request);
       const promise = new Promise((resolve, reject) => {
         if (!queue.find(i => i.request == request)) {
           queue.push({ request, resolve, reject });
