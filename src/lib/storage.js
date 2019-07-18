@@ -1,7 +1,7 @@
 import * as wallet from 'ethereumjs-wallet'
-import Encryptor   from './workers/encryptor.worker.js'
-import Decryptor   from './workers/decryptor.worker.js'
-import { toHex }   from 'lib/helpers'
+import Encryptor from './workers/encryptor.worker.js'
+import Decryptor from './workers/decryptor.worker.js'
+import { toHex } from 'lib/helpers'
 
 const collection = function (name) {
   return {
@@ -102,15 +102,6 @@ export const transaction = {
 export const account = {
   address () {
     return load('deviceAddress').then(a => a ? [a] : []);
-  },
-
-  withAuth (origin) {
-    return connection.authorized.get().then(list => {
-      if (list.indexOf(origin) != -1)
-        return this.address();
-      else
-        return Promise.resolve([]);
-    })
   },
 
   nonce: {

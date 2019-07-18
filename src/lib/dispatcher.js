@@ -1,6 +1,7 @@
 import { account }       from 'lib/storage'
 import { auth }          from 'lib/tx'
-import { connect }       from 'lib/policy'
+import { connect,
+         withAuth }      from 'lib/policy'
 import * as HttpProvider from 'ethjs-provider-http'
 import * as EthRPC       from 'ethjs-rpc'
 
@@ -14,7 +15,9 @@ export function dispatch (message) {
         return connect(message.origin);
 
       case 'eth_accounts':
-        return account.withAuth(message.origin);
+        return withAuth(message.origin, () => {
+          return account.address();
+        }, () => []);
 
       case 'eth_sendTransaction':
         return auth(message).then(sendToNode).then(upNonce);
