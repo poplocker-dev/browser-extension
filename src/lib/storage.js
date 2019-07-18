@@ -3,20 +3,20 @@ import Encryptor from './workers/encryptor.worker.js'
 import Decryptor from './workers/decryptor.worker.js'
 import { toHex } from 'lib/helpers'
 
-const collection = function(name) {
+const collection = function (name) {
   return {
-    get() {
-      return load(name).then(items => items || [])
+    get () {
+      return load(name).then(items => items || []);
     },
 
-    shift() {
+    shift () {
       return this.get().then(items => {
-        save({ [name]: items.slice(1) })
-        return items[0]
+        save({ [name]: items.slice(1) });
+        return items[0];
       })
     },
 
-    add(item, adder) {
+    add (item, adder) {
       return this.get().then(items => {
         if (adder) save({ [name]: [...(items || []), adder.call(item)] })
         else {
@@ -27,45 +27,43 @@ const collection = function(name) {
 
     size() {
       return this.get().then(items => {
-        return items.length
+        return items.length;
       })
-    },
+    }
   }
 }
 
-export function save(payload) {
+export function save (payload) {
   return new Promise((resolve, reject) => {
     try {
       chrome.storage.local.set(payload, () => {
-        resolve(payload)
-      })
-    } catch (e) {
-      console.error(e)
-      reject(e)
+        resolve(payload);
+      });
     }
+    catch (e) { console.error(e); reject(e); }
   })
 }
 
-export function load(id) {
+export function load (id) {
   return new Promise((resolve, reject) => {
     try {
-      chrome.storage.local.get([id], value => {
-        if (Object.keys(value).indexOf(id) != -1) resolve(value[id])
-        else resolve(null)
-      })
-    } catch (e) {
-      console.error(e)
-      reject(e)
+      chrome.storage.local.get([id], (value) => {
+        if (Object.keys(value).indexOf(id) != -1)
+          resolve(value[id]);
+        else
+          resolve(null);
+      });
     }
+    catch (e) { console.error(e); reject(e) }
   })
 }
 
 export const connection = {
   requests: collection('requests'),
-  authorized: collection('authorized'),
+  authorized: collection('authorized')
 }
 
-export function initialize() {
+export function initialize () {
   save({
     deviceAddress: null,
     smartLockerAddress: null,
@@ -79,44 +77,42 @@ export function initialize() {
 
 //TODO: use collection here
 export const transaction = {
-  pending() {
-    return load('pending')
+  pending () {
+    return load('pending');
   },
 
-  shift() {
+  shift () {
     return this.pending().then(txs => {
-      save({ pending: txs.slice(1) })
-      return txs[0]
+      save({ pending: txs.slice(1) });
+      return txs[0];
     })
   },
 
-  add(tx) {
+  add (tx) {
     return this.pending().then(txs => {
-      tx.txId = Math.random()
-                    .toString(36)
-                    .substr(2, 5)
-      save({ pending: [...(txs || []), tx] })
+      tx.txId = Math.random().toString(36).substr(2, 5);
+      save({ pending: [...(txs || []), tx] });
     })
   },
 
   size() {
     return this.pending().then(txs => {
-      return txs.length
+      return txs.length;
     })
-  },
+  }
 }
 
 export const account = {
   address: {
-    device() {
-      return load('deviceAddress')
+    device () {
+      return load('deviceAddress');
     },
 
-    locker() {
-      return load('smartLockerAddress')
+    locker( ) {
+      return load('smartLockerAddress');
     },
 
-    current() {
+    current () {
       return this.all().then(([deviceAddress, smartLockerAddress]) => {
         if (deviceAddress) {
           return smartLockerAddress ? [smartLockerAddress] : [deviceAddress]
@@ -126,17 +122,17 @@ export const account = {
       })
     },
 
-    all() {
-      return Promise.all([this.device(), this.locker()])
+    all () {
+      return Promise.all([this.device(), this.locker()]);
     },
 
-    setLocker(addr) {
+    setLocker (addr) {
       return save({
         smartLockerAddress: addr,
         smartLockerNonce: '0x0',
         smartLockerNonceTimeStamp: 0,
-      })
-    },
+      });
+    }
   },
 
   nonce: {
@@ -186,40 +182,39 @@ export const account = {
     })
   },
 
-  encrypt(sk, secret) {
+  encrypt (sk, secret) {
     return new Promise((resolve, reject) => {
-      const w = new Encryptor()
+      const w = new Encryptor();
 
-      w.postMessage({ sk, secret })
+      w.postMessage({ sk, secret });
       w.onmessage = ({ data }) => {
-        resolve(data)
-        w.terminate()
+        resolve(data);
+        w.terminate();
       }
       w.onerror = () => {
-        reject()
-        w.terminate()
+        reject();
+        w.terminate();
       }
-    })
+    });
   },
 
-  decrypt(secret) {
+  decrypt (secret) {
     return new Promise((resolve, reject) => {
-      Promise.all([load('encrypted'), load('salt')]).then(
-        ([encrypted, salt]) => {
-          const w = new Decryptor()
+      Promise.all([load('encrypted'), load('salt')]).then(([encrypted, salt]) => {
 
-          w.postMessage({ encrypted, salt, secret })
-          w.onmessage = ({ data }) => {
-            resolve(data)
-            w.terminate()
-          }
-          w.onerror = e => {
-            e.preventDefault()
-            reject()
-            w.terminate()
-          }
+        const w = new Decryptor();
+
+        w.postMessage({ encrypted, salt, secret });
+        w.onmessage = ({ data }) => {
+          resolve(data);
+          w.terminate();
         }
-      )
-    })
-  },
+        w.onerror = (e) => {
+          e.preventDefault();
+          reject();
+          w.terminate();
+        }
+      });
+    });
+  }
 }

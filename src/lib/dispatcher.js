@@ -1,11 +1,11 @@
-import { account } from 'lib/storage';
-import { auth } from 'lib/tx';
-import { connect, withAuth } from 'lib/policy';
-import smartLocker from 'lib/smartlocker';
-import ShhRpc from 'lib/rpc/whisper';
-import keyRequests from 'lib/key_requests';
-import HttpProvider from 'ethjs-provider-http';
-import EthRpc from 'ethjs-rpc';
+import { account }           from 'lib/storage'
+import { auth }              from 'lib/tx'
+import { connect, withAuth } from 'lib/policy'
+import smartLocker           from 'lib/smartlocker'
+import ShhRpc                from 'lib/rpc/whisper'
+import keyRequests           from 'lib/key_requests'
+import HttpProvider          from 'ethjs-provider-http'
+import EthRpc                from 'ethjs-rpc'
 
 const eth = new EthRpc(new HttpProvider(process.env.RPC_URL));
 const shh = new ShhRpc(process.env.SHH_URL, process.env.GAS_RELAY_TOPIC);
@@ -13,6 +13,7 @@ const shh = new ShhRpc(process.env.SHH_URL, process.env.GAS_RELAY_TOPIC);
 export function ethDispatch(message) {
   const result = () => {
     switch (message.method) {
+
       case 'eth_requestAccounts':
         return connect(message.origin);
 

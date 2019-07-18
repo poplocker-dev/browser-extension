@@ -1,9 +1,9 @@
+
 import { sign, signMetaTx, noncify } from 'lib/tx'
 import { ethDispatch, apiDispatch }  from 'lib/dispatcher'
 import { badge }                     from 'lib/helpers'
-import { account, save, initialize,
-         transaction,
-         connection }                from 'lib/storage'
+import { initialize, save, account,
+         transaction, connection }   from 'lib/storage'
 import smartLocker                   from 'lib/smartlocker'
 import keyRequests                   from 'lib/key_requests'
 
@@ -97,4 +97,3 @@ chrome.storage.onChanged.addListener(changes => {
   if (changes.deviceAddress)
     changes.deviceAddress.newValue ? badge.reset() : badge.warning();
 });
-
