@@ -1,4 +1,5 @@
 import BigNumber              from 'bignumber.js'
+import parseDomain            from 'parse-domain'
 import { createStore }        from 'redux'
 import { store }              from 'lib/store'
 import { reducers }           from 'lib/store/reducers'
@@ -69,4 +70,9 @@ export function fixedEth (bn) {
 
 export function toHex (bignumber) {
   return '0x' + bignumber.toString(16);
+}
+
+export function getDomain(origin) {
+  const parts = parseDomain(origin, { customTlds: /localhost/ });
+  return Object.values(parts).filter(i => i != "").reverse().join('.');
 }

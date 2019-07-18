@@ -5,7 +5,7 @@ import { account,
          save,
 	 initialize,
          transaction,
-         connection, } from 'lib/storage'
+         connection } from 'lib/storage'
 
 chrome.runtime.onInstalled.addListener(({ reason }) => {
   if (reason == 'install') initialize();

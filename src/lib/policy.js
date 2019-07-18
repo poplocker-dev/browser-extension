@@ -1,4 +1,5 @@
 import { account, connection } from 'lib/storage'
+import { getDomain }           from 'lib/helpers'
 
 const promiseQ = function () {
   let queue = [];
@@ -40,7 +41,8 @@ chrome.runtime.onMessage.addListener(function handleRequest(message) {
   }
 });
 
-export async function connect (request) {
+export async function connect (origin) {
+  const request  = getDomain(origin) || origin;
   const authList = await connection.authorized.get();
   const rqsList  = await connection.requests.get();
 
@@ -57,8 +59,9 @@ export async function connect (request) {
 }
 
 export function withAuth (origin, callback, reject) {
+  const request = getDomain(origin) || origin;
   return connection.authorized.get().then(list => {
-    if (list.indexOf(origin) != -1) return callback();
+    if (list.indexOf(request) != -1) return callback();
     else return Promise.resolve(reject());
   })
 }
