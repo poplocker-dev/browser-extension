@@ -60,7 +60,23 @@ export function load (id) {
 
 export const connection = {
   requests: collection('requests'),
-  authorized: collection('authorized')
+  authorized: collection('authorized'),
+  mode: {
+    type () {
+      return load('connectionMode');
+    },
+
+    public () {
+      return save({ connectionMode: 'public' });
+    },
+
+    private () {
+      return save({ connectionMode: 'private' });
+    }
+  },
+  clear () {
+    return save({ authorized: [] });
+  }
 }
 
 export function initialize () {
@@ -72,6 +88,7 @@ export function initialize () {
     deviceNonceTimeStamp: 0,
     smartLockerNonce: '0x0',
     smartLockerNonceTimeStamp: 0,
+    connectionMode: 'public'
   })
 }
 

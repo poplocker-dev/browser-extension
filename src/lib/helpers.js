@@ -22,7 +22,7 @@ export async function initOrRedirect (render) {
 }
 
 export function initOptions (render) {
-  return render(createStore(reducers, { page: 'change_password' }));
+  return render(createStore(reducers, {page: 'options'}));
 }
 
 export const badge = {
