@@ -61,15 +61,32 @@ export function load (id) {
 
 export const connection = {
   requests: collection('requests'),
-  authorized: collection('authorized')
+  authorized: collection('authorized'),
+  mode: {
+    type () {
+      return load('connectionMode');
+    },
+
+    public () {
+      return save({ connectionMode: 'public' });
+    },
+
+    private () {
+      return save({ connectionMode: 'private' });
+    }
+  },
+  clear () {
+    return save({ authorized: [] });
+  }
 }
 
 export function initialize () {
   save({
     deviceAddress: null,
     pending: [],
-    deviceNonce: "0x0",
-    deviceNonceTimeStamp: 0
+    deviceNonce: '0x0',
+    deviceNonceTimeStamp: 0,
+    connectionMode: 'public'
   });
 }
 

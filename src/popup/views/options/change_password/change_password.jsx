@@ -22,7 +22,7 @@ class ChangePasswordView extends React.Component {
       this.setState({ currentPasswordError: '' });
   }
 
-  onCurrentPasswordBlur (e) {
+  onCurrentPasswordBlur () {
     if (!this.state.currentPassword)
       this.setState({ currentPasswordError: 'password cannot be empty' });
   }
@@ -47,7 +47,7 @@ class ChangePasswordView extends React.Component {
 
   render () {
     return (
-      <div className="change-password-view view">
+      <div className="change-password">
         <Header caption="Change password on this device" />
         <form className="change-password-form" onSubmit={ this.handleSubmit.bind(this) }>
           <PassField name="current password"

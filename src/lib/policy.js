@@ -42,11 +42,12 @@ chrome.runtime.onMessage.addListener(function handleRequest(message) {
 });
 
 export async function connect (origin) {
+  const mode     = await connection.mode.type();
   const request  = getDomain(origin) || origin;
   const authList = await connection.authorized.get();
   const rqsList  = await connection.requests.get();
 
-  if (authList.indexOf(request) != -1) {
+  if (mode === 'public' || authList.indexOf(request) != -1 ) {
     const address = await account.address();
     return Promise.resolve(address);
   }
@@ -58,10 +59,12 @@ export async function connect (origin) {
   return promiseQ.addOnce(request);
 }
 
-export function withAuth (origin, callback, reject) {
+export async function withAuth (origin, callback, reject) {
+  const mode    = await connection.mode.type();
   const request = getDomain(origin) || origin;
+
   return connection.authorized.get().then(list => {
-    if (list.indexOf(request) != -1) return callback();
+    if (mode === 'public' || list.indexOf(request) != -1) return callback();
     else return Promise.resolve(reject());
   })
 }

@@ -3,7 +3,7 @@ import { dispatch }      from 'lib/dispatcher'
 import { badge }         from 'lib/helpers'
 import { account,
          save,
-	 initialize,
+         initialize,
          transaction,
          connection } from 'lib/storage'
 
@@ -18,40 +18,40 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     switch (message.type) {
 
-    case 'ETH_RPC':
-      dispatch(message).then(sendResponse);
-      break;
+      case 'ETH_RPC':
+        dispatch(message).then(sendResponse);
+        break;
 
-    case 'NEW_ACCOUNT':
-      account.generate(message.secret)
-        .then(save)
-        .then(sendResponse)
-        .catch(sendResponse)
-      break;
+      case 'NEW_ACCOUNT':
+        account.generate(message.secret)
+               .then(save)
+               .then(sendResponse)
+               .catch(sendResponse)
+        break;
 
-    case 'CHANGE_PASSWORD':
-      account.decrypt(message.oldSecret)
-        .then(sk => account.encrypt(sk, message.newSecret))
-        .then(save)
-        .then(sendResponse)
-        .catch(sendResponse)
-      break;
+      case 'CHANGE_PASSWORD':
+        account.decrypt(message.oldSecret)
+               .then(sk => account.encrypt(sk, message.newSecret))
+               .then(save)
+               .then(sendResponse)
+               .catch(sendResponse)
+        break;
 
-    case 'TX_SIGN': {
-      noncify(message.tx, message.blockNonce).then(tx => {
-        account.decrypt(message.secret)
-          .then(sk => sign(tx, sk))
-          .then(sendResponse)
-          .catch(sendResponse)});
-      break;
-    }
+      case 'TX_SIGN': {
+        noncify(message.tx, message.blockNonce).then(tx => {
+          account.decrypt(message.secret)
+                 .then(sk => sign(tx, sk))
+                 .then(sendResponse)
+                 .catch(sendResponse)});
+        break;
+      }
 
-      // tx.js/auth listens to it too
-    case 'TX_SIGNED':
-    case 'TX_CANCEL':
-      transaction.shift()
-        .then(sendResponse);
-      break;
+        // tx.js/auth listens to it too
+      case 'TX_SIGNED':
+      case 'TX_CANCEL':
+        transaction.shift()
+                   .then(sendResponse);
+        break;
     }
     return true;
   }
