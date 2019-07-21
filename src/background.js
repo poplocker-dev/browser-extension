@@ -58,8 +58,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 transaction.pending().then(p => {
-  if (p && p.length > 0)
+  if (p && p.length > 0) {
+    for (let tx of p) dispatch(tx);
     badge.info = p.length;
+  }
 });
 
 connection.requests.get().then(r => {

@@ -2,7 +2,9 @@ import { account, transaction } from 'lib/storage'
 import { rawSendTx }            from 'lib/rpc/eth_node'
 import { sign as signer }       from 'ethjs-signer'
 
-export function auth (tx) {
+export async function auth (tx) {
+  const pending = await transaction.pending();
+
   return new Promise(resolve => {
     chrome.runtime.onMessage.addListener(function handleSign(message) {
       if ( message.type == 'TX_SIGNED' && message.txId == tx.txId) {
@@ -14,7 +16,8 @@ export function auth (tx) {
         chrome.runtime.onMessage.removeListener(handleSign);
       }
     });
-    transaction.add(tx);
+    if (pending.map(p => p.id).indexOf(tx.id) == -1)
+      transaction.add(tx);
   });
 }
 
