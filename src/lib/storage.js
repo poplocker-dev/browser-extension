@@ -55,10 +55,14 @@ const collection = function (name) {
       })
     },
 
-    size() {
+    size () {
       return this.get().then(items => {
         return items.length;
       })
+    },
+
+    clear () {
+      save({ [name]: [] });
     }
   }
 }

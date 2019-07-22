@@ -30,7 +30,7 @@ class AuthorizeView extends React.Component {
 
   render () {
     return (
-      <div className="view authorize-view">
+      <div className="authorize-view view">
         <Header small={true}>
           <AccountBalance/>
         </Header>

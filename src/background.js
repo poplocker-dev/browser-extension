@@ -76,8 +76,6 @@ chrome.storage.onChanged.addListener(changes => {
   }
 });
 
-save({
-  pendingCnxs: [],
-  rejectedCnxs: [],
-  pendingTxs: []
-});
+connection.pending.clear();
+connection.rejected.clear();
+transaction.clear();

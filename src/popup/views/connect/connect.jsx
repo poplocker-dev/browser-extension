@@ -17,11 +17,11 @@ class ConnectView extends React.Component  {
 
   render () {
     return (
-      <div className="connect-view">
+      <div className="connect-view view">
         <Header/>
         <h1>{this.props.request}</h1>
         <h2>Would like to connect to your account</h2>
-        <h2>Only authorize if you trust this site</h2>
+        <h2>Only authorize if you trust this website</h2>
         <div className="buttons buttons--2row">
           <Button tabIndex={-1}
                   kind="reject"

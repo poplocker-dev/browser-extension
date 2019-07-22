@@ -1,6 +1,4 @@
 .failure-view {
-  display: flex;
-  flex-direction: column;
   justify-content: space-between;
   align-content: center;
 
@@ -12,7 +10,7 @@
   }
 
   .btn {
-    width: 40%;
+    width: 45%;
     margin: 40px auto;
   }
 }
