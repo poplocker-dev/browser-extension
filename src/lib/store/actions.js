@@ -43,8 +43,12 @@ export function revalueTx (fee, value) {
   }
 }
 
-export function enqueuePending (pending) {
-  return { type: 'ENQUEUE_TXS', pending };
+export function enqueuePendingCnxs (cnxs) {
+  return { type: 'ENQUEUE_CNXS', cnxs };
+}
+
+export function enqueuePendingTxs (txs) {
+  return { type: 'ENQUEUE_TXS', txs };
 }
 
 export function txSignFailed (message) {

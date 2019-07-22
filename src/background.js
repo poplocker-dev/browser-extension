@@ -1,7 +1,11 @@
-import { sign, noncify }                          from 'lib/tx'
-import { dispatch }                               from 'lib/dispatcher'
-import { badge }                                  from 'lib/helpers'
-import { initialize, save, account, transaction } from 'lib/storage'
+import { sign, noncify } from 'lib/tx'
+import { dispatch }      from 'lib/dispatcher'
+import { badge }         from 'lib/helpers'
+import { initialize,
+         save,
+         account,
+         connection,
+         transaction }   from 'lib/storage'
 
 chrome.runtime.onInstalled.addListener(({ reason }) => {
   if (reason == 'install') initialize();
@@ -34,36 +38,46 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                .catch(sendResponse)
         break;
 
-      case 'TX_SIGN': {
+      case 'TX_SIGN':
         noncify(message.tx, message.blockNonce).then(tx => {
           account.decrypt(message.secret)
                  .then(sk => sign(tx, sk))
                  .then(sendResponse)
                  .catch(sendResponse)});
         break;
-      }
 
-      // tx.js/auth listens to it too
+      case 'CNX_AUTHORIZED':
+      case 'CNX_REJECTED':
       case 'TX_SIGNED':
       case 'TX_CANCEL':
-        transaction.shift()
-                   .then(sendResponse);
+        sendResponse(true);
         break;
     }
     return true;
   }
 });
 
-transaction.pending().then(p => {
-  if (p && p.length > 0)
-    badge.info = p.length;
-});
-
 chrome.storage.onChanged.addListener(changes => {
-  if (changes.pending && changes.pending.newValue)
-    badge.info = changes.pending.newValue.length || '';
-
-  if (changes.deviceAddress)
-    changes.deviceAddress.newValue ? badge.reset() : badge.warning();
+  if (changes.deviceAddress || changes.pendingCnxs || changes.pendingTxs) {
+    account.address().then(([address]) => {
+      if (!address) badge.warning();
+      else {
+        connection.pending.size().then(pendingCnxSize => {
+          if (pendingCnxSize > 0) badge.cnxs = pendingCnxSize;
+          else {
+            transaction.size().then(pendingTxSize => {
+              if (pendingTxSize > 0) badge.txs = pendingTxSize;
+              else badge.reset();
+            });
+          }
+        });
+      }
+    });
+  }
 });
 
+save({
+  pendingCnxs: [],
+  rejectedCnxs: [],
+  pendingTxs: []
+});

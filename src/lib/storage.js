@@ -3,6 +3,14 @@ import Encryptor   from './workers/encryptor.worker.js'
 import Decryptor   from './workers/decryptor.worker.js'
 import { toHex }   from 'lib/helpers'
 
+export function initialize () {
+  save({
+    deviceAddress: null,
+    deviceNonce: '0x0',
+    deviceNonceTimeStamp: 0
+  });
+}
+
 export function save (payload) {
   return new Promise((resolve, reject) => {
     try {
@@ -28,41 +36,40 @@ export function load (id) {
   })
 }
 
-export function initialize () {
-  save({
-    deviceAddress: null,
-    pending: [],
-    deviceNonce: "0x0",
-    deviceNonceTimeStamp: 0
-  });
-}
+const collection = function (name) {
+  return {
+    get () {
+      return load(name).then(items => items || []);
+    },
 
-export const transaction = {
+    shift () {
+      return this.get().then(items => {
+        save({ [name]: items.slice(1) });
+        return items[0];
+      })
+    },
 
-  pending () {
-    return load('pending');
-  },
+    add (item) {
+      return this.get().then(items => {
+        save({ [name]: [...(items || []), item] });
+      })
+    },
 
-  shift () {
-    return this.pending().then(txs => {
-      save({ pending: txs.slice(1) });
-      return txs[0];
-    })
-  },
-
-  add (tx) {
-    return this.pending().then(txs => {
-      tx.txId = Math.random().toString(36).substr(2, 5);
-      save({ pending: [...(txs || []), tx] });
-    })
-  },
-
-  size() {
-    return this.pending().then(txs => {
-      return txs.length;
-    })
+    size() {
+      return this.get().then(items => {
+        return items.length;
+      })
+    }
   }
 }
+
+export const connection = {
+  pending: collection('pendingCnxs'),
+  authorized: collection('authorizedCnxs'),
+  rejected: collection('rejectedCnxs')
+}
+
+export const transaction = collection('pendingTxs');
 
 export const account = {
   address () {

@@ -20,7 +20,7 @@ class ChangePasswordView extends React.Component {
     this.setState({ currentPassword: e.target.value, currentPasswordError: '' });
   }
 
-  onCurrentPasswordBlur (e) {
+  onCurrentPasswordBlur () {
     if (!this.state.currentPassword)
       this.setState({ currentPasswordError: 'password cannot be empty' });
   }

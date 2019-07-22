@@ -1,18 +1,22 @@
-import BigNumber                from 'bignumber.js'
-import { createStore }          from 'redux'
-import { store }                from 'lib/store'
-import { reducers }             from 'lib/store/reducers'
-import { enqueuePending }       from 'lib/store/actions'
-import { account, transaction } from 'lib/storage'
+import BigNumber                                 from 'bignumber.js'
+import parseDomain                               from 'parse-domain'
+import { createStore }                           from 'redux'
+import { store }                                 from 'lib/store'
+import { reducers }                              from 'lib/store/reducers'
+import { enqueuePendingCnxs, enqueuePendingTxs } from 'lib/store/actions'
+import { account, connection, transaction }      from 'lib/storage'
 
 export async function initOrRedirect (render) {
-  const [address] = await account.address();
-  const pending   = await transaction.pending();
+  const [address]   = await account.address();
+  const pendingCnxs = await connection.pending.get();
+  const pendingTxs  = await transaction.get();
 
-  if (address && pending.length == 0)
+  if (address && pendingCnxs.length > 0)
+    store.dispatch(enqueuePendingCnxs(pendingCnxs));
+  else if (address && pendingTxs.length > 0)
+    store.dispatch(enqueuePendingTxs(pendingTxs));
+  else if (address)
     chrome.tabs.create({ 'url': process.env.POPLOCKER_WALLET_URL });
-  else if (address && pending.length > 0)
-    store.dispatch(enqueuePending(pending));
 
   return render(store);
 }
@@ -22,7 +26,12 @@ export function initOptions (render) {
 }
 
 export const badge = {
-  set info (value) {
+  set cnxs (value) {
+    this.color = '#f48f42';
+    this.text = `${value}`;
+  },
+
+  set txs (value) {
     this.color = '#386BE1';
     this.text = `${value}`;
   },
@@ -53,4 +62,9 @@ export function fixedEth (bn) {
 
 export function toHex (bignumber) {
   return '0x' + bignumber.toString(16);
+}
+
+export function getDomain (origin) {
+  const parts = parseDomain(origin, { customTlds: /localhost/ });
+  return Object.values(parts).filter(i => i != "").reverse().join('.');
 }

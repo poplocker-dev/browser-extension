@@ -6,14 +6,15 @@ export const background = {
 
     return new Promise((resolve, reject) => {
       try{
-        chrome.runtime.sendMessage(message, (response) => {
-          if (chrome.runtime.lastError || !response) {
+        chrome.runtime.sendMessage(message, response => {
+          if (chrome.runtime.lastError || !response)
             reject(chrome.runtime.lastError || "No response defined");
-          }
+          else if (response.error)
+            reject(response.error);
           else resolve(response);
         })
       } catch(error) {
-        reject(error.toString())
+        reject(error.message)
       }
     })
   }

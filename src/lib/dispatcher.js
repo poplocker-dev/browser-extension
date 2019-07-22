@@ -1,5 +1,6 @@
 import { account }       from 'lib/storage'
-import { auth }          from 'lib/tx'
+import { authorizeCnx }  from 'lib/cnx'
+import { authorizeTx }   from 'lib/tx'
 import * as HttpProvider from 'ethjs-provider-http'
 import * as EthRPC       from 'ethjs-rpc'
 
@@ -9,23 +10,27 @@ export function dispatch (message) {
   const result = () => {
     switch (message.method) {
 
-      // non-private by default for now
       case 'eth_requestAccounts':
       case 'eth_accounts':
-        return account.address();
+        return authorizeCnx(message.origin).then(account.address);
 
       case 'eth_sendTransaction':
-        return auth(message).then(sendToNode).then(upNonce);
+        return authorizeTx(message).then(sendToNode).then(upNonce);
 
       default:
         return sendToNode(message);
     }
   }
-  return result().then(r => decorate(message, r));
+  return result().then(r => decorate(message, r))
+                 .catch(e => decorateError(message, e));
 }
 
 function decorate ({ method, id, jsonrpc }, result) {
   return {...{ method, id, jsonrpc, result }};
+}
+
+function decorateError ({method, id, jsonrpc }, error) {
+  return {...{method, id, jsonrpc, error: error.message }};
 }
 
 function strip({ id, method, jsonrpc, params }) {

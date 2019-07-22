@@ -3,9 +3,17 @@ import reduceReducers      from 'reduce-reducers';
 import toBN                from 'number-to-bn'
 import { toHex }           from 'lib/helpers'
 
-function pending (state = [], action) {
+function pendingCnxs (state = [], action) {
+  if (action.type == 'ENQUEUE_CNXS') {
+    return action.cnxs;
+  }
+  else
+    return state;
+}
+
+function pendingTxs (state = [], action) {
   if (action.type == 'ENQUEUE_TXS') {
-    return action.pending.map(({params, origin, txId}) => {
+    return action.txs.map(({params, origin, txId}) => {
       return { params: params[0], origin, txId }
     });
   }
@@ -13,7 +21,7 @@ function pending (state = [], action) {
     return state;
 }
 
-function firstPending (state = null, action) {
+function firstPendingTx (state = null, action) {
   if (action.type == 'ENQUEUE_TXS')
     return (state.length > 0) ? state[0] : null;
 
@@ -57,6 +65,8 @@ function page (state = 'new_account', action) {
       return 'success';
     case 'ACCOUNT_FAILED':
       return 'failure';
+    case 'ENQUEUE_CNXS':
+     return 'connect';
     case 'ENQUEUE_TXS':
       return 'authorize';
     default:
@@ -85,9 +95,9 @@ function noFundsError (state = null, action) {
     return state;
 }
 
-const current  = reduceReducers(pending, firstPending);
+const current  = reduceReducers(pendingTxs, firstPendingTx);
 const tx       = combineReducers({ balance, pricing, current });
 const errors   = combineReducers({ txInfo: txInfoError, txSign: txSignError, noFunds: noFundsError });
-const reducers = combineReducers({ page, tx, errors, advancedMode });
+const reducers = combineReducers({ pendingCnxs, page, tx, errors, advancedMode });
 
 export { reducers };
