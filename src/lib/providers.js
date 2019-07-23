@@ -7,7 +7,7 @@ export class EthereumProvider extends SafeEventEmitter {
 
     this.host    = 'poplocker';
     this.timeout = timeout || 0;
-    this.proxy   = new RpcProxy('ETH_TX', 'ETH_RX');
+    this.proxy   = new RpcProxy('ETH_RPC', 'ETH_TX', 'ETH_RX');
     this.id      = 0;
     this.jsonrpc = '2.0';
   }
@@ -27,15 +27,14 @@ export class EthereumProvider extends SafeEventEmitter {
     return new Promise((resolve, reject) => {
       const id = this.id++;
       this.proxy.send({ method, params, id, jsonrpc: this.jsonrpc }, (error, data) => {
-        if (data && data.error) {
+        if (data && data.error)
           reject(data.error);
-        }
         else if (error)
           reject(error);
         else
           resolve(data && data.result);
-      })
-    })
+      });
+    });
   }
 }
 
@@ -44,5 +43,44 @@ export class Web3Provider extends EthereumProvider {
     super(host, timeout);
   }
 
-  sendAsync (payload, callback) { this.proxy.send(payload, callback); }
+  sendAsync (payload, callback) {
+    this.proxy.send(payload, callback);
+  }
+}
+
+export class PopLockerProvider {
+  constructor () {
+    this.counter = 1;
+    this.proxy = new RpcProxy('POPLOCKER_API', 'POPLOCKER_TX', 'POPLOCKER_RX');
+  }
+
+  sendAsync (payload) {
+    this.counter++;
+    return new Promise((resolve, reject) => {
+      this.proxy.send({ ...payload, id: this.counter }, (error, response) => {
+        if (!error)
+          resolve(response.result);
+        else
+          reject(error);
+      });
+    });
+  }
+
+  getSmartLockerState () {
+    return this.sendAsync({ method: 'getSmartLockerState' });
+  }
+
+  setSmartLockerAddress (address) {
+    return this.sendAsync({
+      method: 'setSmartLockerAddress',
+      address: address
+    });
+  }
+
+  removeKeyRequest (address) {
+    return this.sendAsync({
+      method: 'removeKeyRequest',
+      address: address
+    });
+  }
 }

@@ -11,12 +11,13 @@ export const background = {
             reject(chrome.runtime.lastError || "No response defined");
           else if (response.error)
             reject(response.error);
-          else resolve(response);
-        })
+          else
+            resolve(response);
+        });
       } catch(error) {
         reject(error.message)
       }
-    })
+    });
   }
 }
 
