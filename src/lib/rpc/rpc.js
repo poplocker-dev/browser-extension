@@ -11,12 +11,13 @@ export const background = {
             reject(chrome.runtime.lastError || "No response defined");
           else if (response.error)
             reject(response.error);
-          else resolve(response);
-        })
+          else
+            resolve(response);
+        });
       } catch(error) {
         reject(error.message)
       }
-    })
+    });
   }
 }
 
@@ -24,6 +25,7 @@ export const background = {
 // proxy. Used by injected.js
 // that lives in separate DOM
 export class RpcProxy {
+
   constructor (up, down) {
     this.up       = up;
     this.down     = down;

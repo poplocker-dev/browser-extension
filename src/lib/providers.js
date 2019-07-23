@@ -27,15 +27,14 @@ export class EthereumProvider extends SafeEventEmitter {
     return new Promise((resolve, reject) => {
       const id = this.id++;
       this.proxy.send({ method, params, id, jsonrpc: this.jsonrpc }, (error, data) => {
-        if (data && data.error) {
+        if (data && data.error)
           reject(data.error);
-        }
         else if (error)
           reject(error);
         else
           resolve(data && data.result);
-      })
-    })
+      });
+    });
   }
 }
 
@@ -44,5 +43,7 @@ export class Web3Provider extends EthereumProvider {
     super(host, timeout);
   }
 
-  sendAsync (payload, callback) { this.proxy.send(payload, callback); }
+  sendAsync (payload, callback) {
+    this.proxy.send(payload, callback);
+  }
 }

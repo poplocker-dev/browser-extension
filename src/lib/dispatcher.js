@@ -1,8 +1,8 @@
-import { account }       from 'lib/storage'
-import { authorizeCnx }  from 'lib/cnx'
-import { authorizeTx }   from 'lib/tx'
-import * as HttpProvider from 'ethjs-provider-http'
-import * as EthRPC       from 'ethjs-rpc'
+import { account }      from 'lib/storage'
+import { authorizeCnx } from 'lib/cnx'
+import { authorizeTx }  from 'lib/tx'
+import HttpProvider     from 'ethjs-provider-http'
+import EthRPC           from 'ethjs-rpc'
 
 const eth = new EthRPC(new HttpProvider(process.env.RPC_URL));
 
@@ -33,7 +33,7 @@ function decorateError ({method, id, jsonrpc }, error) {
   return {...{method, id, jsonrpc, error: error.message }};
 }
 
-function strip({ id, method, jsonrpc, params }) {
+function strip ({ id, method, jsonrpc, params }) {
   // parity strict nodes don't like extra props
   return { id, method, jsonrpc, params };
 }
