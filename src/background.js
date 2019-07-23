@@ -84,8 +84,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 chrome.storage.onChanged.addListener(changes => {
   if (changes.deviceAddress || changes.pendingCnxs || changes.pendingTxs) {
-    account.address().then(([address]) => {
-      if (!address) badge.warning();
+    account.address.device().then(deviceAddress => {
+      if (!deviceAddress) badge.warning();
       else {
         connection.pending.size().then(pendingCnxSize => {
           if (pendingCnxSize > 0) badge.cnxs = pendingCnxSize;
