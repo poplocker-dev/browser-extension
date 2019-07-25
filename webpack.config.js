@@ -9,10 +9,10 @@ let config = {
   devtool: false,
   entry: {
     background: './src/background.js',
-    popup: './src/popup/popup.jsx',
+    popup: './src/poplocker/popup.jsx',
     contentscript: './src/contentscript.js',
     injected: './src/injected.js',
-    options: './src/popup/options.jsx'
+    options: './src/poplocker/options.jsx'
   },
   output: {
     path: __dirname + '/dist',
@@ -73,13 +73,13 @@ let config = {
     alias: {
       lib: __dirname + '/src/lib',
       assets: __dirname + '/src/assets',
-      ui: __dirname + '/src/popup/ui'
+      ui: __dirname + '/src/poplocker/ui'
     },
     plugins: [
       new DirectoryNamedWebpackPlugin({
         exclude: /node_modules/,
         include: [
-          __dirname + '/src/popup',
+          __dirname + '/src/poplocker',
           __dirname + '/src/lib'
         ]
       }),
@@ -125,4 +125,3 @@ module.exports = (env, argv) => {
   }
   return config;
 };
-
