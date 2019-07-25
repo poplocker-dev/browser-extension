@@ -30,7 +30,7 @@ function decorate ({ method, id, jsonrpc }, result) {
 }
 
 function decorateError ({method, id, jsonrpc }, error) {
-  return {...{method, id, jsonrpc, error: error.message }};
+  return {...{method, id, jsonrpc, error: error.message || error }};
 }
 
 function strip ({ id, method, jsonrpc, params }) {

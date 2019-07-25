@@ -22,10 +22,10 @@ function pendingTxs (state = [], action) {
 }
 
 function firstPendingTx (state = null, action) {
-  if (action.type == 'ENQUEUE_TXS')
+  if (action.type == 'ENQUEUE_TXS') {
     return (state.length > 0) ? state[0] : null;
 
-  if (action.type == 'REVALUE_TX' && state) {
+  } else if (action.type == 'REVALUE_TX' && state) {
     const value = toBN(action.value).sub(toBN(action.fee));
     const params = { ...state.params, value: toHex(value.lt('0') ? '0' : value) };
     return { ...state, params };

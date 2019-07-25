@@ -66,5 +66,5 @@ export function toHex (bignumber) {
 
 export function getDomain (origin) {
   const parts = parseDomain(origin, { customTlds: /localhost/ });
-  return Object.values(parts).filter(i => i != "").reverse().join('.');
+  return parts? Object.values(parts).filter(i => i != "").reverse().join('.') : null;
 }
