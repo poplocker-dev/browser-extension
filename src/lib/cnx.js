@@ -8,7 +8,7 @@ export async function authorizeCnx (origin) {
   const pendingCnxs = await connection.pending.get();
 
   return new Promise((resolve, reject) => {
-    if (authorizedCnxs.indexOf(request) != -1) {
+    if (authorizedCnxs.indexOf(request) != -1 || !request.indexOf('chrome-extension://' + chrome.runtime.id)) {
       resolve();
     } else if (rejectedCnxs.indexOf(request) != -1) {
       reject(new Error('Unauthorized connection request: ' + request));

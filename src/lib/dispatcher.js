@@ -16,7 +16,7 @@ export function ethDispatch (message) {
 
       case 'eth_requestAccounts':
       case 'eth_accounts':
-        return authorizeCnx(message.origin).then(account.address.current);
+        return authorizeCnx(message.origin).then(() => account.address.current());
 
       case 'eth_sendTransaction':
         return authorizeTx(message).then(sendToNodeOrWhisper);
@@ -36,23 +36,22 @@ export function apiDispatch (message) {
       case 'setSmartLockerAddress':
         return account.address
                       .setLocker(message.address)
-                      .then(keyRequests.subscribe(message.address))
-                      .catch(() => {return `Failed: ${message.method}`});
+                      .then(keyRequests.subscribe(message.address));
 
       case 'getSmartLockerState':
         return account.address.all().then(results => {
           return smartLocker.getState(...results);
-        }).catch(() => { return `Failed: ${message.method}` });
+        });
 
       case 'removeKeyRequest':
-        return Promise.resolve(keyRequests.remove(message.address))
-                      .catch(() => {return `Failed: ${message.method}`});
+        return Promise.resolve(keyRequests.remove(message.address));
 
       default:
-        return Promise.reject(`No such method: ${message.method}`);
+        return Promise.reject('No such method: ' + message.method);
     }
   }
-  return result().then(r => decorate(message, r));
+  return authorizeCnx(message.origin).then(result).then(r => decorate(message, r))
+                                                  .catch(e => decorateError(message, e));
 }
 
 function decorate ({ method, id, jsonrpc }, result) {
@@ -60,7 +59,7 @@ function decorate ({ method, id, jsonrpc }, result) {
 }
 
 function decorateError ({method, id, jsonrpc }, error) {
-  return {...{method, id, jsonrpc, error: error.message }};
+  return {...{method, id, jsonrpc, error: error.message || error }};
 }
 
 async function sendToNodeOrWhisper (message) {

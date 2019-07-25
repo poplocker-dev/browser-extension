@@ -22,7 +22,7 @@ function pendingTxs (state = [], action) {
 }
 
 function firstPendingTx (state = null, action) {
-  if (action.type == 'ENQUEUE_TXS')
+  if (action.type == 'ENQUEUE_TXS') {
     return (state.length > 0) ? state[0] : null;
 
   } else if (action.type == 'REVALUE_TX' && state) {
