@@ -83,6 +83,7 @@ const mapDispatch = (dispatch) => ({
     const params      = {...this.props.tx.current.params, gasPrice, gasLimit: gasEstimate};
 
     getLatestNonce()
+      .catch(e => { throw('Network error') })
       .then(blockNonce => signTx(params, this.props.tx.current.txId, blockNonce.result, this.state.password))
       .then(window.close)
       .catch(e => dispatch(txSignFailed(e)));
