@@ -24,12 +24,16 @@ class ShhRpc {
       if (symKeyID && await this.web3.shh.hasSymKey(symKeyID)) {
         return this.web3.shh.post({ ...this.params, symKeyID, topic, payload });
       } else {
+        throw -1;
+      }
+    } catch(e) {
+      try {
         this.web3 = new Web3(this.url, null);
         this.symKeyID = await this.web3.shh.generateSymKeyFromPassword(this.topic);
         this.post(message);
+      } catch(e) {
+        return Promise.reject(e)
       }
-    } catch(e) {
-      return Promise.reject(e)
     }
   }
 
