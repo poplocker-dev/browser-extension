@@ -1,4 +1,8 @@
 .authorize-view {
+  .locker-wrapper {
+    min-height: 40px;
+  }
+
   .input-field--invalid {
     margin-bottom: 2.6px;
   }

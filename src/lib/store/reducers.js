@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import reduceReducers      from 'reduce-reducers';
+import reduceReducers      from 'reduce-reducers'
 import toBN                from 'number-to-bn'
 import { toHex }           from 'lib/helpers'
 
@@ -29,6 +29,9 @@ function firstPendingTx (state = null, action) {
     const value = toBN(action.value).sub(toBN(action.fee));
     const params = { ...state.params, value: toHex(value.lt('0') ? '0' : value) };
     return { ...state, params };
+
+  } else if (action.type == 'SET_TO_LOCKER' && state) {
+    return { ...state, toLocker: action.toLocker };
   }
   else
     return state;
@@ -43,8 +46,8 @@ function balance (state = null, action) {
 
 function pricing (state = null, action) {
   if (action.type == 'UPDATE_PRICING') {
-    const [gasPrice, gasEstimate] = action.pricing.map(toBN);
-    return { gasPrice, gasEstimate, fee: gasPrice.mul(gasEstimate) }
+    const [gasPrice, gasEstimate, overhead] = action.pricing.map(toBN);
+    return { gasPrice, gasEstimate, overhead, fee: gasPrice.mul(gasEstimate.add(overhead)) }
   }
   else
     return state;
@@ -95,9 +98,17 @@ function noFundsError (state = null, action) {
     return state;
 }
 
+function locker(state = { status: null }, action) {
+  if (action.type == 'SMARTLOCKER_UPDATE') {
+    return action.state;
+  }
+  else
+    return state;
+}
+
 const current  = reduceReducers(pendingTxs, firstPendingTx);
 const tx       = combineReducers({ balance, pricing, current });
 const errors   = combineReducers({ txInfo: txInfoError, txSign: txSignError, noFunds: noFundsError });
-const reducers = combineReducers({ pendingCnxs, page, tx, errors, advancedMode });
+const reducers = combineReducers({ pendingCnxs, page, tx, errors, advancedMode, locker });
 
 export { reducers };

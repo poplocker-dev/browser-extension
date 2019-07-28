@@ -7,7 +7,10 @@ export function initialize () {
   save({
     deviceAddress: null,
     deviceNonce: '0x0',
-    deviceNonceTimeStamp: 0
+    deviceNonceTimeStamp: 0,
+    smartLockerAddress: null,
+    smartLockerNonce: '0x0',
+    smartLockerNonceTimeStamp: 0
   });
 }
 
@@ -76,26 +79,60 @@ export const connection = {
 export const transaction = collection('pendingTxs');
 
 export const account = {
-  address () {
-    return load('deviceAddress').then(a => a ? [a] : []);
+  address: {
+    device () {
+      return load('deviceAddress');
+    },
+
+    locker () {
+      return load('smartLockerAddress');
+    },
+
+    current () {
+      return this.all().then(([deviceAddress, smartLockerAddress]) => {
+        if (deviceAddress) {
+          return smartLockerAddress ? [smartLockerAddress] : [deviceAddress];
+        } else {
+          return [];
+        }
+      });
+    },
+
+    all () {
+      return Promise.all([this.device(), this.locker()]);
+    },
+
+    setLocker (addr) {
+      return save({
+        smartLockerAddress: addr,
+        smartLockerNonce: "0x0",
+        smartLockerNonceTimeStamp: 0
+      });
+    }
   },
 
   nonce: {
-    current () { return load('deviceNonce'); },
+    current (smartLocker=false) {
+      return smartLocker? load('smartLockerNonce') : load('deviceNonce');
+    },
 
-    up (number=1) {
-      return this.current().then(current => {
-        const deviceNonce = toHex(parseInt(current) + number);
-        return save({ deviceNonce, deviceNonceTimeStamp: Date.now() });
+    up (number=1, smartLocker=false) {
+      return this.current(smartLocker).then(current => {
+        const nonce = toHex(parseInt(current) + number);
+        return smartLocker?
+          save({ smartLockerNonce: nonce, smartLockerNonceTimeStamp: Date.now() }) :
+          save({ deviceNonce: nonce, deviceNonceTimeStamp: Date.now() });
       })
     },
 
-    async track (remote) {
-      const local  = await this.current();
-      const timeStamp = await load('deviceNonceTimeStamp');
+    async track (remote, smartLocker=false) {
+      const local  = await this.current(smartLocker);
+      const timeStamp = smartLocker? await load('smartLockerNonceTimeStamp') : await load('deviceNonceTimeStamp');
 
       if (parseInt(remote) > parseInt(local) || Date.now() - timeStamp > 300000) {
-        save({ deviceNonce: remote, deviceNonceTimeStamp: Date.now() });
+        smartLocker?
+          save({ smartLockerNonce: remote, smartLockerNonceTimeStamp: Date.now() }) :
+          save({ deviceNonce: remote, deviceNonceTimeStamp: Date.now() });
         return remote;
       }
       else return local;

@@ -43,9 +43,9 @@ class Sliders extends React.Component {
 
   updateGasPrice (gasPrice) {
     this.setState({ gasPrice }, () => {
-      this.dispatch(updatePricing([this.state.gasPrice, this.base.gasEstimate]));
+      this.dispatch(updatePricing([this.state.gasPrice, this.base.gasEstimate, this.base.overhead]));
       if (this.props.tx.current.params.sendAll)
-        this.dispatch(revalueTx(this.state.gasPrice*this.base.gasEstimate, this.balance));
+        this.dispatch(revalueTx(this.state.gasPrice*(+this.base.gasEstimate + +this.base.overhead), this.balance));
     });
   }
 }

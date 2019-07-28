@@ -42,6 +42,7 @@
     "bignumber.js": "^8.0.2",
     "classnames": "^2.2.6",
     "ethereumjs-wallet": "^0.6.3",
+    "ethers": "^3.0.29",
     "ethjs-provider-http": "^0.1.6",
     "ethjs-rpc": "^0.2.0",
     "ethjs-signer": "^0.1.1",
@@ -54,6 +55,7 @@
     "redux-thunk": "^2.3.0",
     "safe-event-emitter": "^1.0.1",
     "simple-crypto-js": "^2.0.2",
+    "web3": "^1.0.0-beta.52",
     "zxcvbn": "^4.4.2"
   }
 }

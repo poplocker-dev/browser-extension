@@ -4,9 +4,16 @@ import Header         from 'ui/header'
 import SignForm       from './sign_form'
 import TxInfo         from './info'
 import AccountBalance from './balance'
+import Locker         from './locker'
 
-import { getBalance, getTxPricing }                   from 'lib/rpc/eth_node'
-import { updateBalance, updatePricing, txInfoFailed } from 'lib/store/actions'
+import { getBalance, getTxPricing } from 'lib/rpc/eth_node'
+import { getSmartLockerName }       from 'lib/rpc/locker'
+import { account }                  from 'lib/storage'
+import { updateBalance,
+         updatePricing,
+         txInfoFailed,
+         revalueTx,
+         setToLocker }              from 'lib/store/actions'
 
 import './authorize.css'
 
@@ -20,8 +27,19 @@ class AuthorizeView extends React.Component {
     try {
       const balance = await getBalance();
       this.props.dispatch(updateBalance(balance.result));
-      const pricing = await getTxPricing(this.props.current);
-      this.props.dispatch(updatePricing(pricing.map(i => i.result)));
+      const pricing = (await getTxPricing(this.props.current)).map(i => i.result);
+      const overhead = await account.address.locker() ? 53000 : 0;
+      pricing.push(overhead);
+      this.props.dispatch(updatePricing(pricing));
+
+      if (this.props.current.params.to) {
+        try {
+          const toLocker = await getSmartLockerName(this.props.current.params.to);
+          if (toLocker)
+            setTimeout(() => this.props.dispatch(setToLocker(toLocker)), 2000);
+        } catch {
+        }
+      }
     }
     catch(e) {
       this.props.dispatch(txInfoFailed('Transaction will fail'));
@@ -34,6 +52,7 @@ class AuthorizeView extends React.Component {
         <Header small={true}>
           <AccountBalance/>
         </Header>
+        <Locker/>
         <TxInfo/>
         <SignForm/>
       </div>
@@ -41,4 +60,9 @@ class AuthorizeView extends React.Component {
   }
 }
 
-export default connect(({ tx }) =>  ({ current: tx.current }))(AuthorizeView);
+const mapStore = ({ tx }) => ({
+  current: tx.current,
+  pricing: tx.pricing
+});
+
+export default connect(mapStore)(AuthorizeView);

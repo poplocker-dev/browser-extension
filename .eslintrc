@@ -19,9 +19,11 @@
     "Promise": true,
     "document": true,
     "window": true,
-    "process": true
+    "process": true,
+    "config": true
   },
   "rules": {
+    "no-trailing-spaces": "error",
     "react/prop-types": "off",
     "no-console": ["error", { "allow": ["error"] }]
   }

@@ -1,6 +1,8 @@
 .transaction-info {
   display: flex;
   padding: 12px;
+  background: white;
+  margin-top: 12px;
   margin-bottom: 12px;
   flex-direction: column;
   border: 1px solid var(--border-color);

@@ -26,7 +26,8 @@ export const background = {
 // that lives in separate DOM
 export class RpcProxy {
 
-  constructor (up, down) {
+  constructor (type, up, down) {
+    this.type     = type;
     this.up       = up;
     this.down     = down;
     this.queue    = [];
@@ -35,7 +36,7 @@ export class RpcProxy {
     window.addEventListener('message', ({ source, data }) => {
       if (source != window) return;
 
-      if (data.type == 'ETH_RPC' && (data.channel == this.down)) {
+      if (data.type == this.type && (data.channel == this.down)) {
         if (this.queue.length > 0) {
           const found = this.queue.findIndex(i => (i.method == data.method && i.id == data.id));
 
@@ -61,7 +62,7 @@ export class RpcProxy {
     if (callback)
       this.queue.push({ method: payload.method, id: payload.id, callback });
 
-    window.postMessage({ type: 'ETH_RPC', channel: this.up, ...payload }, '*');
+    window.postMessage({ type: this.type, channel: this.up, ...payload }, '*');
     return this;
   }
 }

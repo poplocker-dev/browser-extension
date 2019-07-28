@@ -7,15 +7,15 @@ import { enqueuePendingCnxs, enqueuePendingTxs } from 'lib/store/actions'
 import { account, connection, transaction }      from 'lib/storage'
 
 export async function initOrRedirect (render) {
-  const [address]   = await account.address();
-  const pendingCnxs = await connection.pending.get();
-  const pendingTxs  = await transaction.get();
+  const deviceAddress = await account.address.device();
+  const pendingCnxs   = await connection.pending.get();
+  const pendingTxs    = await transaction.get();
 
-  if (address && pendingCnxs.length > 0)
+  if (deviceAddress && pendingCnxs.length > 0)
     store.dispatch(enqueuePendingCnxs(pendingCnxs));
-  else if (address && pendingTxs.length > 0)
+  else if (deviceAddress && pendingTxs.length > 0)
     store.dispatch(enqueuePendingTxs(pendingTxs));
-  else if (address)
+  else if (deviceAddress)
     chrome.tabs.create({ 'url': process.env.POPLOCKER_WALLET_URL });
 
   return render(store);
@@ -52,6 +52,10 @@ export const badge = {
     this.color = '#FF0054';
     this.text  = '!';
   }
+}
+
+export function lockerRedirect () {
+  chrome.tabs.create({ 'url': process.env.POPLOCKER_WALLET_URL + process.env.SMARTLOCKER_PATH});
 }
 
 export function fixedEth (bn) {

@@ -2,7 +2,7 @@ import { background } from 'lib/rpc'
 import { account }    from 'lib/storage'
 
 export function getBalance () {
-  return account.address().then(([a]) => send(raw.balance(a)));
+  return account.address.current().then(([a]) => send(raw.balance(a)));
 }
 
 export function getTxPricing (tx) {
@@ -13,7 +13,7 @@ export function getTxPricing (tx) {
 }
 
 export function getLatestNonce () {
-  return account.address().then(([a]) => send(raw.nonce(a)));
+  return account.address.device().then((a) => send(raw.nonce(a)));
 }
 
 export function rawSendTx (tx) {
@@ -27,7 +27,7 @@ function send (payload) {
 
 // format raw JSON
 // RPC messages
-export const raw = {
+const raw = {
   format: (method, params, id='1') => {
     return JSON.parse(JSON.stringify({
       id,

@@ -1,5 +1,6 @@
-import { account, transaction } from 'lib/storage'
+import { transaction, account } from 'lib/storage'
 import { rawSendTx }            from 'lib/rpc/eth_node'
+import smartLocker              from 'lib/smartlocker'
 import { sign as signer }       from 'ethjs-signer'
 
 let txId = 0;
@@ -28,8 +29,12 @@ export function sign (rawTx, sk) {
   return Promise.resolve(signer(rawTx, sk));
 }
 
-export function noncify (tx, nonce) {
-  return account.nonce.track(nonce).then(updated => {
+export function signMetaTx (rawTx, sk, smartLockerAddress, smartLockerNonce) {
+  return Promise.resolve(smartLocker.createMetaTx(rawTx, sk, smartLockerAddress, smartLockerNonce));
+}
+
+export function noncify (tx, nonce, smartLocker=false) {
+  return account.nonce.track(nonce, smartLocker).then(updated => {
     return {...tx, nonce: updated};
   });
 }
