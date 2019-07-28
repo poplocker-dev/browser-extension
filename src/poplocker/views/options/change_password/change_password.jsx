@@ -1,6 +1,5 @@
 import React                 from 'react'
 import { connect }           from 'react-redux'
-import Header                from 'ui/header'
 import { Button, PassField } from '@poplocker/react-ui'
 import { changePassword }    from 'lib/rpc/account'
 import PassConfirm           from 'ui/pass_confirm'
@@ -9,7 +8,7 @@ import { accountReady } from 'lib/store/actions'
 
 import './change_password.css'
 
-class ChangePasswordView extends React.Component {
+class ChangePassword extends React.Component {
   constructor (props) {
     super(props);
 
@@ -20,7 +19,7 @@ class ChangePasswordView extends React.Component {
     this.setState({ currentPassword: e.target.value, currentPasswordError: '' });
   }
 
-  onCurrentPasswordBlur (e) {
+  onCurrentPasswordBlur () {
     if (!this.state.currentPassword)
       this.setState({ currentPasswordError: 'password cannot be empty' });
   }
@@ -45,24 +44,23 @@ class ChangePasswordView extends React.Component {
 
   render () {
     return (
-      <div className="change-password-view view">
-        <Header caption="Change password on this device" />
-        <form className="change-password-form" onSubmit={ this.handleSubmit.bind(this) }>
+      <div className="change-password">
+        <h2>Change password on this device:</h2>
+        <form className="change-password-form" onSubmit={this.handleSubmit.bind(this)}>
           <PassField name="current password"
                      label="Current Password"
-                     autoFocus={true}
                      value={this.state.currentPassword}
                      error={this.state.currentPasswordError}
-                     onChange={ this.onCurrentPasswordChange.bind(this) }
-                     onBlur={ this.onCurrentPasswordBlur.bind(this) }/>
+                     onChange={this.onCurrentPasswordChange.bind(this)}
+                     onBlur={this.onCurrentPasswordBlur.bind(this)}/>
           <PassConfirm passwordLabel="New Password"
                        confirmationLabel="Confirm New Password"
-                       onUpdatePassword={ this.onUpdateNewPassword.bind(this) } />
-          <Button icon="human" disabled={ this.shouldBeDisabled() }>Change Password</Button>
+                       onUpdatePassword={this.onUpdateNewPassword.bind(this)} />
+          <Button icon="human" disabled={this.shouldBeDisabled()}>Change Password</Button>
         </form>
       </div>
     )
   }
 }
 
-export default connect()(ChangePasswordView)
+export default connect()(ChangePassword)

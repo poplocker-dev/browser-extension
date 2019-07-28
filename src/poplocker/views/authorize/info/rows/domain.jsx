@@ -1,6 +1,6 @@
 import React         from 'react'
 import { Preloader } from '@poplocker/react-ui'
-import parseDomain   from 'parse-domain'
+import { getDomain } from 'lib/helpers'
 
 const Domain = ({ tx, advancedMode }) => (
   <div className="row domain">
@@ -20,15 +20,8 @@ const recipient = (tx) => (
 )
 
 
-const domain = (transaction) => {
-  const origin = transaction.current.origin;
-  const parts  = parseDomain(origin, { customTlds: /localhost/ });
-  const parsed = Object.values(parts)
-                       .filter(i => i != "")
-                       .reverse()
-                       .join('.');
-
-  return parsed || 'unknown';
+const domain = (tx) => {
+  return getDomain(tx.current.origin) || 'unknown';
 }
 
 export default Domain;

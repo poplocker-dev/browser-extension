@@ -27,7 +27,7 @@ body {
   color: var(--foreground-color);
   font-size: 13px;
   font-family: Orkney, Helvetica, sans-serif;
-	line-height: 19px;
+  line-height: 19px;
 
   .view {
     position: relative;

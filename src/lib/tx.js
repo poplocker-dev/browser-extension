@@ -2,18 +2,24 @@ import { account, transaction } from 'lib/storage'
 import { rawSendTx }            from 'lib/rpc/eth_node'
 import { sign as signer }       from 'ethjs-signer'
 
-export function auth (tx) {
-  return new Promise(resolve => {
-    chrome.runtime.onMessage.addListener(function handleSign(message) {
-      if ( message.type == 'TX_SIGNED' && message.txId == tx.txId) {
+let txId = 0;
 
-        resolve(rawSendTx(message.tx));
-        chrome.runtime.onMessage.removeListener(handleSign);
+export function authorizeTx (tx) {
+  return new Promise((resolve, reject) => {
 
-      } else if ( message.type == 'TX_CANCEL' && message.txId == tx.txId) {
-        chrome.runtime.onMessage.removeListener(handleSign);
+    chrome.runtime.onMessage.addListener(function handleTxSign(message) {
+      if (message.txId == tx.txId && (message.type == 'TX_SIGNED' || message.type == 'TX_CANCEL')) {
+        if (message.type == 'TX_SIGNED') {
+          resolve(rawSendTx(message.tx));
+        } else if (message.type == 'TX_CANCEL') {
+          reject(new Error('User rejected transaction: ' + tx.txId));
+        }
+        transaction.shift();
+        chrome.runtime.onMessage.removeListener(handleTxSign);
       }
     });
+
+    tx.txId = txId++;
     transaction.add(tx);
   });
 }
