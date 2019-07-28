@@ -4,7 +4,7 @@ import { Bouncing } from '@poplocker/react-ui'
 import './loading.css'
 
 const LoadingView = () => (
-  <div className="loading-view">
+  <div className="loading-view view">
     <Bouncing/>
   </div>
 )

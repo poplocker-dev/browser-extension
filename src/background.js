@@ -1,9 +1,13 @@
-import { sign, signMetaTx, noncify }              from 'lib/tx'
-import { ethDispatch, apiDispatch }               from 'lib/dispatcher'
-import { badge }                                  from 'lib/helpers'
-import { initialize, save, account, transaction } from 'lib/storage'
-import smartLocker                                from 'lib/smartlocker'
-import keyRequests                                from 'lib/key_requests'
+import { sign, signMetaTx, noncify } from 'lib/tx'
+import { ethDispatch, apiDispatch }  from 'lib/dispatcher'
+import { badge }                     from 'lib/helpers'
+import { initialize,
+         save,
+         account,
+         connection,
+         transaction }               from 'lib/storage'
+import smartLocker                   from 'lib/smartlocker'
+import keyRequests                   from 'lib/key_requests'
 
 chrome.runtime.onInstalled.addListener(({ reason }) => {
   if (reason == 'install') initialize();
@@ -41,7 +45,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                .catch(sendResponse)
         break;
 
-        // TODO: dispatcher for transactions
       case 'TX_SIGN':
         account.address.locker().then((smartLockerAddress) => {
           if (smartLockerAddress) {
@@ -62,10 +65,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         })
         break;
 
+      case 'CNX_AUTHORIZED':
+      case 'CNX_REJECTED':
       case 'TX_SIGNED':
       case 'TX_CANCEL':
-        transaction.shift()
-                   .then(sendResponse);
+        sendResponse(true);
         break;
 
       case 'SMARTLOCKER_NAME':
@@ -78,17 +82,27 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 });
 
+chrome.storage.onChanged.addListener(changes => {
+  if (changes.deviceAddress || changes.pendingCnxs || changes.pendingTxs) {
+    account.address.device().then(deviceAddress => {
+      if (!deviceAddress) badge.warning();
+      else {
+        connection.pending.size().then(pendingCnxSize => {
+          if (pendingCnxSize > 0) badge.cnxs = pendingCnxSize;
+          else {
+            transaction.size().then(pendingTxSize => {
+              if (pendingTxSize > 0) badge.txs = pendingTxSize;
+              else badge.reset();
+            });
+          }
+        });
+      }
+    });
+  }
+});
+
 account.address.locker().then(address => keyRequests.subscribe(address));
 
-transaction.pending().then(p => {
-  if (p && p.length > 0)
-    badge.info = p.length;
-});
-
-chrome.storage.onChanged.addListener(changes => {
-  if (changes.pending && changes.pending.newValue)
-    badge.info = changes.pending.newValue.length || '';
-
-  if (changes.deviceAddress)
-    changes.deviceAddress.newValue ? badge.reset() : badge.warning();
-});
+connection.pending.clear();
+connection.rejected.clear();
+transaction.clear();
