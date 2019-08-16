@@ -23,7 +23,7 @@ const smartLocker = {
       data: rawTx.data || '0x0',
       nonce: smartLockerNonce || '0x0',
       gasPrice: rawTx.gasPrice || '0x0',
-      gasLimit: rawTx.gasLimit || '0x0'
+      gasLimit: rawTx.gasLimit? utils.bigNumberify(rawTx.gasLimit).mul(2).toHexString() : '0x0'
     };
 
     const hash = utils.solidityKeccak256(
